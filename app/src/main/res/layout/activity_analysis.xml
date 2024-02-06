@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AnalysisActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTitle"
+            android:text="Analysis"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            style="@style/Titleblue"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearTitle"
+            android:orientation="horizontal"
+            android:layout_below="@id/txtTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BoDyS - "
+                style="@style/Textblue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtBodyNumer"
+                android:text="1"
+                style="@style/Textblue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" - "
+                style="@style/Textblue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtTask"
+                android:text="Spont"
+                style="@style/Textblue"/>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnListenAnalysis"
+            android:layout_below="@id/linearTitle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/bg_button"
+            android:text="Listen audio"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:id="@+id/cardDisplayAnalysis"
+            android:layout_below="@id/btnListenAnalysis">
+
+
+            <fr.thomas.menard.ispeak.Utils.WaveformView
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:id="@+id/waveFormAnalysis"
+                android:layout_below="@id/linearTime"/>
+
+
+
+            <fr.thomas.menard.ispeak.Utils.CustomCardView
+                android:id="@+id/customCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTaskEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cardDisplayAnalysis"/>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutPostLabel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/recyclerTaskEvent"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/linearTextPostLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/txt_Trial_label"
+                    style="@style/Titleblue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Try :"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/txtidTrial"
+                    style="@style/Titleblue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/num" />
+
+                <TextView
+                    android:id="@+id/txt_underscore"
+                    style="@style/Titleblue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/tiret" />
+
+
+                <TextView
+                    android:id="@+id/txt_categorie_postLabel"
+                    style="@style/Titleblue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/categorie" />
+
+                <TextView
+                    android:id="@+id/txt_underscore1"
+                    style="@style/Titleblue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/tiret" />
+
+                <TextView
+                    android:id="@+id/txt_task_postLabel"
+                    style="@style/Titleblue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/task" />
+
+                <TextView
+                    android:id="@+id/txt_underscore2"
+                    style="@style/Titleblue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/tiret" />
+
+                <TextView
+                    android:id="@+id/txt_side_postLabel"
+                    style="@style/Titleblue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/side" />
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btnATM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:background="@color/green"
+                android:clickable="false"
+                android:text="ATM"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearHand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/btnATM">
+
+                <Button
+                    android:id="@+id/btnMultiplural"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/ATM1" />
+
+                <Button
+                    android:id="@+id/btnPluriDigital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/ATM2" />
+
+                <Button
+                    android:id="@+id/btnLateralPinch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/ATM3" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnSTL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/green"
+                android:clickable="false"
+                android:text="STL"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearHand"
+                />
+
+            <LinearLayout
+                android:id="@+id/linearSTL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/btnSTL">
+
+                <Button
+                    android:id="@+id/btnDigitopalmar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button"
+                    android:text="@string/STL1" />
+
+                <Button
+                    android:id="@+id/btnRanking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/STL2" />
+
+                <Button
+                    android:id="@+id/btnUlnar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/STL3" />
+
+                <Button
+                    android:id="@+id/btnInterdigital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/STL4" />
+
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btnSTS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/green"
+                android:clickable="false"
+                android:text="STS"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearSTL"
+                />
+
+            <LinearLayout
+                android:id="@+id/linearSTS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/btnSTS">
+
+                <Button
+                    android:id="@+id/btnSTS1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button"
+                    android:text="@string/STS1" />
+
+                <Button
+                    android:id="@+id/btnSTS2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/STS2" />
+
+                <Button
+                    android:id="@+id/btnSTS3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/STS3" />
+
+                <Button
+                    android:id="@+id/btnSTS4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/STS4" />
+
+                <Button
+                    android:id="@+id/btnSTS5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_postlabel"
+                    android:text="@string/STS5" />
+
+
+            </LinearLayout>
+
+
+
+            <Button
+                android:id="@+id/btnSTQ"
+                android:layout_width="100dp"
+                android:layout_height="200dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/green"
+                android:clickable="false"
+                android:text="STQ"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linearSTS" />
+
+            <Button
+                android:id="@+id/btnSTQ1"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="@string/STQ1"
+                app:layout_constraintLeft_toRightOf="@id/btnSTQ"
+                app:layout_constraintTop_toBottomOf="@id/linearSTS" />
+
+            <Button
+                android:id="@+id/btnSTQ2"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="@string/STQ2"
+                app:layout_constraintLeft_toRightOf="@id/btnSTQ"
+                app:layout_constraintTop_toBottomOf="@id/btnSTQ1" />
+
+
+            <Button
+                android:id="@+id/btnSTQ3"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="@string/STQ3"
+                app:layout_constraintLeft_toRightOf="@id/btnSTQ1"
+                app:layout_constraintTop_toBottomOf="@id/linearSTS" />
+
+            <!--
+
+            <Button
+                android:id="@+id/btnSS"
+                android:layout_width="100dp"
+                android:layout_height="200dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/green"
+                android:clickable="false"
+                android:text="STS"
+                app:layout_constraintLeft_toRightOf="@id/btnSTQ3"
+                app:layout_constraintTop_toBottomOf="@id/linearSTS" />
+
+            <Button
+                android:id="@+id/btnAbd"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="@string/STQ1"
+                app:layout_constraintLeft_toRightOf="@id/btnSS"
+                app:layout_constraintTop_toBottomOf="@id/linearSTS" />
+
+            <Button
+                android:id="@+id/btnElev"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/elev"
+                app:layout_constraintLeft_toRightOf="@id/btnAbd"
+                app:layout_constraintTop_toBottomOf="@id/linearSTS" />
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/add"
+                app:layout_constraintLeft_toRightOf="@id/btnSS"
+                app:layout_constraintTop_toBottomOf="@id/btnAbd" />
+
+            <Button
+                android:id="@+id/btnExt_r"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/ext_r"
+                app:layout_constraintLeft_toRightOf="@id/btnAdd"
+                app:layout_constraintTop_toBottomOf="@id/btnAbd" />
+
+            <Button
+                android:id="@+id/btnInt_r"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/int_r"
+                app:layout_constraintLeft_toRightOf="@id/btnExt_r"
+                app:layout_constraintTop_toBottomOf="@id/btnAbd" />
+
+
+            <Button
+                android:id="@+id/btnTitleTrunk"
+                android:layout_width="100dp"
+                android:layout_height="200dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/green"
+                android:clickable="false"
+                android:text="/trunk"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnExt_r" />
+
+            <Button
+                android:id="@+id/btnInc"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/inc"
+                app:layout_constraintLeft_toRightOf="@id/btnTitleTrunk"
+                app:layout_constraintTop_toBottomOf="@id/btnExt_r" />
+
+            <Button
+                android:id="@+id/btnRot"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/rot"
+                app:layout_constraintLeft_toRightOf="@id/btnInc"
+                app:layout_constraintTop_toBottomOf="@id/btnExt_r" />
+
+            <Button
+                android:id="@+id/btnFlex_trunk"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/flex"
+                app:layout_constraintLeft_toRightOf="@id/btnTitleTrunk"
+                app:layout_constraintTop_toBottomOf="@id/btnInc" />
+
+
+            <Button
+                android:id="@+id/btnTitleHead"
+                android:layout_width="100dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/green"
+                android:clickable="false"
+                android:text="/head"
+                app:layout_constraintStart_toStartOf="@id/btnSTS"
+                app:layout_constraintTop_toBottomOf="@id/btnExt_r" />
+
+            <Button
+                android:id="@+id/btnInc_head"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/inc"
+                app:layout_constraintLeft_toRightOf="@id/btnTitleHead"
+                app:layout_constraintTop_toBottomOf="@id/btnExt_r" />
+
+            <Button
+                android:id="@+id/btnRot_head"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/rot"
+                app:layout_constraintLeft_toRightOf="@id/btnTitleHead"
+                app:layout_constraintTop_toBottomOf="@id/btnInc_head" />
+
+            <Button
+                android:id="@+id/btnFlex_head"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button"
+                android:text="/flex"
+                app:layout_constraintLeft_toRightOf="@id/btnRot_head"
+                app:layout_constraintTop_toBottomOf="@id/btnInc_head" />
+
+
+            -->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="80dp"
+            android:id="@+id/btnValidate"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/layoutPostLabel"
+            android:layout_marginTop="100dp"
+            android:text="Confirm"
+            android:background="@drawable/bg_button"/>
+    </RelativeLayout>
+
+
+
+
+</ScrollView>

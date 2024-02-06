@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="30dp">
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imPlay"
+        android:src="@drawable/play_24"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="10dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_path"
+        android:text="Internal/DCIM"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/imPlay"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtCat0"
+        android:text="Task : "
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/txt_path"
+        app:layout_constraintLeft_toRightOf="@id/imPlay"
+        tools:ignore="HardcodedText"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtCategorieRecording"
+        android:text="BoDyS 1"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/txtCat0"
+        app:layout_constraintTop_toBottomOf="@id/txt_path"
+        tools:ignore="HardcodedText"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtTiret0"
+        android:text=" - "
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/txtCategorieRecording"
+        app:layout_constraintTop_toBottomOf="@id/txt_path"
+        tools:ignore="HardcodedText"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtTaskRecording"
+        android:text="Task"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/txtTiret0"
+        app:layout_constraintTop_toBottomOf="@id/txt_path"
+        tools:ignore="HardcodedText"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtNumberEvent"
+        android:text="Number event : "
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/imPlay"
+        app:layout_constraintTop_toBottomOf="@id/txtTaskRecording"
+        tools:ignore="HardcodedText"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtEventRecording"
+        android:text="eventnumber"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/txtNumberEvent"
+        app:layout_constraintTop_toBottomOf="@id/txtCategorieRecording"
+        tools:ignore="HardcodedText"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

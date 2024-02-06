@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">iSpeak</string>
+    <string name="welcome">Welcome to iSpeak ! \n\nFor which patient do you want to do the test ?</string>
+    <string name="id_patient">Patient ID (7 caracters)</string>
+    <string name="case_id">Case ID (7 caracters)</string>
+    <string name="confirm">Confirm</string>
+
+
+    <string name="ATM1">Erhöhte Einatmungshäufigk</string>
+    <string name="ATM2">übermäBiges Unterschreiten</string>
+    <string name="ATM3">Hör-/sichtbar</string>
+
+
+    <string name="STL1">Zu hoch</string>
+    <string name="STL2">Zu tief</string>
+    <string name="STL3">Zu laut</string>
+    <string name="STL4">Zu leise</string>
+
+    <string name="STQ1">Behaucht</string>
+    <string name="STQ2">Gepresst</string>
+    <string name="STQ3">Rau</string>
+
+    <string name="STS1">Wechselnde stimmqualität</string>
+    <string name="STS2">Lautstärke</string>
+    <string name="STS3">Stimmzittern</string>
+    <string name="STS4">Entstimmungen</string>
+    <string name="STS5">Unwillkürliche</string>
+
+    <string name="ART1">Offen</string>
+    <string name="ART2">Geschlossen</string>
+    <string name="ART3">Reduziert</string>
+    <string name="ART4">Ubersteigert</string>
+    <string name="ART5">Wechselnde</string>
+
+    <string name="RES1">Hypernasal</string>
+    <string name="RES2">Hyponasal</string>
+
+    <string name="TEM1">Niedrig</string>
+    <string name="TEM2">Hoch</string>
+
+    <string name="RDF1">Pausen</string>
+    <string name="RDF2">Iterationen</string>
+
+    <string name="MOD1">Eingeschränkte</string>
+    <string name="MOD2">Auffälligkeiten</string>
+
+
+
+
+</resources>

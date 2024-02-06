@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PresetActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearPatientID"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Patient ID : "
+            style="@style/Titleblue"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtPatientID"
+            style="@style/Titleblue"/>
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/card1"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="26dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@id/linearPatientID">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/txtPresets"
+                style="@style/Titleblue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chose assessment :" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilRadioFirst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:errorEnabled="true">
+
+                <RadioGroup
+                    android:id="@+id/RadioGroupFirst"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/radioBtn1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="BodyS1" />
+
+                    <RadioButton
+                        android:id="@+id/radioBtn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="BodyS2" />
+
+                    <RadioButton
+                        android:id="@+id/radioBtn3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="BodyS3" />
+
+                    <RadioButton
+                        android:id="@+id/radioBtn4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="Sustained vowel" />
+
+                </RadioGroup>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/card2"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="26dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/card1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/txtDiagnosis"
+            style="@style/Titleblue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Patient's diagnosis :" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilRadioFirstDiagnos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            app:errorEnabled="true">
+
+            <RadioGroup
+                android:id="@+id/RadioGroupDiagnosis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioBtnStroke"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="Stroke" />
+
+                <RadioButton
+                    android:id="@+id/radioBtnParkinsom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="Parkinson" />
+
+                <RadioButton
+                    android:id="@+id/radioBtnOther"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:text="Other" />
+
+
+            </RadioGroup>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnValidate"
+        android:layout_below="@id/card2"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/confirm"
+        android:background="@drawable/bg_button"/>
+
+
+</RelativeLayout>
