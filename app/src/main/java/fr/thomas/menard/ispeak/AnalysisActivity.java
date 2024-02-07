@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.thomas.menard.ispeak.Utils.Event;
 import fr.thomas.menard.ispeak.Utils.EventAdapter;
 import fr.thomas.menard.ispeak.Utils.RecordingModel;
 import fr.thomas.menard.ispeak.Utils.Trial;
@@ -37,11 +38,13 @@ public class AnalysisActivity extends AppCompatActivity {
 
     private RecyclerView.LayoutManager layoutManager;
 
+    int eventselected =0;
 
 
-    private boolean isPressedMultiPlural, isPressedPluriDigi, isPressedLatPinch, isPressedHandPalmar,
-            isPressedDigitoPalmar,isPressedRanking,isPressedHandUlnar,isPressedInterdigital;
-    private boolean isPressedFlexWrist, isPressedTremor, isPressedPron, isPressedSup;
+
+    private boolean isPressedATM1, isPressedATM2, isPressedATM3, isPressedSTL1,isPressedSTL2,
+            isPressedSTL3,isPressedSTL4;
+    private boolean isPressedSTS1, isPressedSTS2, isPressedSTS3, isPressedSTS4, isPressedSTS5;
     private boolean isPressedAbd, isPressedAdd, isPressedElev, isPressedExtR, isPressedIntR;
     private boolean isPressedInc, isPressedRot, isPressedFlexTrunk;
     private boolean isPressedIncHead, isPressedRotHead, isPressedFlexHead;
@@ -50,6 +53,8 @@ public class AnalysisActivity extends AppCompatActivity {
 
     List<Trial> listTrial = new ArrayList<>();
     List<String>postLabel = new ArrayList<>();
+
+    List<Event> listEvent = new ArrayList<>();
 
     List<RecordingModel> listRecording = new ArrayList<>();
 
@@ -78,9 +83,12 @@ public class AnalysisActivity extends AppCompatActivity {
         patientID = intent.getStringExtra("patientID");
         listTrial = (List<Trial>) intent.getSerializableExtra("listPostLabel");
         listRecording = (List<RecordingModel>) intent.getSerializableExtra("listRecording");
+        listEvent = (List<Event>) intent.getSerializableExtra("listEvent");
 
         Log.d("TEST", "list trial"+listTrial.get(0).getNumber_compens());
         Log.d("TEST", "list recording"+listRecording.size());
+        Log.d("TEST", "list event"+listEvent.size());
+
 
 
         binding.txtTask.setText(task);
@@ -91,35 +99,85 @@ public class AnalysisActivity extends AppCompatActivity {
 
         binding.customCardView.setVisibility(View.VISIBLE);
 
-        Toast.makeText(this, "id task" + taskNumber, Toast.LENGTH_SHORT).show();
-
     }
 
     private void initRecycler(){
         layoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerTaskEvent.setHasFixedSize(true);
         binding.recyclerTaskEvent.setLayoutManager(layoutManager);
-        eventAdapter = new EventAdapter(listTrial, getApplicationContext(), postLabel);
+        eventAdapter = new EventAdapter(listEvent, getApplicationContext(), postLabel);
         binding.recyclerTaskEvent.setAdapter(eventAdapter);
         binding.recyclerTaskEvent.setVisibility(View.VISIBLE);
         // the post labelling layout appear if it's invisible
         eventAdapter.setOnClickListener(visible -> {
             if(visible)
                 binding.layoutPostLabel.setVisibility(View.VISIBLE);
-            else
+            else {
                 binding.layoutPostLabel.setVisibility(View.GONE);
+                postLabel.clear();
+                resetBoolean();
+                modifyBackground();
+            }
         });
 
-        eventAdapter.setOnTitleListener((number, categorie, task, side) -> {
-            binding.txtidTrial.setText(number);
+        eventAdapter.setOnTitleListener((number, categorie, task) -> {
             binding.txtCategoriePostLabel.setText(categorie);
             binding.txtTaskPostLabel.setText(task);
-            binding.txtSidePostLabel.setText(side);
+            eventselected = number;
+            Log.d("TEST", ""+number);
         });
 
 
 
 
+    }
+
+    private void modifyBackground(){
+        if(!isPressedATM1)
+            binding.btnATM1.setBackgroundResource(R.drawable.bg_button);
+        if(!isPressedATM2)
+            binding.btnATM2.setBackgroundResource(R.drawable.bg_button);
+        if(!isPressedATM3)
+            binding.btnATM3.setBackgroundResource(R.drawable.bg_button);
+
+        if(!isPressedSTL1)
+            binding.btnSTL1.setBackgroundResource(R.drawable.bg_button);
+        if(!isPressedSTL2)
+            binding.btnSTL2.setBackgroundResource(R.drawable.bg_button);
+        if(!isPressedSTL3)
+            binding.btnSTL3.setBackgroundResource(R.drawable.bg_button);
+        if(!isPressedSTL4)
+            binding.btnSTL4.setBackgroundResource(R.drawable.bg_button);
+
+
+        if(!isPressedSTS1)
+            binding.btnSTS1.setBackgroundResource(R.drawable.bg_button);
+        if(!isPressedSTS2)
+            binding.btnSTS2.setBackgroundResource(R.drawable.bg_button);
+        if(!isPressedSTS3)
+            binding.btnSTS3.setBackgroundResource(R.drawable.bg_button);
+        if(!isPressedSTS4)
+            binding.btnSTS4.setBackgroundResource(R.drawable.bg_button);
+        if(!isPressedSTS5)
+            binding.btnSTS5.setBackgroundResource(R.drawable.bg_button);
+
+
+
+    }
+
+    private void resetBoolean(){
+        isPressedATM1 = false;
+        isPressedATM2 = false;
+        isPressedATM3 = false;
+        isPressedSTL1 = false;
+        isPressedSTL2 = false;
+        isPressedSTL3 = false;
+        isPressedSTL4 = false;
+        isPressedSTS1 = false;
+        isPressedSTS2 = false;
+        isPressedSTS3 = false;
+        isPressedSTS4 = false;
+        isPressedSTS5 = false;
     }
 
     private void listenBtnValidate() {
@@ -168,345 +226,197 @@ public class AnalysisActivity extends AppCompatActivity {
 
     @SuppressLint("NotifyDataSetChanged")
     private void listenBtnLabel(){
-        Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show();
-        /*3
-        binding.btnMultiplural.setOnClickListener(view -> {
-            if(!isPressedMultiPlural) {
-                postLabel.add("Multiplural");
-                isPressedMultiPlural = true;
-                binding.btnMultiplural.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+        binding.btnATM1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedATM1){
+                    postLabel.add("Erhöhte Einatmungshäufigk");
+                    isPressedATM1 = true;
+                    binding.btnATM1.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedATM1 = false;
+                    binding.btnATM1.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Erhöhte Einatmungshäufigk");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            else{
-                isPressedMultiPlural = false;
-                binding.btnMultiplural.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Multiplural");
-            }
-            eventAdapter.notifyDataSetChanged();
         });
-        binding.btnPluriDigital.setOnClickListener(view -> {
-            if(!isPressedPluriDigi) {
-                postLabel.add("PluriDigital");
-                isPressedPluriDigi = true;
-                binding.btnPluriDigital.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+        binding.btnATM2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedATM2){
+                    postLabel.add("übermäBiges Unterschreiten");
+                    isPressedATM2 = true;
+                    binding.btnATM2.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedATM2 = false;
+                    binding.btnATM2.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("übermäBiges Unterschreiten");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            else{
-                isPressedPluriDigi = false;
-                binding.btnPluriDigital.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("PluriDigital");
-            }
-            eventAdapter.notifyDataSetChanged();
-
         });
-        binding.btnLateralPinch.setOnClickListener(view -> {
-            if(!isPressedLatPinch) {
-                postLabel.add("LateralPinch");
-                isPressedLatPinch = true;
-                binding.btnLateralPinch.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+        binding.btnATM3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedATM3){
+                    postLabel.add("Hör-/sichtbar");
+                    isPressedATM3 = true;
+                    binding.btnATM3.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedATM3 = false;
+                    binding.btnATM3.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Hör-/sichtbar");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            else{
-                isPressedLatPinch = false;
-                binding.btnLateralPinch.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("LateralPinch");
-
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnPalmar.setOnClickListener(view -> {
-            if(!isPressedHandPalmar) {
-                postLabel.add("Palmar");
-                isPressedHandPalmar = true;
-                binding.btnPalmar.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-            }
-            else{
-                isPressedHandPalmar = false;
-                binding.btnPalmar.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Palmar");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnDigitopalmar.setOnClickListener(view -> {
-            if(!isPressedDigitoPalmar) {
-                postLabel.add("DigitoPalmar");
-                isPressedDigitoPalmar = true;
-                binding.btnDigitopalmar.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-            }
-            else{
-                isPressedDigitoPalmar = false;
-                binding.btnDigitopalmar.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("DigitoPalmar");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnRanking.setOnClickListener(view -> {
-            if(!isPressedRanking) {
-                postLabel.add("Ranking");
-                isPressedRanking = true;
-                binding.btnRanking.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-            }
-            else{
-                isPressedRanking = false;
-                binding.btnRanking.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Ranking");
-
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnUlnar.setOnClickListener(view -> {
-            if(!isPressedHandUlnar) {
-                postLabel.add("Ulnar");
-                isPressedHandUlnar = true;
-                binding.btnUlnar.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-            }
-            else{
-                isPressedHandUlnar = false;
-                binding.btnUlnar.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Ulnar");
-
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnInterdigital.setOnClickListener(view -> {
-            if(!isPressedInterdigital) {
-                postLabel.add("Interdigital");
-                isPressedInterdigital = true;
-                binding.btnInterdigital.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-            }
-            else{
-                isPressedInterdigital = false;
-                binding.btnInterdigital.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Interdigital");
-
-            }
-            eventAdapter.notifyDataSetChanged();
-
         });
 
-        binding.btnFlex.setOnClickListener(view -> {
-            if(!isPressedFlexWrist) {
-                postLabel.add("WristFlex");
-                isPressedFlexWrist = true;
-                binding.btnFlex.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-            }
-            else{
-                isPressedFlexWrist = false;
-                binding.btnFlex.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("WristFlex");
 
-            }
-            eventAdapter.notifyDataSetChanged();
 
+        binding.btnSTL1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedSTL1){
+                    postLabel.add("Zu hoch");
+                    isPressedSTL1 = true;
+                    binding.btnSTL1.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedSTL1 = false;
+                    binding.btnSTL1.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Zu hoch");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
+            }
         });
-        binding.btnTremor.setOnClickListener(view -> {
-            if(!isPressedTremor) {
-                postLabel.add("Tremor");
-                isPressedTremor = true;
-                binding.btnTremor.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+        binding.btnSTL2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedSTL2){
+                    postLabel.add("Zu tief");
+                    isPressedSTL2 = true;
+                    binding.btnSTL2.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedSTL2 = false;
+                    binding.btnSTL2.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Zu tief");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            else{
-                isPressedTremor = false;
-                binding.btnTremor.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Tremor");
-            }
-            eventAdapter.notifyDataSetChanged();
-
         });
-        binding.btnPron.setOnClickListener(view -> {
-            if(!isPressedPron) {
-                isPressedPron = true;
-                binding.btnPron.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("Pron");
-
+        binding.btnSTL3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedSTL3){
+                    postLabel.add("Zu laut");
+                    isPressedSTL3 = true;
+                    binding.btnSTL3.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedSTL3 = false;
+                    binding.btnSTL3.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Zu laut");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            else{
-                isPressedPron = false;
-                binding.btnPron.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Pron");
-
-            }
-            eventAdapter.notifyDataSetChanged();
-
         });
-        binding.btnSup.setOnClickListener(view -> {
-            if(!isPressedSup) {
-                isPressedSup = true;
-                binding.btnSup.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("Sup");
+        binding.btnSTL4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedSTL4){
+                    postLabel.add("Zu leise");
+                    isPressedSTL4 = true;
+                    binding.btnSTL4.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedSTL4 = false;
+                    binding.btnSTL4.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Zu leise");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            else{
-                isPressedSup = false;
-                binding.btnSup.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Sup");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-
-        binding.btnAbd.setOnClickListener(view -> {
-            if(!isPressedAbd) {
-                isPressedAbd = true;
-                binding.btnAbd.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("Abd");
-            }
-            else{
-                isPressedAbd = false;
-                binding.btnAbd.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Abd");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnAdd.setOnClickListener(view -> {
-            if(!isPressedAdd) {
-                isPressedAdd = true;
-                binding.btnAdd.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("Add");
-            }
-            else{
-                isPressedAdd = false;
-                binding.btnAdd.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Add");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnElev.setOnClickListener(view -> {
-            if(!isPressedElev) {
-                isPressedElev = true;
-                binding.btnElev.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("Elev");
-            }
-            else{
-                isPressedElev = false;
-                binding.btnElev.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Elev");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnExtR.setOnClickListener(view -> {
-            if(!isPressedExtR) {
-                isPressedExtR = true;
-                binding.btnExtR.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("ExtR");
-            }
-            else{
-                isPressedExtR = false;
-                binding.btnExtR.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("ExtR");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnIntR.setOnClickListener(view -> {
-            if(!isPressedIntR) {
-                isPressedIntR = true;
-                binding.btnIntR.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("IntR");
-            }
-            else{
-                isPressedIntR = false;
-                binding.btnIntR.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("IntR");
-
-            }
-            eventAdapter.notifyDataSetChanged();
-
         });
 
-        binding.btnInc.setOnClickListener(view -> {
-            if(!isPressedInc) {
-                isPressedInc = true;
-                binding.btnInc.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("Inc");
+
+        binding.btnSTS1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedSTS1){
+                    postLabel.add("Wechselnde stimmqualität");
+                    isPressedSTS1 = true;
+                    binding.btnSTS1.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedSTS1 = false;
+                    binding.btnSTS1.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Wechselnde stimmqualität");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            else{
-                isPressedInc = false;
-                binding.btnInc.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Inc");
+        });
+        binding.btnSTS2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedSTS2){
+                    postLabel.add("Lautstärke");
+                    isPressedSTS2 = true;
+                    binding.btnSTS2.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedSTS2 = false;
+                    binding.btnSTS2.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Lautstärke");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            eventAdapter.notifyDataSetChanged();
+        });
+        binding.btnSTS3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedSTS3){
+                    postLabel.add("Stimmzittern");
+                    isPressedSTS3 = true;
+                    binding.btnSTS3.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedSTS3 = false;
+                    binding.btnSTS3.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Stimmzittern");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
+
+
+            }
 
         });
-        binding.btnRot.setOnClickListener(view -> {
-            if(!isPressedRot) {
-                isPressedRot = true;
-                binding.btnRot.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("Rot");
+        binding.btnSTS4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedSTS4){
+                    postLabel.add("Entstimmungen");
+                    isPressedSTS4 = true;
+                    binding.btnSTS4.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedSTS4 = false;
+                    binding.btnSTS4.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Entstimmungen");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            else{
-                isPressedRot = false;
-                binding.btnRot.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("Rot");
-            }
-            eventAdapter.notifyDataSetChanged();
-
         });
-        binding.btnFlexTrunk.setOnClickListener(view -> {
-            if(!isPressedFlexTrunk) {
-                isPressedFlexTrunk = true;
-                binding.btnFlexTrunk.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("FlexTrunk");
+        binding.btnSTS5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPressedSTS5){
+                    postLabel.add("Unwillkürliche");
+                    isPressedSTS5 = true;
+                    binding.btnSTS5.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
+                }else{
+                    isPressedSTS5 = false;
+                    binding.btnSTS5.setBackgroundResource(R.drawable.bg_button);
+                    postLabel.remove("Unwillkürliche");
+                }
+                eventAdapter.notifyItemChanged(eventselected - 1);
             }
-            else{
-                isPressedFlexTrunk = false;
-                binding.btnFlexTrunk.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("FlexTrunk");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-
-        binding.btnIncHead.setOnClickListener(view -> {
-            if(!isPressedIncHead) {
-                isPressedIncHead = true;
-                binding.btnIncHead.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("IncHead");
-            }
-            else{
-                isPressedIncHead = false;
-                binding.btnIncHead.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("IncHead");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnRotHead.setOnClickListener(view -> {
-            if(!isPressedRotHead) {
-                isPressedRotHead = true;
-                binding.btnRotHead.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("RotHead");
-            }
-            else{
-                isPressedRotHead = false;
-                binding.btnRotHead.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("RotHead");
-            }
-            eventAdapter.notifyDataSetChanged();
-
-        });
-        binding.btnFlexHead.setOnClickListener(view -> {
-            if(!isPressedFlexHead) {
-                isPressedFlexHead = true;
-                binding.btnFlexHead.setBackgroundResource(R.drawable.bg_button_postlabel_pressed);
-                postLabel.add("FlexHead");
-            }
-            else{
-                isPressedFlexHead = false;
-                binding.btnFlexHead.setBackgroundResource(R.drawable.bg_button);
-                postLabel.remove("FlexHead");
-            }
-            eventAdapter.notifyDataSetChanged();
-            
-
-
         });
 
-         */
+
+
 
 
     }

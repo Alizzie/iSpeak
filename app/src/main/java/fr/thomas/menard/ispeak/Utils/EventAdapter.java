@@ -1,6 +1,7 @@
 package fr.thomas.menard.ispeak.Utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +22,13 @@ import fr.thomas.menard.ispeak.R;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHoldder> {
 
-    List<Trial> trialList;
+    List<Event> eventList;
     List<String> listPostLabel;
     Context context;
     boolean visible = false;
 
-    public EventAdapter(List<Trial> trialList, Context context, List<String> listPostLabel){
-        this.trialList = trialList;
+    public EventAdapter(List<Event> eventList, Context context, List<String> listPostLabel){
+        this.eventList = eventList;
         this.context = context;
         this.listPostLabel = listPostLabel;
     }
@@ -61,8 +62,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHoldde
 
     @Override
     public void onBindViewHolder(@NonNull EventAdapter.MyViewHoldder holder, int position) {
-        holder.txtTask.setText(trialList.get(position).task);
-        holder.number_event.setText(trialList.get(position).number_compens);
+        Log.d("TEST",""+ eventList.get(position).getId());
+        holder.txtCategorie.setText(eventList.get(position).getCategorie());
+        holder.txtTask.setText(eventList.get(position).getTask());
+        holder.number_event.setText(String.valueOf(eventList.get(position).getId()));
+        holder.timeStart.setText(String.valueOf(eventList.get(position).getTimeStart()));
+        holder.timeEnd.setText(String.valueOf(eventList.get(position).getTimeEnd()));
         holder.label.setText(listPostLabel.toString());
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
@@ -77,10 +82,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHoldde
                 if(listener != null)
                     listener.onItemClick(visible);
                 if(listener1 != null)
-                    listener1.onTitleItemClick(trialList.get(position).getNumber(),
-                            trialList.get(position).getCategorie(),
-                            trialList.get(position).getTask(),
-                            trialList.get(position).getSide());
+                    listener1.onTitleItemClick(eventList.get(position).getId(),
+                            eventList.get(position).getCategorie(),
+                            eventList.get(position).getTask());
 
             }
         });
@@ -88,13 +92,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHoldde
 
     @Override
     public int getItemCount() {
-        return trialList.size();
+        return eventList.size();
     }
 
     public class MyViewHoldder  extends RecyclerView.ViewHolder{
 
-        TextView txtTask, number_event, label;
-        ConstraintLayout layout, postLabel;
+        TextView txtTask, txtCategorie, number_event, label, timeStart, timeEnd;
+        ConstraintLayout layout;
 
         public MyViewHoldder(@NonNull View itemView) {
             super(itemView);
@@ -103,7 +107,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHoldde
             layout = itemView.findViewById(R.id.itemPostLabel);
 
             number_event = itemView.getRootView().findViewById(R.id.postlabel_txt_compensation);
-            txtTask = itemView.getRootView().findViewById(R.id.postLabel_txt_categorie);
+            txtCategorie = itemView.getRootView().findViewById(R.id.postLabel_txt_categorie);
+            txtTask = itemView.getRootView().findViewById(R.id.postLabel_txt_task);
+            timeStart = itemView.getRootView().findViewById(R.id.txt_timeStart);
+            timeEnd = itemView.getRootView().findViewById(R.id.txt_timeEnd);
             label = itemView.findViewById(R.id.txt_postlabel_precise);
         }
     }

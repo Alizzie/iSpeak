@@ -107,10 +107,11 @@
         android:id="@+id/test_checkbox_android_button_tint"
         android:text="Event detected"
         android:layout_centerHorizontal="true"
-        android:textSize="20sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         android:visibility="invisible"
         android:layout_below="@id/linearTime"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/red"
         />
 
     <androidx.cardview.widget.CardView

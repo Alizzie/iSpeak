@@ -80,11 +80,13 @@ public class AssessmentActivity extends AppCompatActivity implements Visualizer.
 
     private int itemSelected = 0;
 
-
+    private Event event1;
     private MediaRecorder mediaRecorder = new MediaRecorder();
 
     List<Trial> listPostLabel = new ArrayList<>();
-    List<Trial> listEvent = new ArrayList<>();
+    List<Trial> listTrial = new ArrayList<>();
+
+    List<Event> listEvent = new ArrayList<>();
 
     RecyclerView.LayoutManager layoutManager;
 
@@ -118,7 +120,6 @@ public class AssessmentActivity extends AppCompatActivity implements Visualizer.
         listenBtnValidate();
         listenBtnTherapist();
         listenBtnEvent();
-        listenBtnEventDetected();
 
     }
 
@@ -237,30 +238,26 @@ public class AssessmentActivity extends AppCompatActivity implements Visualizer.
     private void listenBtnEvent() {
         binding.btnEventDetected.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent e) {
+
                 if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                    numberEvent = numberEvent + 1;
+                    event1 = new Event(numberEvent, categorie, task, 0, 0, 0);
                     event = true;
                     binding.testCheckboxAndroidButtonTint.setVisibility(View.VISIBLE);
                     startTime = binding.txtChrono.getTimeElapsed();
-
-                    Log.d("TEST", "start" + startTime);
+                    Long sec = (startTime / 1000) %60;
+                    Long mili = (((startTime % 1000) % 1000) / 100);
+                    Log.d("TEST", "sec and mili " + sec + "  "+ mili);
+                    event1.setTimeStart(startTime);
 
                 } else if(e.getAction() == MotionEvent.ACTION_UP){
                     event = false;
                     binding.testCheckboxAndroidButtonTint.setVisibility(View.INVISIBLE);
                     endTime = binding.txtChrono.getTimeElapsed();
-                    Log.d("TEST", "end" + endTime);
-
+                    event1.setTimeEnd(endTime);
+                    listEvent.add(event1);
                 }
                 return false;
-            }
-        });
-    }
-
-    private void listenBtnEventDetected(){
-        binding.btnEventDetected.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                numberEvent = numberEvent + 1;
             }
         });
     }
@@ -272,8 +269,6 @@ public class AssessmentActivity extends AppCompatActivity implements Visualizer.
     private void getMicroPhonePermissions(){
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED){
             ActivityCompat.requestPermissions(this, new String[]
-
-
 
                     {Manifest.permission.RECORD_AUDIO}, 200);
         }
@@ -287,7 +282,7 @@ public class AssessmentActivity extends AppCompatActivity implements Visualizer.
                 model = new RecordingModel(taskNumber, outputFile, categorie, task, String.valueOf(numberEvent));
                 listRecoring.add(model);
                 Log.d("TEST", "recording list" + listRecoring.size());
-                listPostLabel.add(listEvent.get(adapter.getCheckPosition()));
+                listPostLabel.add(listTrial.get(adapter.getCheckPosition()));
                 Intent intent = new Intent(getApplicationContext(), AnalysisActivity.class);
                 intent.putExtra("taskNumber", taskNumber);
                 intent.putExtra("patientID", patientID);
@@ -295,6 +290,7 @@ public class AssessmentActivity extends AppCompatActivity implements Visualizer.
                 intent.putExtra("task", task);
                 intent.putExtra("listPostLabel", (Serializable) listPostLabel);
                 intent.putExtra("listRecording", (Serializable) listRecoring);
+                intent.putExtra("listEvent", (Serializable) listEvent);
                 intent.putExtra("output_file", outputFile);
                 startActivity(intent);
                 
@@ -334,12 +330,10 @@ public class AssessmentActivity extends AppCompatActivity implements Visualizer.
                     binding.linearEvent.setVisibility(View.GONE);
                     numberTry = numberTry + 1;
                     trial = new Trial(String.valueOf(numberTry),categorie, task, String.valueOf(numberEvent), null, sec, milisec);
-                    listEvent.add(trial);
-                    Event event1 = new Event(1, startTime, endTime, 0);
-                    itemSelected = listEvent.size();
+                    listTrial.add(trial);
+                    itemSelected = listTrial.size();
 
-
-                    adapter = new TrialAdapter(listEvent, getApplicationContext());
+                    adapter = new TrialAdapter(listTrial, getApplicationContext());
                     binding.recyclerTrial.setAdapter(adapter);
                     adapter.setSelectedClick(selected -> {
                         itemSelected = selected +1;
