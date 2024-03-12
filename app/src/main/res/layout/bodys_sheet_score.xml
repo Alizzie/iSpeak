@@ -1,0 +1,261 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ATMLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="166dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal"
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ATM"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/ATM" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ATMScore"
+                android:text="@string/number4"
+                style="@style/ButtonBoDySScore"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/STSLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ATMLayout">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="279dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/STS"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/STS" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/STSScore"
+                android:text="@string/number4"
+                style="@style/ButtonBoDySScore"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ARTLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/STSLayout">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="167dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ART"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/ART" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ARTScore"
+                android:text="@string/number4"
+                style="@style/ButtonBoDySScore"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/STLLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="111dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/STL"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/STL" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/STLScore"
+                android:text="@string/number4"
+                style="@style/ButtonBoDySScore"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/STQLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/STLLayout">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="111dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/STQ"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/STQ" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/STQScore"
+                android:text="@string/number4"
+                style="@style/ButtonBoDySScore"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/RESLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/STQLayout">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="111dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/RES"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/RES" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/RESScore"
+                android:text="@string/number4"
+                style="@style/ButtonBoDySScore"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/MODLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RESLayout">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="111dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/MOD"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/MOD" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/MODScore"
+                android:text="@string/number4"
+                style="@style/ButtonBoDySScore"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/RDFLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MODLayout">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="55dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/RDF"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/RDF" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/RDFScore"
+                android:text="@string/number4"
+                style="@style/ButtonBoDySScore"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/TEMLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RDFLayout">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="55dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/TEM"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/TEM"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/TEMScore"
+                android:text="@string/number4"
+                style="@style/ButtonBoDySScore"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

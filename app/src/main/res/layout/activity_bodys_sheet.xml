@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/darkGrayBlue">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recordingInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginHorizontal="30dp">
+
+        <GridLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5">
+
+            <TextView
+                android:id="@+id/taskName"
+                style="@style/AppTitle"
+                android:textColor="@color/lightGray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:text="@string/spont1" />
+
+            <TextView
+                android:id="@+id/taskProgressNr"
+                style="@style/TextBlack"
+                android:textColor="@color/colorAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_gravity="end"
+                android:text="@string/taskProgress" />
+
+            <ProgressBar
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:id="@+id/taskProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_gravity="fill"
+                android:layout_row="1"
+                android:layout_columnSpan="2"
+                android:progressTint="@color/green"
+                android:progressBackgroundTint="@color/lightGray"/>
+
+            <TextView
+                android:id="@+id/recordingTime"
+                style="@style/TextWhite"
+                android:textColor="@color/lightGray"
+                android:textAlignment="textStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_row="2"
+                android:text="@string/patientRecordingTime" />
+        </GridLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/patientId"
+                style="@style/TextWhite"
+                android:textAlignment="textEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/patientData" />
+
+            <TextView
+                android:id="@+id/patientDiagnosis"
+                style="@style/TextWhite"
+                android:textAlignment="textEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/diagnosisStroke" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/cardDisplay"
+        android:backgroundTint="@color/lightGray">
+
+        <com.masoudss.lib.WaveformSeekBar
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:id="@+id/waveformSeekbar"
+            app:wave_width="5dp"
+            app:wave_gap="2dp"
+            app:wave_corner_radius="2dp"
+            app:wave_background_color="@color/colorAccent"
+            app:wave_progress_color="@color/darkBlue"
+            app:wave_gravity="center"
+            app:wave_padding_top="2dp"
+            app:wave_padding_Bottom="2dp"
+            app:wave_padding_right="2dp"
+            app:wave_padding_left="2dp"
+            app:marker_color="@color/red"
+            app:marker_width="1dp"
+            app:marker_text_color="@color/colorAccent"
+            app:marker_text_padding="2dp"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/seekbarTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp">
+
+        <TextView
+            android:id="@+id/audioTime"
+            style="@style/TextWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/audioDuration"
+            style="@style/TextWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/playbackBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="center">
+
+        <ImageButton
+            android:id="@+id/btnBackward"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/backward_5_24"
+            android:backgroundTint="@color/black"
+            android:contentDescription="@string/backwardBtn"
+            android:layout_toStartOf="@id/btnPlay"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/btnPlay"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/play_24"
+            android:backgroundTint="@color/black"
+            android:contentDescription="@string/startRecordingBtn"
+            android:layout_marginHorizontal="20dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            />
+
+        <ImageButton
+            android:id="@+id/btnForward"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/forward_5_24"
+            android:backgroundTint="@color/black"
+            android:contentDescription="@string/forwardBtn"
+            android:layout_toEndOf="@id/btnPlay"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/eventBookmarkBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/bookmark_add_24"
+            android:backgroundTint="@color/lightBlue"
+            android:contentDescription="@string/eventDetectedBtn"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="40dp"/>
+
+    </RelativeLayout>
+
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/lightGray"
+        style="@style/CustomMaterialCardView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="20dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/editBtn"
+                    style="@style/TextBlue"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="@string/editBoDyS" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggleButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    app:checkedButton="@id/eventModeBtn">
+
+                    <Button
+                        android:id="@+id/eventModeBtn"
+                        style="@style/OutlinedButtonLeftCorners"
+                        android:layout_width="165dp"
+                        android:layout_height="match_parent"
+                        android:text="@string/eventToggleBtn"
+                        />
+
+                    <Button
+                        android:id="@+id/markingModeBtn"
+                        style="@style/OutlinedButtonRightCorners"
+                        android:layout_width="165dp"
+                        android:layout_height="match_parent"
+                        android:text="@string/beobachtungToggleBtn" />
+
+                    <Button
+                        android:id="@+id/scoringModeBtn"
+                        style="@style/OutlinedButtonRightCorners"
+                        android:layout_width="165dp"
+                        android:layout_height="match_parent"
+                        android:text="@string/bewertungToggleBtn"
+                        />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <TextView
+                    android:id="@+id/skipPrefillBtn"
+                    style="@style/TextBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:text="@string/skipBoDyS" />
+
+            </RelativeLayout>
+
+            <include
+                android:id="@+id/bodysMarkingSheet"
+                layout="@layout/bodys_sheet"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/bodysScoringSheet"
+                layout="@layout/bodys_sheet_score"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/bodysEventLabeling"
+                layout="@layout/bodys_eventlabeling"
+                android:visibility="visible"/>
+
+
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</LinearLayout>

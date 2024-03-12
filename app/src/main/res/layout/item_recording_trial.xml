@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/recordingTrialInfo"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/trialSelection"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@string/trialNotSelected"
+        android:src="@drawable/outline_circle_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/trialSelection"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/trialLabelTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextBlue"
+            android:text="@string/trialNumber"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/patientTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/patientRecordingTime"
+            style="@style/TextBlack"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/trialLabelTxt" />
+
+        <TextView
+            android:id="@+id/totalTimeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/totalRecordingTime"
+            style="@style/TextBlack"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/patientTime" />
+
+        <TextView
+            android:id="@+id/totalTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number0"
+            style="@style/TextBlack"
+            app:layout_constraintLeft_toRightOf="@id/totalTimeTxt"
+            app:layout_constraintTop_toBottomOf="@id/patientTime" />
+
+        <TextView
+            android:id="@+id/numEventsTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/totalEventCount"
+            style="@style/TextBlack"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/totalTimeTxt" />
+
+        <TextView
+            android:id="@+id/numEvents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number0"
+            style="@style/TextBlack"
+            app:layout_constraintLeft_toRightOf="@id/numEventsTxt"
+            app:layout_constraintTop_toBottomOf="@id/totalTimeTxt" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

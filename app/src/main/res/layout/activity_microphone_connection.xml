@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.MicrophoneConnectionActivity"
+    android:orientation="vertical"
+    >
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/microCheckTitle"
+        style="@style/AppTitle"
+        android:layout_marginTop="200dp"/>
+
+    <ImageView
+        android:id="@+id/micImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:contentDescription="@string/imageMicDescription"
+        android:src="@drawable/mic_24" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/divasNotConnected"
+        android:id="@+id/connectionTxt"
+        style="@style/TextRed"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/btnCheckMicroConnection"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="25dp"
+        android:layout_gravity="center"
+        android:text="@string/microCheckBtn"
+        style="@style/Button"
+        />
+
+    <Button
+        android:id="@+id/btnStartRecordingPageNotActivated"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:text="@string/finishMicroBtn"
+        style="@style/ButtonNotActivated"
+        android:clickable="false"
+        android:visibility="visible"/>
+
+    <Button
+        android:id="@+id/btnStartRecordingPageActivated"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:text="@string/finishMicroBtn"
+        style="@style/Button"
+        android:visibility="gone"/>
+
+
+</LinearLayout>

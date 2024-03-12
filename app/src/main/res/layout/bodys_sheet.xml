@@ -1,0 +1,506 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ATMLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="166dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal"
+            >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ATM"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/ATM" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ATM1"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/ATM1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ATM2"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/ATM2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ATM1"
+                    android:layout_marginTop="1dp"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ATM3"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/ATM3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ATM2"
+                    android:layout_marginTop="1dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/STSLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ATMLayout">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="279dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/STS"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/STS" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STS1"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/STS1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STS2"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/STS2"
+                    android:layout_marginTop="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/STS1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STS3"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/STS3"
+                    android:layout_marginTop="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/STS2" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STS4"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/STS4"
+                    android:layout_marginTop="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/STS3" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STS5"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/STS5"
+                    android:layout_marginTop="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/STS4" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/ARTLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/STSLayout">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="167dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ART"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/ART" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ART1"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/ART1"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ART2"
+                    style="@style/ButtonBoDyS"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="1dp"
+                    android:text="@string/ART2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ART1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/ART4"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ART3"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/ART3"
+                    android:layout_marginTop="1dp"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ART1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ART4"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/ART4"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/ART3"
+                    app:layout_constraintTop_toBottomOf="@+id/ART2" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/ART5"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/ART5"
+                    android:layout_marginTop="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ART3" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/STLLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="355dp"
+            android:layout_height="111dp"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/STL"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/STL" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STL1"
+                    style="@style/ButtonBoDyS"
+                    android:layout_width="0dp"
+                    android:text="@string/STL1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STL2"
+                    style="@style/ButtonBoDyS"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="1dp"
+                    android:text="@string/STL2"
+                    app:layout_constraintStart_toEndOf="@+id/STL1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STL3"
+                    style="@style/ButtonBoDyS"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="1dp"
+                    android:text="@string/STL3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/STL1"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STL4"
+                    style="@style/ButtonBoDyS"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginTop="1dp"
+                    android:text="@string/STL4"
+                    app:layout_constraintStart_toEndOf="@+id/STL3"
+                    app:layout_constraintTop_toBottomOf="@+id/STL2"
+                    app:layout_constraintWidth_percent="0.5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/STQLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/STLLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/STQ"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/STQ" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STQ1"
+                    style="@style/ButtonBoDyS"
+                    android:layout_width="0dp"
+                    android:text="@string/STQ1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STQ2"
+                    style="@style/ButtonBoDyS"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="1dp"
+                    android:text="@string/STQ2"
+                    app:layout_constraintStart_toEndOf="@+id/STQ1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/STQ3"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/STQ3"
+                    android:layout_marginTop="1dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/STQ1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/RESLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/STQLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/RES"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/RES" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/RES1"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/RES1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/RES2"
+                    style="@style/ButtonBoDyS"
+                    android:layout_marginTop="1dp"
+                    android:text="@string/RES2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/RES1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/MODLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RESLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/MOD"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/MOD" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/MOD1"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/MOD1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/MOD2"
+                    style="@style/ButtonBoDyS"
+                    android:layout_marginTop="1dp"
+                    android:text="@string/MOD2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/MOD1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/RDFLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MODLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/RDF"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/RDF" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/RDF1"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/RDF1"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/RDF2"
+                    style="@style/ButtonBoDyS"
+                    android:layout_width="0dp"
+                    android:text="@string/RDF2"
+                    android:layout_marginStart="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/RDF1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/TEMLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RDFLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/TEM"
+                style="@style/ButtonBoDySCategory"
+                android:text="@string/TEM"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="300dp"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/TEM1"
+                    style="@style/ButtonBoDyS"
+                    android:text="@string/TEM1"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/TEM2"
+                    style="@style/ButtonBoDyS"
+                    android:layout_width="0dp"
+                    android:text="@string/TEM2"
+                    android:layout_marginStart="1dp"
+                    app:layout_constraintStart_toEndOf="@+id/TEM1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

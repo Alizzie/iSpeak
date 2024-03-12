@@ -1,0 +1,18 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:id="@+id/categoryListItemWrapper"
+    android:layout_marginTop="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/categoryListItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextBlack"
+        android:gravity="center_vertical"
+        android:text="@string/ATM"
+        android:paddingStart="20dp"
+        android:paddingVertical="20dp"/>
+</LinearLayout>

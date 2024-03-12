@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/lightGray">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="50dp">
+
+        <ImageView
+            android:id="@+id/popupCloseBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/close_24"/>
+
+
+        <GridLayout
+            android:id="@+id/scoreBoardPopup"
+            android:layout_below="@id/popupCloseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="2"
+            android:layout_marginTop="20dp"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/ButtonBoDySScore.Button"
+                android:text="@string/number0"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/ButtonBoDySScore.Button"
+                android:text="@string/number1"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/ButtonBoDySScore.Button"
+                android:text="@string/number2"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/ButtonBoDySScore.Button"
+                android:text="@string/number3"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/ButtonBoDySScore.Button"
+                android:text="@string/number4"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill"
+                android:visibility="gone"
+                />
+        </GridLayout>
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

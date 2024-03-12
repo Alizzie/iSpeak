@@ -1,28 +1,229 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.ISpeak" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Base.Theme.ISpeak" parent="Theme.Material3.Light">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/darkGrayBlue</item>
+        <item name="colorSecondaryContainer">@color/darkGrayBlue</item>
+        <item name="colorOnSecondaryContainer">@color/lightGray</item>
     </style>
 
     <style name="Theme.ISpeak" parent="Base.Theme.ISpeak" />
 
+    <style name="AppTitle">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/darkBlue</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 
-    <style name="Titleblue">
+    <style name="TitleBlue">
         <item name="android:textSize">25sp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/darkGrayBlue</item>
         <item name="android:textAlignment">center</item>
     </style>
 
-    <style name="Textblue">
+    <style name="TitleWhite">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/lightGray</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="TitleBlack">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TextBlue">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/darkGrayBlue</item>
         <item name="android:textAlignment">center</item>
     </style>
 
-    <style name="Titleblack">
-        <item name="android:textSize">20sp</item>
+    <style name="TextWhite">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/lightGray</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="TextBlack">
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textAlignment">center</item>
     </style>
+
+    <style name="TextRed">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="PatientInfoData">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Button">
+        <item name="background">@drawable/bg_button</item>
+        <item name="android:textSize">18sp</item>
+        <item name="strokeColor">@color/lightGray</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+    <style name="ButtonBoDyS">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">55dp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="background">@drawable/bg_button_bodys</item>
+        <item name="android:textSize">17.5sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="strokeColor">@color/lightGray</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">20dp</item>
+    </style>
+
+    <style name="ButtonBoDySCategory">
+        <item name="android:layout_width">55dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="backgroundTint">@color/lightBlue</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="background">@drawable/bg_button_bodys</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAlignment">center</item>
+        <item name="strokeColor">@color/colorAccent</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <!--        <item name="icon">@drawable/outline_note_24</item>-->
+        <!--        <item name="iconSize">13dp</item>-->
+        <!--        <item name="iconPadding">0dp</item>-->
+        <!--        <item name="iconGravity">textTop</item>-->
+        <!--        <item name="iconTint">@color/darkGrayBlue</item>-->
+    </style>
+
+    <style name="ButtonBoDySScore">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="background">@drawable/bg_button_bodys</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAlignment">center</item>
+        <item name="strokeColor">@color/colorAccent</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+    </style>
+
+    <style name="ButtonNotActivated">
+        <item name="backgroundTint">@color/lightGray</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="strokeColor">@color/colorAccent</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+    <style name="ButtonMenu">
+        <item name="background">@drawable/bg_button</item>
+        <item name="android:textSize">28sp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+    <style name="ButtonBoDySScore.Button" parent="@style/Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">150dp</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textSize">32dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+    </style>
+
+    <style name="ButtonShapeLeftTopCorner">
+        <item name="cornerSizeTopLeft">50dp</item>
+    </style>
+
+    <style name="ButtonShapeRightTopCorner">
+        <item name="cornerSizeTopRight">50dp</item>
+    </style>
+
+    <style name="ButtonShapeNoCorner">
+        <item name="cornerSize">0dp</item>
+    </style>
+
+
+    <style name="CustomMaterialCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_cardView_corners_top</item>
+    </style>
+
+    <style name="OutlinedButtonLeftCorners" parent="@style/Widget.Material3.Button.OutlinedButton">
+        <item name="android:textSize">18sp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_outlinedButtoms_corners_left</item>
+    </style>
+
+    <style name="OutlinedButtonNoneCorners" parent="@style/Widget.Material3.Button.OutlinedButton">
+        <item name="android:textSize">18sp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_outlinedButtoms_corners_none</item>
+    </style>
+
+    <style name="OutlinedButtonRightCorners" parent="@style/Widget.Material3.Button.OutlinedButton">
+        <item name="android:textSize">18sp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_outlinedButtoms_corners_right</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_cardView_corners_top">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">25dp</item>
+        <item name="cornerSizeTopLeft">25dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_outlinedButtoms_corners_right">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">10dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomRight">10dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_outlinedButtoms_corners_none">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay_outlinedButtoms_corners_left">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeTopLeft">10dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">10dp</item>
+    </style>
+
+
+
 </resources>

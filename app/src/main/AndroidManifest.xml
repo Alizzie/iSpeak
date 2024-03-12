@@ -15,29 +15,20 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:extractNativeLibs="false"
         android:icon="@drawable/ispeak"
-        android:label="@string/app_name"
+        android:label="@string/appName"
         android:roundIcon="@drawable/ispeak"
         android:supportsRtl="true"
         android:theme="@style/Theme.ISpeak"
         tools:targetApi="31">
+        <activity android:name=".Views.BoDySSheetActivity"/>
+        <activity android:name=".Views.RecordingActivity"/>
+        <activity android:name=".Views.MicrophoneConnectionActivity"/>
+        <activity android:name=".Views.BoDySMenuActivity"/>
+        <activity android:name=".Views.MenuActivity"/>
         <activity
-            android:name=".FinishActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AnalysisActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AssessmentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MicroConnectionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PresetActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".Views.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -4,114 +4,142 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Views.MainActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/mic_24"
+        android:contentDescription="@string/imageMicDescription"
+        android:id="@+id/micImage"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txtWelcome"
         android:text="@string/welcome"
-        style="@style/Titleblue"
+        style="@style/AppTitle"
+        android:layout_below="@id/micImage"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:id="@+id/welcomeTitle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/patientInformationQuestion"
+        style="@style/TitleBlue"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/welcomeTitle"
+        android:id="@+id/patientInformationQuestion"
+        android:layout_marginTop="10dp"
         />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
+        android:id="@+id/patientIdWrapper"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtWelcome"
-        android:id="@+id/APatient_tilId"
-        app:errorEnabled="true"
-        app:counterEnabled="true"
-        app:counterMaxLength="7"
-        android:layout_marginTop="100dp"
-        android:padding="20dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/APatient_txtIdPatient"
-            android:hint="@string/id_patient"
-            android:inputType="phone" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/APatient_tilCaseId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/APatient_tilId"
-        android:padding="20dp"
+        android:layout_below="@id/patientInformationQuestion"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
         app:counterEnabled="true"
         app:counterMaxLength="7"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/APatient_txtIdCase"
+            android:id="@+id/patientIdInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/case_id"
+            android:hint="@string/patientIdInput"
+            android:inputType="phone" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/patientIdWrapper"
+        android:id="@+id/caseInformationWrapper"
+        android:layout_centerInParent="true"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="7"
+        android:layout_marginTop="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/caseIdInput"
+            android:hint="@string/caseIdInput"
             android:inputType="phone" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearDiagnosis"
+        android:id="@+id/diagnosisWrapper"
         android:orientation="vertical"
-        android:layout_below="@id/APatient_tilCaseId"
-        android:padding="20dp">
+        android:layout_below="@id/caseInformationWrapper"
+        android:layout_marginHorizontal="120dp"
+        android:layout_marginTop="50dp"
+        >
 
         <TextView
-            android:id="@+id/txtDiagnosis"
-            style="@style/Titleblue"
+            style="@style/TitleBlue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Patient's diagnosis :"
-            android:layout_gravity="center"/>
+            android:text="@string/patientDiagnosis"
+            android:layout_gravity="start" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilRadioFirstDiagnos"
+            android:id="@+id/diagnosisTextInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="start"
             app:errorEnabled="true">
 
             <RadioGroup
-                android:id="@+id/RadioGroupDiagnosis"
+                android:id="@+id/radioGroupDiagnosis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <RadioButton
                     android:id="@+id/radioBtnStroke"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:text="Stroke" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="@string/diagnosisStroke"
+                    style="@style/TextBlack"/>
 
                 <RadioButton
-                    android:id="@+id/radioBtnParkinsom"
+                    android:id="@+id/radioBtnPakinson"
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:text="Parkinson" />
+                    android:layout_height="48dp"
+                    android:text="@string/diagnosisPakinson"
+                    style="@style/TextBlack"/>
 
                 <RadioButton
                     android:id="@+id/radioBtnOther"
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:text="Other" />
+                    android:layout_height="48dp"
+                    android:text="@string/diagnosisOther"
+                    style="@style/TextBlack"/>
 
 
             </RadioGroup>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
+
     <Button
-        android:id="@+id/APatient_btnValidate"
+        android:id="@+id/patientRegisterBtn"
         android:layout_width="300dp"
         android:layout_height="80dp"
-        android:layout_below="@id/linearDiagnosis"
+        android:layout_below="@id/diagnosisWrapper"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:background="@drawable/bg_button"
-        android:text="@string/confirm" />
+        style="@style/Button"
+        android:text="@string/confirmBtn" />
 
 </RelativeLayout>

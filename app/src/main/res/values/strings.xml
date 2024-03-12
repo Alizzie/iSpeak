@@ -1,49 +1,143 @@
 <resources>
-    <string name="app_name">iSpeak</string>
-    <string name="welcome">Welcome to iSpeak ! \n\nFor which patient do you want to do the test ?</string>
-    <string name="id_patient">Patient ID (7 caracters)</string>
-    <string name="case_id">Case ID (7 caracters)</string>
-    <string name="confirm">Confirm</string>
+    <string name="appName">iSpeak</string>
 
+    <!--Patient Register -->
+    <string name="welcome">Welcome to iSpeak!</string>
+    <string name="patientInformationQuestion">For which patient do you want to do the test?</string>
+    <string name="patientIdInput">Patient ID (7 characters)</string>
+    <string name="caseIdInput">Case ID (7 characters)</string>
+    <string name="patientDiagnosis">Patient\'s diagnosis:</string>
 
-    <string name="ATM1">Erhöhte Einatmungshäufigk</string>
-    <string name="ATM2">übermäBiges Unterschreiten</string>
-    <string name="ATM3">Hör-/sichtbar</string>
+    <!--Diagnosis-->
+    <string name="diagnosisStroke">Stroke</string>
+    <string name="diagnosisPakinson">Pakinson</string>
+    <string name="diagnosisOther">Other</string>
 
+    <!--Button Text-->
+    <string name="confirmBtn">Confirm</string>
 
+    <!--Numbers-->
+    <string name="number0">0</string>
+    <string name="number1">1</string>
+    <string name="number2">2</string>
+    <string name="number3">3</string>
+    <string name="number4">4</string>
+
+    <!--Image Content Description-->
+    <string name="imageMicDescription">Microphone image</string>
+
+    <!--Menus-->
+    <string name="dashboard">Dashboard</string>
+    <string name="patientTitle">Patient: </string>
+    <string name="patientData">Patient Id: %1$s</string>
+    <string name="caseData">Case Id: %1$s</string>
+    <string name="date">Date</string>
+    <string name="menuRecording">Recording</string>
+    <string name="menuBoDySAssessment">BoDyS assessment</string>
+    <string name="menuImporting">Import Audios</string>
+    <string name="menuPatient">Patient</string>
+
+    <!--BoDyS Menu-->
+    <string name="boDySAssessmentSelection">Would you like to start a new assessment or import an old assessment?</string>
+    <string name="newBoDySAssessment">New Assessment</string>
+    <string name="oldBoDySAssessment">Old Assessment</string>
+
+    <!--Microphone Connection-->
+    <string name="microCheckTitle">Microphone check</string>
+    <string name="divasNotConnected">Microphone is not connected</string>
+    <string name="divasConnected">Microphone is connected</string>
+    <string name="microCheckBtn">Try to connect</string>
+    <string name="finishMicroBtn">Start Recording</string>
+
+    <!--BoDyS Task-->
+    <string name="spont1">Spont 1</string>
+    <string name="spont2">Spont 2</string>
+    <string name="nach1">Nach 1</string>
+    <string name="nach2">Nach 2</string>
+    <string name="les1">Les 1</string>
+    <string name="les2">Les 2</string>
+    <string name="bild1">Bild 1</string>
+    <string name="bild2">Bild 2</string>
+
+    <string name="ATM">ATM</string>
+    <string name="ATM1">Erhöhte Einatmungshäufigk./\nInadäquate Zwischenatmungen</string>
+    <string name="ATM2">Übermäßiges Unterschreiten der Atemruhelage</string>
+    <string name="ATM3">Hör-/sichtbar angestrengte Einatmungen, Hochatmung</string>
+
+    <string name="STL">STL</string>
     <string name="STL1">Zu hoch</string>
     <string name="STL2">Zu tief</string>
     <string name="STL3">Zu laut</string>
     <string name="STL4">Zu leise</string>
 
+    <string name="STQ">STQ</string>
     <string name="STQ1">Behaucht</string>
     <string name="STQ2">Gepresst</string>
     <string name="STQ3">Rau</string>
 
-    <string name="STS1">Wechselnde stimmqualität</string>
-    <string name="STS2">Lautstärke</string>
+    <string name="STS">STS</string>
+    <string name="STS1">Wechselnde Stimmqualität</string>
+    <string name="STS2">Lautstärke-/Tonhöhenschwankungen</string>
     <string name="STS3">Stimmzittern</string>
-    <string name="STS4">Entstimmungen</string>
-    <string name="STS5">Unwillkürliche</string>
+    <string name="STS4">Entstimmungen/ Stimmschwund/ -abbruch</string>
+    <string name="STS5">Unwillkürliche Vokalisation</string>
 
+    <string name="ART">ART</string>
     <string name="ART1">Offen</string>
     <string name="ART2">Geschlossen</string>
     <string name="ART3">Reduziert</string>
-    <string name="ART4">Ubersteigert</string>
-    <string name="ART5">Wechselnde</string>
+    <string name="ART4">Übersteigert</string>
+    <string name="ART5">Wechselnde Artikulationsschärfe</string>
 
+    <string name="RES">RES</string>
     <string name="RES1">Hypernasal</string>
-    <string name="RES2">Hyponasal</string>
+    <string name="RES2">Intermittierend hyper-/oder hyponasal</string>
 
+    <string name="TEM">TEM</string>
     <string name="TEM1">Niedrig</string>
     <string name="TEM2">Hoch</string>
 
+    <string name="RDF">RDF</string>
     <string name="RDF1">Pausen</string>
     <string name="RDF2">Iterationen</string>
 
-    <string name="MOD1">Eingeschränkte</string>
-    <string name="MOD2">Auffälligkeiten</string>
+    <string name="MOD">MOD</string>
+    <string name="MOD1">Eingeschränkte Tonhöhen-/ Lautstärkemodulation</string>
+    <string name="MOD2">Auffälligkeiten in Rythmus/ Betonungsmuster</string>
 
+    <!--Recording-->
+    <string name="tryNum">Versuch 1</string>
+    <string name="taskProgress">%1$d/8</string>
+    <string name="startRecordingBtn">Start</string>
+    <string name="stopRecordingBtn">Stop</string>
+    <string name="retryRecordingBtn">Retry</string>
+    <string name="pauseRecordingBtn">Pause</string>
+    <string name="eventDetectedBtn">Event Detected</string>
+    <string name="backwardBtn">Backward</string>
+    <string name="forwardBtn">Forward</string>
+
+    <string name="patientRecordingTime">Patientendauer:"&#032;"%1$d</string>
+    <string name="patientRecordingChrono">Patientendauer:"&#032;"</string>
+    <string name="totalRecordingTime">Gesamtdauer:"&#032;"</string>
+    <string name="totalEventCount">Anzahl Events:"&#032;"</string>
+
+    <!--Recording Trials-->
+    <string name="trialNotSelected">Trial is not selected</string>
+    <string name="trialSelected">Trial is selected</string>
+    <string name="trialNumber">Versuch %1$d</string>
+
+    <!--BoDyS Assessment-->
+    <string name="skipBoDyS">Weiter</string>
+    <string name="editBoDyS">Edit</string>
+    <string name="eventToggleBtn">Event</string>
+    <string name="beobachtungToggleBtn">Beobachtung</string>
+    <string name="bewertungToggleBtn">Bewertung</string>
+
+    <string name="eventNr">Event %1$d</string>
+    <string name="categoryHeading">Kategorie</string>
+    <string name="eventCategoryList">Kategorien</string>
+    <string name="noEventsNotice">Keine Events vorhanden</string>
+    <string name="removeItem">Remove Item Btn</string>
 
 
 

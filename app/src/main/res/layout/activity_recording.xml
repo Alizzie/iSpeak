@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Views.RecordingActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recordingInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginHorizontal="30dp">
+
+        <GridLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5">
+
+            <TextView
+                android:id="@+id/taskName"
+                style="@style/AppTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:text="@string/spont1" />
+
+            <TextView
+                android:id="@+id/taskProgressNr"
+                style="@style/TextBlack"
+                android:textColor="@color/colorAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_gravity="end"
+                android:text="@string/taskProgress" />
+
+            <ProgressBar
+                android:id="@+id/taskProgressBar"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="7dp"
+                android:layout_row="1"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill"
+                android:progressBackgroundTint="@color/colorAccent"
+                android:progressTint="@color/green" />
+
+            <TextView
+                android:id="@+id/trialNumber"
+                style="@style/TextBlack"
+                android:textAlignment="textStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_row="2"
+                android:text="@string/trialNumber" />
+        </GridLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/patientId"
+                style="@style/TextBlack"
+                android:textAlignment="textEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/patientData" />
+
+            <TextView
+                android:id="@+id/patientDiagnosis"
+                style="@style/TextBlack"
+                android:textAlignment="textEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/diagnosisStroke" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chronometerInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recordingInfo"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnStartRecording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_circle_button"
+            android:text="@string/startRecordingBtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/patientRecordingChrono"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+
+            <com.example.ispeak.Utils.Chronometer
+                android:id="@+id/patientTimeChrono"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                style="@style/TextBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/totalRecordingTime" />
+
+            <com.example.ispeak.Utils.Chronometer
+                android:id="@+id/totalTimeChrono"
+                style="@style/TextBlack"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:textAlignment="textStart" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                style="@style/TextBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/totalEventCount" />
+
+            <TextView
+                android:id="@+id/numEvents"
+                style="@style/TextBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/number0" />
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/test_checkbox_android_button_tint"-->
+<!--        android:text="Event detected"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:textSize="22sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:visibility="invisible"-->
+<!--        android:layout_below="@id/chronometerInformation"-->
+<!--        android:textColor="@color/red"-->
+<!--        />-->
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_margin="10dp"
+        android:id="@+id/cardDisplay"
+        android:layout_below="@id/chronometerInformation">
+
+        <com.example.ispeak.Utils.WaveformView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="150dp"
+            android:id="@+id/waveformView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTrial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="25dp"
+            android:layout_marginHorizontal="30dp" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="horizontal"
+        android:id="@+id/linearEvent"
+        android:layout_below="@id/cardDisplay"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="30dp">
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="120dp"
+            android:id="@+id/btnPauseRecording"
+            style="@style/Button"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="50dp"
+            android:layout_alignParentStart="true"
+            android:text="@string/pauseRecordingBtn" />
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="120dp"
+            android:id="@+id/btnEventDetected"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentEnd="true"
+            style="@style/Button"
+            android:text="@string/eventDetectedBtn" />
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/btnConfirm"
+            style="@style/Button"
+            android:text="@string/confirmBtn"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
