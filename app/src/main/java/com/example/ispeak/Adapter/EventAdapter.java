@@ -84,7 +84,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.eventNr.setText(holder.itemView.getContext().getString(R.string.eventNr, position + 1));
         holder.eventLabels.setText(eventList.get(position).getEventLabels());
-        holder.eventTimestamp.setText(String.valueOf(eventList.get(position).getTimeStart()));
+        holder.eventTimestamp.setText(context.getString(R.string.eventTimestamp, eventList.get(position).getFormattedTimeStart(), eventList.get(position).getFormattedTimeEnd()));
 
         holder.setDeleteBtnVisibility(deleteMode);
         holder.tickItem();

@@ -116,9 +116,10 @@
     <string name="backwardBtn">Backward</string>
     <string name="forwardBtn">Forward</string>
 
-    <string name="patientRecordingTime">Patientendauer:"&#032;"%1$d</string>
+    <string name="patientRecordingTime">Patientendauer:"&#032;"%1$s</string>
     <string name="patientRecordingChrono">Patientendauer:"&#032;"</string>
-    <string name="totalRecordingTime">Gesamtdauer:"&#032;"</string>
+    <string name="totalRecordingTime">Gesamtdauer:"&#032;"%1$s</string>
+    <string name="totalRecordingTimeChrono">Gesamtdauer:"&#032;"</string>
     <string name="totalEventCount">Anzahl Events:"&#032;"</string>
 
     <!--Recording Trials-->
@@ -138,6 +139,7 @@
     <string name="eventCategoryList">Kategorien</string>
     <string name="noEventsNotice">Keine Events vorhanden</string>
     <string name="removeItem">Remove Item Btn</string>
+    <string name="eventTimestamp">%1$s - %2$s</string>
 
 
 

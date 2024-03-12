@@ -53,14 +53,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/patientTime" />
 
-        <TextView
-            android:id="@+id/totalTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/number0"
-            style="@style/TextBlack"
-            app:layout_constraintLeft_toRightOf="@id/totalTimeTxt"
-            app:layout_constraintTop_toBottomOf="@id/patientTime" />
 
         <TextView
             android:id="@+id/numEventsTxt"

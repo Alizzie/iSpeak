@@ -145,7 +145,7 @@
                 style="@style/TextBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/totalRecordingTime" />
+                android:text="@string/totalRecordingTimeChrono" />
 
             <com.example.ispeak.Utils.Chronometer
                 android:id="@+id/totalTimeChrono"

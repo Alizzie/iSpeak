@@ -179,4 +179,6 @@ public class Microphone {
         return isActive;
     }
 
+    public boolean isPaused() {return isPaused;}
+
 }

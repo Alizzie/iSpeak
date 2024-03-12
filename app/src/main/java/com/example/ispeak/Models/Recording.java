@@ -3,17 +3,20 @@ package com.example.ispeak.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.ispeak.Utils.Utils;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Recording implements Parcelable {
 
     //private String wav_filepath, mp3_filepath;
     private String mp3_filepath;
-    private int totalTime, patientTime;
+    private long totalTime, patientTime;
     private int taskId;
     private ArrayList<Event> events;
 
-    public Recording(String mp3_filepath, int totalTime, int patientTime, int taskId, ArrayList<Event> events) {
+    public Recording(String mp3_filepath, long totalTime, long patientTime, int taskId, ArrayList<Event> events) {
         this.mp3_filepath = mp3_filepath;
         this.totalTime = totalTime;
         this.patientTime = patientTime;
@@ -23,8 +26,8 @@ public class Recording implements Parcelable {
 
     protected Recording(Parcel in) {
         mp3_filepath = in.readString();
-        totalTime = in.readInt();
-        patientTime = in.readInt();
+        totalTime = in.readLong();
+        patientTime = in.readLong();
         taskId = in.readInt();
         events = in.createTypedArrayList(Event.CREATOR);
     }
@@ -45,12 +48,18 @@ public class Recording implements Parcelable {
         return mp3_filepath;
     }
 
-    public int getTotalTime() {
+    public long getTotalTime() {
         return totalTime;
     }
+    public String getFormattedTotalTime(){
+        return Utils.formatTime(totalTime);
+    }
 
-    public int getPatientTime() {
+    public long getPatientTime() {
         return patientTime;
+    }
+    public String getFormattedPatientTime(){
+        return Utils.formatTime(patientTime);
     }
 
     public int getTaskId() {
@@ -95,8 +104,8 @@ public class Recording implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(mp3_filepath);
-        parcel.writeInt(totalTime);
-        parcel.writeInt(patientTime);
+        parcel.writeLong(totalTime);
+        parcel.writeLong(patientTime);
         parcel.writeInt(taskId);
         parcel.writeTypedList(events);
     }

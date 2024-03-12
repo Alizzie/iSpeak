@@ -48,9 +48,9 @@ public class RecordingTrialAdapter extends RecyclerView.Adapter<RecordingTrialAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.trialLabelTxt.setText(holder.itemView.getContext().getString(R.string.trialNumber, position+1));
-        holder.patientTime.setText(holder.itemView.getContext().getString(R.string.patientRecordingTime, trialList.get(position).getPatientTime()));
-        holder.totalTime.setText(String.valueOf(trialList.get(position).getTotalTime()));
+        holder.trialLabelTxt.setText(context.getString(R.string.trialNumber, position+1));
+        holder.patientTime.setText(context.getString(R.string.patientRecordingTime, trialList.get(position).getFormattedPatientTime()));
+        holder.totalTime.setText(context.getString(R.string.totalRecordingTime, trialList.get(position).getFormattedTotalTime()));
         holder.numEvents.setText(String.valueOf(trialList.get(position).getEvents().size()));
 
 //        if (checkPosition == holder.getAdapterPosition()) {
@@ -87,7 +87,7 @@ public class RecordingTrialAdapter extends RecyclerView.Adapter<RecordingTrialAd
             super(itemView);
             trialLabelTxt = itemView.findViewById(R.id.trialLabelTxt);
             patientTime = itemView.findViewById(R.id.patientTime);
-            totalTime = itemView.findViewById(R.id.totalTime);
+            totalTime = itemView.findViewById(R.id.totalTimeTxt);
             numEvents = itemView.findViewById(R.id.numEvents);
             trialSelected = itemView.findViewById(R.id.trialSelection);
             trialItem = itemView.findViewById(R.id.recordingTrialInfo);

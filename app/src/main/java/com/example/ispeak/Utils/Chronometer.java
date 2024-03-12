@@ -1,5 +1,6 @@
 /*
 * Thomas M.
+* Extended Pausing Feature by Elisa D.
  */
 package com.example.ispeak.Utils;
 
@@ -8,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
@@ -24,9 +26,11 @@ public class Chronometer extends AppCompatTextView {
     }
 
     private long mBase;
+    private long mPauseTime;
     private boolean mVisible;
     private boolean mStarted;
     private boolean mRunning;
+    private boolean mPausing;
     private OnChronometerTickListener mOnChronometerTickListener;
     private Chronometer mChrono;
 
@@ -52,11 +56,15 @@ public class Chronometer extends AppCompatTextView {
     private void init() {
         mBase = SystemClock.elapsedRealtime();
         mChrono = this;
+        mPauseTime = 0;
+        mPausing = false;
         updateText(mBase);
     }
 
     public void setBase(long base) {
         mBase = base;
+        mPauseTime = 0;
+        mPausing = false;
         dispatchChronometerTick();
         updateText(SystemClock.elapsedRealtime());
     }
@@ -84,6 +92,14 @@ public class Chronometer extends AppCompatTextView {
         updateRunning();
     }
 
+    public void pause(){
+        mPausing = true;
+    }
+
+    public void unpause(){
+        mPausing = false;
+    }
+
 
     public void setStarted(boolean started) {
         mStarted = started;
@@ -105,35 +121,16 @@ public class Chronometer extends AppCompatTextView {
     }
 
     private synchronized void updateBackground(long now){
-        timeElapsed = now - mBase;
+        timeElapsed = now - mBase - mPauseTime;
+    }
+
+    private synchronized void updatePauseTime(long now) {
+        mPauseTime = now - mBase - timeElapsed;
     }
 
     public synchronized void updateText(long now) {
-        timeElapsed = now - mBase;
-
-        DecimalFormat df = new DecimalFormat("00");
-
-        int hours = (int) (timeElapsed / (3600 * 1000));
-        int remaining = (int) (timeElapsed % (3600 * 1000));
-
-        int minutes = (int) (remaining / (60 * 1000));
-        remaining = (int) (remaining % (60 * 1000));
-
-        int seconds = (int) (remaining / 1000);
-        remaining = (int) (remaining % (1000));
-
-        int milliseconds = (int) (((int) timeElapsed % 1000) / 100);
-
-        String text = "";
-
-        if (hours > 0) {
-            text += df.format(hours) + ":";
-        }
-
-        text += df.format(minutes) + ":";
-        text += df.format(seconds) + ":";
-        text += Integer.toString(milliseconds);
-
+        timeElapsed = now - mBase - mPauseTime;
+        String text = Utils.formatTime(timeElapsed);
         setText(text);
 
         /*
@@ -174,12 +171,15 @@ public class Chronometer extends AppCompatTextView {
 
     private Handler mHandler = new Handler() {
         public void handleMessage(Message m) {
-            if (mRunning) {
+            if(mPausing) {
+                updatePauseTime(SystemClock.elapsedRealtime());
+            } else if (mRunning) {
                 updateText(SystemClock.elapsedRealtime());
                 dispatchChronometerTick();
-                sendMessageDelayed(Message.obtain(this , TICK_WHAT),
-                        100);
             }
+
+            sendMessageDelayed(Message.obtain(this , TICK_WHAT),
+                    100);
         }
     };
 

@@ -4,32 +4,34 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.example.ispeak.Utils.Utils;
+
 import java.util.ArrayList;
 
 public class Event implements Parcelable {
 
-    private float timeStart, timeEnd, duration;
+    private long timeStart, timeEnd, duration;
     private int eventId, taskId;
     private ArrayList<String> eventLabels = new ArrayList<>();
 
-    public Event(int eventId, int taskId, float timeStart, float timeEnd, float duration, String firstLabel){
-        this(eventId, taskId, timeStart);
+    public Event(int eventId, int taskId, long timeStart, long timeEnd, long duration, String firstLabel){
+        this.eventId = eventId;
+        this.taskId = taskId;
+        this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.duration = duration;
         eventLabels.add(firstLabel);
     }
 
-    public Event(int eventId, int taskId, float timeStart){
-        this.eventId = eventId;
-        this.taskId = taskId;
+    public Event(int eventId, int taskId, long timeStart){
+        this(eventId, taskId, timeStart, timeStart, 0, "");
+    }
+
+    public void setTimeStart(long timeStart) {
         this.timeStart = timeStart;
     }
 
-    public void setTimeStart(float timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public void setTimeEnd(float timeEnd) {
+    public void setTimeEnd(long timeEnd) {
         this.timeEnd = timeEnd;
         calculateDuration();
         documentEvent();
@@ -43,9 +45,11 @@ public class Event implements Parcelable {
         Log.d("PLAYBACKK", "Starttime " + timeStart + ", Endtime " + timeEnd + ", duration " + duration);
     }
 
-    public float getTimeStart() {
+    public long getTimeStart() {
         return timeStart;
     }
+    public String getFormattedTimeStart(){return Utils.formatTime(timeStart);}
+    public String getFormattedTimeEnd(){return Utils.formatTime(timeEnd);}
 
     public ArrayList<String> getEventLabelsList(){
         return eventLabels;
@@ -64,9 +68,9 @@ public class Event implements Parcelable {
     }
 
     protected Event(Parcel in) {
-        timeStart = in.readFloat();
-        timeEnd = in.readFloat();
-        duration = in.readFloat();
+        timeStart = in.readLong();
+        timeEnd = in.readLong();
+        duration = in.readLong();
         eventId = in.readInt();
         taskId = in.readInt();
         eventLabels = in.createStringArrayList();
@@ -91,9 +95,9 @@ public class Event implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeFloat(timeStart);
-        parcel.writeFloat(timeEnd);
-        parcel.writeFloat(duration);
+        parcel.writeLong(timeStart);
+        parcel.writeLong(timeEnd);
+        parcel.writeLong(duration);
         parcel.writeInt(eventId);
         parcel.writeInt(taskId);
         parcel.writeStringList(eventLabels);

@@ -35,6 +35,7 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
     private String outputAudio;
     private Microphone microphone;
     private int eventCounter = 0;
+    private boolean eventRegistered;
     private Patient patientInfo;
     private BoDyS assessment;
     private ArrayList<Event> eventList = new ArrayList<>();
@@ -133,24 +134,27 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
 
             if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {
                 microphone.pauseRecording();
+                binding.patientTimeChrono.pause();
             }else{
                 microphone.resumeRecording(binding.waveformView);
+                binding.patientTimeChrono.unpause();
             }
 
             return false;
         });
     }
-
     @SuppressLint("ClickableViewAccessibility")
     private void listenBtnEventDetection(){
         binding.btnEventDetected.setOnTouchListener((view, motionEvent) -> {
-            if (!microphone.isActive()) {
+            if (!microphone.isActive() || microphone.isPaused()) {
+                eventRegistered = false;
                 return false;
             }
 
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                 registerEventStart();
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                eventRegistered = true;
+            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP && eventRegistered) {
                 registerEventEnd();
             }
 
@@ -163,13 +167,13 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
             return;
         }
 
-        float timeStart = binding.totalTimeChrono.getTimeElapsed();
+        long timeStart = binding.patientTimeChrono.getTimeElapsed();
         Event event = new Event(eventCounter, assessment.getTaskId(), timeStart);
         eventList.add(event);
     }
 
     private void registerEventEnd(){
-        Objects.requireNonNull(eventList.get(eventCounter)).setTimeEnd(binding.totalTimeChrono.getTimeElapsed());
+        Objects.requireNonNull(eventList.get(eventCounter)).setTimeEnd(binding.patientTimeChrono.getTimeElapsed());
         eventCounter = eventCounter + 1;
         binding.numEvents.setText(String.valueOf(eventCounter));
     }
@@ -189,9 +193,6 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
         if (playMode.equalsIgnoreCase("Stop")){
             binding.waveformView.setVisibility(View.GONE);
             binding.recyclerTrial.setVisibility(View.VISIBLE);
-
-            int delta = (int) (SystemClock.elapsedRealtime() - binding.totalTimeChrono.getBase());
-            trialList.add(new Recording(outputAudio, delta, delta, assessment.getTaskId(), eventList));
 
             adapter = new RecordingTrialAdapter(trialList, getApplicationContext());
             binding.recyclerTrial.setAdapter(adapter);
@@ -218,10 +219,16 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
 
         if (playMode.equalsIgnoreCase("Stop")) {
             binding.totalTimeChrono.stop();
+            binding.patientTimeChrono.stop();
+            long totalTimeElapsed = binding.totalTimeChrono.getTimeElapsed();
+            long patientTimeElapsed = binding.patientTimeChrono.getTimeElapsed();
+            trialList.add(new Recording(outputAudio, totalTimeElapsed, patientTimeElapsed, assessment.getTaskId(), eventList));
         } else {
             long base = SystemClock.elapsedRealtime();
             binding.totalTimeChrono.setBase(base);
             binding.totalTimeChrono.start();
+            binding.patientTimeChrono.setBase(base);
+            binding.patientTimeChrono.start();
             resetEventCounter();
         }
     }

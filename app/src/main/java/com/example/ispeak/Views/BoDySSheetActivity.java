@@ -25,6 +25,7 @@ import com.example.ispeak.Models.Event;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Models.Recording;
 import com.example.ispeak.R;
+import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.databinding.ActivityBodysSheetBinding;
 import com.google.android.material.button.MaterialButton;
 
@@ -73,7 +74,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         initCategoryListView(events);
         initBoDySCriteria();
 
-        binding.recordingTime.setText(getApplicationContext().getString(R.string.patientRecordingTime, recording.getPatientTime()));
+        binding.recordingTime.setText(getApplicationContext().getString(R.string.patientRecordingTime, recording.getFormattedPatientTime()));
     }
 
     private void initTaskProgressBar(int taskId){
@@ -87,7 +88,8 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     private void initWaveformBar(Recording recording){
         binding.waveformSeekbar.setSampleFrom(recording.getMp3_filepath());
         binding.waveformSeekbar.setMaxProgress(recording.getPatientTime());
-        binding.audioDuration.setText(String.valueOf(binding.waveformSeekbar.getMaxProgress()));
+        binding.audioDuration.setText(Utils.formatTime((long) binding.waveformSeekbar.getMaxProgress()));
+        binding.audioTime.setText(Utils.formatTime((long) binding.waveformSeekbar.getProgress()));
 
         binding.waveformSeekbar.setOnProgressChanged((waveformSeekBar, progress, fromUser) -> {
             if(fromUser) {
@@ -99,7 +101,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
                 if(progress > waveformSeekBar.getMaxProgress()) {
                     progress = waveformSeekBar.getMaxProgress();
                 }
-                binding.audioTime.setText(String.valueOf(progress));
+                binding.audioTime.setText(Utils.formatTime((long) progress));
             }
         });
 
@@ -266,7 +268,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
 
     private void listenEventBookmarkBtn(){
         binding.eventBookmarkBtn.setOnClickListener(view -> {
-            float eventStart = binding.waveformSeekbar.getProgress();
+            long eventStart = (long) binding.waveformSeekbar.getProgress();
             int eventId = recording.getEvents().size();
             Event newEvent = new Event(eventId, taskId, eventStart);
             recording.addEvent(newEvent);
@@ -321,7 +323,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     private void setEventLabels(ArrayList<Event> eventArrayList){
         HashMap<Float, String> events = new HashMap<>();
         for (Event event: eventArrayList) {
-            events.put(event.getTimeStart(), event.getEventLabels());
+            events.put((float) event.getTimeStart(), event.getEventLabels());
         }
 
         if(events.size() == 0){
