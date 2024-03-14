@@ -18,7 +18,7 @@ public class MicrophoneConnectionActivity extends AppCompatActivity implements I
 
     private ActivityMicrophoneConnectionBinding binding;
     private Microphone microphone;
-    private BoDyS assessment;
+    private int assessmentNr;
 
 
     @Override
@@ -74,11 +74,11 @@ public class MicrophoneConnectionActivity extends AppCompatActivity implements I
 
     @Override
     public void prepareIntent(Intent intent) {
-        intent.putExtra("assessment", assessment);
+        intent.putExtra("assessmentNr", assessmentNr);
     }
 
     @Override
     public void processReceivedIntent(Intent intent) {
-        assessment = intent.getParcelableExtra("assessment");
+        assessmentNr = intent.getIntExtra("assessmentNr", -1);
     }
 }

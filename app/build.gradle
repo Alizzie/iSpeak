@@ -48,4 +48,7 @@ dependencies {
 
     implementation "androidx.work:work-runtime:2.7.1"
     implementation "androidx.lifecycle:lifecycle-runtime:2.5.1"
+
+    implementation "com.opencsv:opencsv:5.5.2"
+
 }

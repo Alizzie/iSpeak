@@ -39,6 +39,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     private ActivityBodysSheetBinding binding;
     private Patient patientInfo;
     private BoDyS assessment;
+    private int assessmentNr;
     private EventAdapter eventAdapter;
     private CategoryAdapter categoryAdapter;
     private int taskId;
@@ -62,6 +63,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     private void init() {
         retrieveIntent(this);
         patientInfo = Patient.getInstance();
+        assessment = (BoDyS) Patient.getInstance().getAssessmentList().get(assessmentNr);
         binding.patientId.setText(patientInfo.getPatientId());
         binding.patientDiagnosis.setText(patientInfo.getDiagnosis());
 
@@ -260,7 +262,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
 
 
     private void listenEditBtn(){
-        binding.editBtn.setOnClickListener(view -> {
+        binding.bodysEventLabeling.editEventBtn.setOnClickListener(view -> {
             eventAdapter.toggleDeleteMode();
             updateCategoryAdapter(recording.getEvents());
         });
@@ -275,6 +277,8 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
 
             eventAdapter.setDeleteMode(false);
             eventAdapter.notifyAdapterItemInserted(eventId);
+
+            binding.eventModeBtn.performClick();
         });
     }
 
@@ -357,14 +361,15 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     }
     @Override
     public void prepareIntent(Intent intent) {
-        intent.putExtra("assessment", assessment);
-        assessment.setTaskId(taskId + 1);
+        intent.putExtra("assessmentNr", assessmentNr);
+
         assessment.startNewTaskRound();
+        assessment.setTaskId(taskId + 1);
     }
 
     @Override
     public void processReceivedIntent(Intent intent) {
-        assessment = intent.getParcelableExtra("assessment");
+        assessmentNr = intent.getIntExtra("assessmentNr", -1);
     }
 
     @Override

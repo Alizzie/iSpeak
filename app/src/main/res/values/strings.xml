@@ -129,7 +129,7 @@
 
     <!--BoDyS Assessment-->
     <string name="skipBoDyS">Weiter</string>
-    <string name="editBoDyS">Edit</string>
+    <string name="editBoDyS">Events löschen</string>
     <string name="eventToggleBtn">Event</string>
     <string name="beobachtungToggleBtn">Beobachtung</string>
     <string name="bewertungToggleBtn">Bewertung</string>

@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.ispeak.Interfaces.FolderStructureCreator;
+import com.example.ispeak.Utils.Utils;
 
 import java.io.File;
 import java.text.ParseException;
@@ -74,6 +75,7 @@ public class Patient implements FolderStructureCreator {
     public String getPatientFolderPath() {
         return patientFolderPath;
     }
+    public List<Assessment> getAssessmentList(){return assessmentList;}
 
     private String changeDateFormat(String date)  {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
@@ -92,20 +94,11 @@ public class Patient implements FolderStructureCreator {
     public void createFolderStructure() {
 
         patientFolderPath = applicationContext.getExternalFilesDir(Environment.DIRECTORY_DCIM) +
-                File.separator + "iSpeak_recordings" +
                 File.separator + patientId +
-                File.separator + caseId +
-                "_" + date;
-        File directory = new File(patientFolderPath);
+                File.separator + "iSpeak" +
+                File.separator + date +
+                "_" + caseId;
 
-        if (!directory.exists()) {
-            if (directory.mkdirs()) {
-                Log.d("DIRECTORY", "SUCCESS: " + directory.getAbsolutePath());
-            } else {
-                Log.e("DIRECTORY", "FAIL");
-            }
-        } else {
-            Log.d("DIRECTORY", "ALREADY EXISTS: " + directory.getAbsolutePath());
-        }
+        Utils.createFolder(patientFolderPath);
     }
 }

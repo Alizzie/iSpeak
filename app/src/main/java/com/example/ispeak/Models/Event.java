@@ -4,11 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.example.ispeak.Interfaces.WriteCSVInterface;
 import com.example.ispeak.Utils.Utils;
+import com.opencsv.CSVWriter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class Event implements Parcelable {
+public class Event implements WriteCSVInterface {
 
     private long timeStart, timeEnd, duration;
     private int eventId, taskId;
@@ -20,9 +24,8 @@ public class Event implements Parcelable {
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.duration = duration;
-        eventLabels.add(firstLabel);
+        addEventLabel(firstLabel);
     }
-
     public Event(int eventId, int taskId, long timeStart){
         this(eventId, taskId, timeStart, timeStart, 0, "");
     }
@@ -56,10 +59,14 @@ public class Event implements Parcelable {
     }
 
     public String getEventLabels(){
-        return eventLabels.toString();
+        return String.join(",", eventLabels);
     }
 
     public void addEventLabel(String label){
+        if(label == null || label.trim().isEmpty()) {
+            return;
+        }
+
         eventLabels.add(label);
     }
 
@@ -67,39 +74,13 @@ public class Event implements Parcelable {
         eventLabels.remove(label);
     }
 
-    protected Event(Parcel in) {
-        timeStart = in.readLong();
-        timeEnd = in.readLong();
-        duration = in.readLong();
-        eventId = in.readInt();
-        taskId = in.readInt();
-        eventLabels = in.createStringArrayList();
-    }
-
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
-        @Override
-        public Event createFromParcel(Parcel in) {
-            return new Event(in);
-        }
-
-        @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
-
     @Override
-    public int describeContents() {
-        return 0;
-    }
+    public List<String[]> onWriteCSV() {
+        ArrayList<String> headline = new ArrayList<>(Arrays.asList("TaskNr", "TimeStart", "TimeEnd", "Labels"));
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(timeStart);
-        parcel.writeLong(timeEnd);
-        parcel.writeLong(duration);
-        parcel.writeInt(eventId);
-        parcel.writeInt(taskId);
-        parcel.writeStringList(eventLabels);
+        String labels = String.join("/", eventLabels);
+        ArrayList<String> data = new ArrayList<>(Arrays.asList(String.valueOf(taskId), getFormattedTimeStart(), getFormattedTimeEnd(), labels));
+
+        return new ArrayList<>(Arrays.asList(headline.toArray(new String[0]), data.toArray(new String[0])));
     }
 }

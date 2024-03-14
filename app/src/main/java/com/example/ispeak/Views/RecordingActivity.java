@@ -16,12 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ispeak.Adapter.RecordingTrialAdapter;
 import com.example.ispeak.Interfaces.IntentHandler;
+import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Event;
 import com.example.ispeak.Models.Microphone;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Models.Recording;
 import com.example.ispeak.R;
+import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.databinding.ActivityRecordingBinding;
 
 import java.io.File;
@@ -37,7 +39,8 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
     private int eventCounter = 0;
     private boolean eventRegistered;
     private Patient patientInfo;
-    private BoDyS assessment;
+    private int assessmentNr;
+    private Assessment assessment;
     private ArrayList<Event> eventList = new ArrayList<>();
     private ArrayList<Recording> trialList = new ArrayList<>();
 
@@ -58,6 +61,7 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
         retrieveIntent(this);
 
         patientInfo = Patient.getInstance();
+        assessment = Patient.getInstance().getAssessmentList().get(assessmentNr);
         binding.patientId.setText(patientInfo.getPatientId());
         binding.patientDiagnosis.setText(patientInfo.getDiagnosis());
 
@@ -90,15 +94,28 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
             Recording checkedRecording = adapter.getCheckedTrial();
             if (checkedRecording != null) {
                 assessment.updateRecordingList(checkedRecording);
-                //saveRecording(checkedRecording);
+                saveRecording(checkedRecording);
                 deleteOtherRecordings(adapter.getCheckPosition());
                 navigateToNextActivity(this, BoDySSheetActivity.class);
             }
         });
     }
 
+    private void saveRecording(Recording recording) {
+        File file = new File(recording.getMp3_filepath());
+        File dest = new File(assessment.getFolderPath() + File.separator + "Recordings" +
+                File.separator + "recording" + assessment.getTaskId() + ".3gp");
+
+        boolean success = file.renameTo(dest);
+        if(success) {
+            recording.setMp3_filepath(dest.getPath());
+        }
+
+    }
+
     private void deleteOtherRecordings(int checkPosition) {
         for (int i = 0; i < trialList.size(); i++) {
+
             if (i != checkPosition) {
                 // Delete the recording, e.g., using File.delete() or your specific logic
                 File fileToDelete = new File(trialList.get(i).getMp3_filepath());
@@ -246,16 +263,17 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
     }
 
     private void updateOutputAudioPath(int trialId) {
-        outputAudio = assessment.getFolderPath() + File.separator + "recording_" + assessment.getTaskId() + "_trial_" + trialId + ".3gp";
+        outputAudio = assessment.getFolderPath() + File.separator + "Recordings" +
+                File.separator + "recording" + assessment.getTaskId() + "_trial_" + trialId + ".3gp";
     }
 
     @Override
     public void prepareIntent(Intent intent) {
-        intent.putExtra("assessment", assessment);
+        intent.putExtra("assessmentNr", assessmentNr);
     }
 
     @Override
     public void processReceivedIntent(Intent intent) {
-        assessment = intent.getParcelableExtra("assessment");
+        assessmentNr = intent.getIntExtra("assessmentNr", -1);
     }
 }

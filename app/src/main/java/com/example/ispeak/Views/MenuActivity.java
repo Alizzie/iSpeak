@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ispeak.Interfaces.IntentHandler;
+import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.R;
@@ -21,7 +22,6 @@ public class MenuActivity extends AppCompatActivity implements IntentHandler {
 
     ActivityMenuBinding binding;
     Patient patientInfo;
-    BoDyS selectedAssessment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,13 +47,11 @@ public class MenuActivity extends AppCompatActivity implements IntentHandler {
     }
 
     private void listenBoDysAssessment() {
-        selectedAssessment = new BoDyS(patientInfo.getPatientFolderPath());
         binding.assessmentBtn.setOnClickListener(view -> navigateToNextActivity(this, BoDySMenuActivity.class));
     }
 
     @Override
     public void prepareIntent(Intent intent) {
-        intent.putExtra("assessment", selectedAssessment);
     }
 
     @Override

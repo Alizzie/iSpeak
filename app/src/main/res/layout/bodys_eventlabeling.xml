@@ -4,6 +4,18 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/editEventBtn"
+        style="@style/TextBlue"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/editBoDyS" />
+
+    <TextView
         android:id="@+id/boDySEventCategoriesTitle"
         android:layout_width="355dp"
         android:layout_height="wrap_content"

@@ -224,17 +224,6 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="30dp">
 
-                <TextView
-                    android:id="@+id/editBtn"
-                    style="@style/TextBlue"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerInParent="true"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:text="@string/editBoDyS" />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/toggleButton"
@@ -243,7 +232,7 @@
                     android:layout_centerInParent="true"
                     app:singleSelection="true"
                     app:selectionRequired="true"
-                    app:checkedButton="@id/eventModeBtn">
+                    app:checkedButton="@id/markingModeBtn">
 
                     <Button
                         android:id="@+id/eventModeBtn"
@@ -286,7 +275,7 @@
             <include
                 android:id="@+id/bodysMarkingSheet"
                 layout="@layout/bodys_sheet"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <include
                 android:id="@+id/bodysScoringSheet"
@@ -296,7 +285,7 @@
             <include
                 android:id="@+id/bodysEventLabeling"
                 layout="@layout/bodys_eventlabeling"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
 
 
