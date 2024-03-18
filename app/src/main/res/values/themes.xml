@@ -224,6 +224,12 @@
         <item name="cornerSizeBottomLeft">10dp</item>
     </style>
 
+    <style name="BoDySNotesPopup">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:windowBlurBehindEnabled" tools:targetApi="s">true</item>
+    </style>
+
 
 
 </resources>

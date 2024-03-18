@@ -239,7 +239,7 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
             binding.patientTimeChrono.stop();
             long totalTimeElapsed = binding.totalTimeChrono.getTimeElapsed();
             long patientTimeElapsed = binding.patientTimeChrono.getTimeElapsed();
-            trialList.add(new Recording(outputAudio, totalTimeElapsed, patientTimeElapsed, assessment.getTaskId(), eventList));
+            trialList.add(new Recording(outputAudio, totalTimeElapsed, patientTimeElapsed, eventList));
         } else {
             long base = SystemClock.elapsedRealtime();
             binding.totalTimeChrono.setBase(base);
@@ -270,6 +270,7 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
     @Override
     public void prepareIntent(Intent intent) {
         intent.putExtra("assessmentNr", assessmentNr);
+        intent.putExtra("prefill", true);
     }
 
     @Override

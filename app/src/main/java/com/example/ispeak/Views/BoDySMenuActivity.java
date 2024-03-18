@@ -30,13 +30,14 @@ public class BoDySMenuActivity extends AppCompatActivity implements IntentHandle
     private void listenBtnNewAssessment(){
         BoDyS boDyS = new BoDyS();
         Patient.getInstance().addAssessment(boDyS);
-        binding.newAssessment.setOnClickListener(view -> navigateToNextActivity(this, MicrophoneConnectionActivity.class));
+        binding.newAssessment.setOnClickListener(view -> navigateToNextActivity(this, BoDySOverviewPageActivity.class));
     }
 
     @Override
     public void prepareIntent(Intent intent) {
         int assessmentNr = Patient.getInstance().getAssessmentList().size() - 1;
         intent.putExtra("assessmentNr", assessmentNr);
+        intent.putExtra("assessmentNew", true);
     }
 
     @Override

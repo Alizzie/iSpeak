@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_row="0"
+    android:layout_column="0"
+    app:cardCornerRadius="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/playImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/play_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/imageRecordingDescription" />
+
+        <TextView
+            android:id="@+id/taskName"
+            style="@style/TextBlack"
+            android:textSize="22sp"
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/spont1"
+            app:layout_constraintStart_toEndOf="@+id/playImage"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/taskStatus"
+            style="@style/TextRed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/recordingStatusNegativeDE"
+            app:layout_constraintStart_toEndOf="@+id/playImage"
+            app:layout_constraintTop_toBottomOf="@+id/taskName" />
+
+        <TextView
+            android:id="@+id/taskScore"
+            style="@style/TextBlack"
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/number0"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="@+id/taskDuration"
+            app:layout_constraintTop_toTopOf="@+id/taskName" />
+
+        <TextView
+            android:id="@+id/taskDuration"
+            style="@style/TextBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="@string/number0"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/taskScore" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

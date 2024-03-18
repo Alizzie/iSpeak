@@ -15,6 +15,8 @@
 
     <!--Button Text-->
     <string name="confirmBtn">Confirm</string>
+    <string name="sendBtnDE">Abschliessen</string>
+    <string name="startWithRecordingTaskBtnDE">Aufnahme</string>
 
     <!--Numbers-->
     <string name="number0">0</string>
@@ -25,6 +27,7 @@
 
     <!--Image Content Description-->
     <string name="imageMicDescription">Microphone image</string>
+    <string name="imageRecordingDescription">Play button image</string>
 
     <!--Menus-->
     <string name="dashboard">Dashboard</string>
@@ -128,6 +131,7 @@
     <string name="trialNumber">Versuch %1$d</string>
 
     <!--BoDyS Assessment-->
+    <string name="boDySName">BoDyS</string>
     <string name="skipBoDyS">Weiter</string>
     <string name="editBoDyS">Events löschen</string>
     <string name="eventToggleBtn">Event</string>
@@ -140,6 +144,17 @@
     <string name="noEventsNotice">Keine Events vorhanden</string>
     <string name="removeItem">Remove Item Btn</string>
     <string name="eventTimestamp">%1$s - %2$s</string>
+    <string name="criteriaNotes">%1$s Notizen</string>
+    <string name="criteriaNotesHint">Schreibe hier deine Notizen</string>
+    <string name="recordingStatusNegativeDE">Nicht aufgenommen</string>
+    <string name="recordingStatusPositiveDE">Aufgenommen</string>
+    <string name="scoringStatusNegativeDE">Nicht bewertet</string>
+    <string name="scoringStatusPositiveDE">Bewertet</string>
+
+    <string name="taskOverview">Task Overview</string>
+    <string name="taskOverviewDE">Aufgabenübersicht</string>
+    <string name="taskOverviewScoringDE">Gesamtpunktzahl: %1$d</string>
+    <string name="taskOverviewProgress">%1$d%%</string>
 
 
 

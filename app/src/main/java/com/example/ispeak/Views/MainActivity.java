@@ -36,15 +36,15 @@ public class MainActivity extends AppCompatActivity implements IntentHandler {
             boolean correctInputLength = checkIdLength(patientId, caseId);
             String diagnosis = retrieveDiagnosis(diagnosisId);
 
-            if (correctInputLength && diagnosis != "NaN") {
-                patientInfo = Patient.getInstance(patientId, caseId, diagnosis, this);
+//            if (correctInputLength && diagnosis != "NaN") {
+//                patientInfo = Patient.getInstance(patientId, caseId, diagnosis, this);
+//
+//                navigateToNextActivity(this, MenuActivity.class);
+//            }
 
-                navigateToNextActivity(this, MenuActivity.class);
-            }
 
-
-//            patientInfo = Patient.getInstance(patientId, caseId, diagnosis, getApplicationContext());
-//            navigateToNextActivity(this, MenuActivity.class);
+            patientInfo = Patient.getInstance(patientId, caseId, diagnosis, getApplicationContext());
+            navigateToNextActivity(this, MenuActivity.class);
         });
     }
 

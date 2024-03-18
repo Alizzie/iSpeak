@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BoDyS extends Assessment{
-    private static final HashMap<Integer, String> BODYSDIC;
-    private HashMap<String, HashMap<String, Integer>> boDySCriteriaMarking = createBoDySCriteria();
-    private HashMap<String, Integer> boDySScores = createBoDySScores();
+    public static final HashMap<Integer, String> BODYSDIC;
+    private BoDySSheet[] boDySSheets;
+    private BoDySSheet currentSheet;
 
 
     static {
@@ -35,29 +35,27 @@ public class BoDyS extends Assessment{
 
     public BoDyS(){
         super("BoDyS", 8);
-    }
-
-    public HashMap<String, HashMap<String, Integer>> getBoDySCriteria() {
-        return boDySCriteriaMarking;
+        this.boDySSheets = new BoDySSheet[this.maxRecordingNr];
+        this.currentSheet = new BoDySSheet();
+        boDySSheets[taskId] = this.currentSheet;
     }
 
     public void startNewTaskRound(){
-        getInfos();
+        currentSheet.getInfos();
         saveTaskResultsInCSV();
-        boDySCriteriaMarking = createBoDySCriteria();
-        boDySScores = createBoDySScores();
+        recordings[taskId].setEvaluationScore(currentSheet.getTotalScore());
+
+        taskId = taskId + 1;
+        currentSheet = new BoDySSheet();
+        boDySSheets[taskId] = this.currentSheet;
     }
 
-    private void getInfos(){
-        for (String main : boDySScores.keySet()) {
-            Log.d("TESTBODYSSCORES", main + ": " + boDySScores.get(main).toString());
-        }
+    public BoDySSheet[] getBoDySSheets() {
+        return boDySSheets;
+    }
 
-        for (String main : boDySCriteriaMarking.keySet()) {
-            for (String crit : boDySCriteriaMarking.get(main).keySet()){
-                Log.d("TESTBODYSMARKING", crit + ": " + boDySCriteriaMarking.get(main).get(crit).toString());
-            }
-        }
+    public BoDySSheet getCurrentSheet(){
+        return currentSheet;
     }
 
     @Override
@@ -66,17 +64,17 @@ public class BoDyS extends Assessment{
         ArrayList<String> markingsArray = new ArrayList<>(Arrays.asList(String.valueOf(taskId)));
 
 
-        List<String> mainKeys = getMainCriteriaList().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        List<String> mainKeys = currentSheet.getMainCriteriaList().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
         for (int j = 0; j < mainKeys.size(); j++){
             String main = mainKeys.get(j);
             criteriaArray.add(main);
-            markingsArray.add(String.valueOf(boDySScores.get(main)));
+            markingsArray.add(String.valueOf(currentSheet.getBoDySScores().get(main)));
 
-            List<String> keys = boDySCriteriaMarking.get(main).keySet().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+            List<String> keys = currentSheet.getBoDySCriteria().get(main).keySet().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 
             for(int i = 0; i < keys.size(); i++) {
                 criteriaArray.add(keys.get(i));
-                markingsArray.add(String.valueOf(boDySCriteriaMarking.get(main).get(keys.get(i))));
+                markingsArray.add(String.valueOf(currentSheet.getBoDySCriteria().get(main).get(keys.get(i))));
             }
         }
 
@@ -86,106 +84,5 @@ public class BoDyS extends Assessment{
     @Override
     public String getTaskName(int taskId){
         return BODYSDIC.get(taskId);
-    }
-
-    private HashMap<String, HashMap<String, Integer>> createBoDySCriteria(){
-        boDySCriteriaMarking = new HashMap<>();
-        boDySCriteriaMarking.put("ATM", new HashMap(){{
-            put("ATM1", 0);
-            put("ATM2", 0);
-            put("ATM3", 0);
-        }});
-
-        boDySCriteriaMarking.put("STL", new HashMap(){{
-            put("STL1", 0);
-            put("STL2", 0);
-            put("STL3", 0);
-            put("STL4", 0);
-        }});
-
-        boDySCriteriaMarking.put("STQ", new HashMap(){{
-            put("STQ1", 0);
-            put("STQ2", 0);
-            put("STQ3", 0);
-        }});
-
-        boDySCriteriaMarking.put("STS", new HashMap(){{
-            put("STS1", 0);
-            put("STS2", 0);
-            put("STS3", 0);
-            put("STS4", 0);
-            put("STS5", 0);
-        }});
-
-        boDySCriteriaMarking.put("ART", new HashMap(){{
-            put("ART1", 0);
-            put("ART2", 0);
-            put("ART3", 0);
-            put("ART4", 0);
-            put("ART5", 0);
-        }});
-
-        boDySCriteriaMarking.put("RES", new HashMap(){{
-            put("RES1", 0);
-            put("RES2", 0);
-        }});
-
-        boDySCriteriaMarking.put("TEM", new HashMap(){{
-            put("TEM1", 0);
-            put("TEM2", 0);
-        }});
-
-        boDySCriteriaMarking.put("RDF", new HashMap(){{
-            put("RDF1", 0);
-            put("RDF2", 0);
-        }});
-
-        boDySCriteriaMarking.put("MOD", new HashMap(){{
-            put("MOD1", 0);
-            put("MOD2", 0);
-        }});
-
-        return boDySCriteriaMarking;
-    }
-
-    private HashMap<String, Integer> createBoDySScores(){
-        HashMap<String, Integer> boDySScores = new HashMap<>();
-        boDySScores.put("ATM", 4);
-        boDySScores.put("STL", 4);
-        boDySScores.put("STQ", 4);
-        boDySScores.put("STS", 4);
-        boDySScores.put("ART", 4);
-        boDySScores.put("RES", 4);
-        boDySScores.put("TEM", 4);
-        boDySScores.put("RDF", 4);
-        boDySScores.put("MOD", 4);
-        return boDySScores;
-    }
-
-    public List<String> getMainCriteriaList(){
-        return new ArrayList<>(this.getBoDySCriteria().keySet());
-    }
-
-    public HashMap<String, Integer> getBoDySScores() {
-        return boDySScores;
-    }
-
-    public ArrayList<String> getMainCriteriaWithEmptyMarkings(){
-        ArrayList<String> list = new ArrayList<>();
-
-        for (String mainCriteria: getMainCriteriaList()) {
-            HashMap<String, Integer> criteriaValues = boDySCriteriaMarking.get(mainCriteria);
-            Collection<Integer> values = criteriaValues.values();
-
-            if(!values.contains(1)){
-                list.add(mainCriteria);
-            }
-        }
-
-        return list;
-    }
-
-    public void updateScores(String key, int score) {
-        boDySScores.put(key, score);
     }
 }

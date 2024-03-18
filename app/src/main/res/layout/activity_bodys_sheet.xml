@@ -101,7 +101,8 @@
         android:id="@+id/cardDisplay"
         android:backgroundTint="@color/lightGray">
 
-        <com.masoudss.lib.WaveformSeekBar
+        <com.example.ispeak.Utils.WaveformSeekbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
@@ -161,41 +162,40 @@
         android:layout_gravity="center">
 
         <ImageButton
-            android:id="@+id/btnBackward"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/backwardBtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/backward_5_24"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/lightBlue"
             android:contentDescription="@string/backwardBtn"
-            android:layout_toStartOf="@id/btnPlay"
+            android:layout_toStartOf="@id/playBtn"
             android:visibility="gone"/>
 
         <ImageButton
-            android:id="@+id/btnPlay"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/play_24"
-            android:backgroundTint="@color/black"
-            android:contentDescription="@string/startRecordingBtn"
-            android:layout_marginHorizontal="20dp"
+            android:id="@+id/playBtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerInParent="true"
-            android:visibility="gone"
-            />
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/play_24"
+            android:backgroundTint="@color/lightBlue"
+            android:contentDescription="@string/startRecordingBtn"
+            android:visibility="gone"/>
 
         <ImageButton
-            android:id="@+id/btnForward"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/forwardBtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/forward_5_24"
-            android:backgroundTint="@color/black"
+            android:backgroundTint="@color/lightBlue"
             android:contentDescription="@string/forwardBtn"
-            android:layout_toEndOf="@id/btnPlay"
+            android:layout_toEndOf="@id/playBtn"
             android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/eventBookmarkBtn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:background="@drawable/bookmark_add_24"
             android:backgroundTint="@color/lightBlue"
             android:contentDescription="@string/eventDetectedBtn"
@@ -255,6 +255,7 @@
                         android:layout_width="165dp"
                         android:layout_height="match_parent"
                         android:text="@string/bewertungToggleBtn"
+                        android:visibility="gone"
                         />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 

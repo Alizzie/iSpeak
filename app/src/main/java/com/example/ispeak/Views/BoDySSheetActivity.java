@@ -2,13 +2,9 @@ package com.example.ispeak.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
@@ -21,18 +17,19 @@ import com.example.ispeak.Adapter.EventAdapter;
 import com.example.ispeak.Interfaces.EventLabelingObserver;
 import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.BoDyS;
+import com.example.ispeak.Models.BoDySSheet;
 import com.example.ispeak.Models.Event;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Models.Recording;
 import com.example.ispeak.R;
-import com.example.ispeak.Utils.Utils;
+import com.example.ispeak.Utils.BoDySMarkingView;
+import com.example.ispeak.Utils.BoDySScoringView;
+import com.example.ispeak.Utils.WaveformSeekbar;
 import com.example.ispeak.databinding.ActivityBodysSheetBinding;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 
 public class BoDySSheetActivity extends AppCompatActivity implements IntentHandler, EventLabelingObserver {
 
@@ -44,6 +41,8 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     private CategoryAdapter categoryAdapter;
     private int taskId;
     private Recording recording;
+    private BoDySSheet boDySSheet;
+    private boolean prefill;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,29 +53,62 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         init();
         listenEventLabelingBtn();
         listenMarkingBtn();
-        listenScoringBtn();
         listenSkipBtn();
         listenEditBtn();
         listenEventBookmarkBtn();
+
+        if(!prefill) {
+            showFullFunctionalities();
+            listenScoringBtn();
+            listenPlayAudioBtn();
+            listenBackwardAudioBtn();
+            listenForwardAudioBtn();
+        }
+    }
+
+    private void showFullFunctionalities(){
+        binding.playBtn.setVisibility(View.VISIBLE);
+        binding.forwardBtn.setVisibility(View.VISIBLE);
+        binding.backwardBtn.setVisibility(View.VISIBLE);
+        binding.scoringModeBtn.setVisibility(View.VISIBLE);
     }
 
     private void init() {
         retrieveIntent(this);
+        initPatientData();
+
+        intiWaveformSeekbar();
+        initTaskProgressBar(taskId);
+
+        ArrayList<Event> events = recording.getEvents();
+        initEventRecyclerView(events);
+        initCategoryListView(events);
+
+        binding.recordingTime.setText(getApplicationContext().getString(R.string.patientRecordingTime, recording.getFormattedPatientTime()));
+    }
+
+    private void initPatientData(){
         patientInfo = Patient.getInstance();
         assessment = (BoDyS) Patient.getInstance().getAssessmentList().get(assessmentNr);
         binding.patientId.setText(patientInfo.getPatientId());
         binding.patientDiagnosis.setText(patientInfo.getDiagnosis());
 
-        this.taskId = assessment.getTaskId();
-        this.recording = assessment.getRecordings()[taskId];
-        ArrayList<Event> events = recording.getEvents();
-        initTaskProgressBar(taskId);
-        initWaveformBar(recording);
-        initEventRecyclerView(events);
-        initCategoryListView(events);
-        initBoDySCriteria();
+        if(prefill) {
+            this.taskId = assessment.getTaskId();
+        } else {
+            assessment.setTaskId(taskId);
+        }
 
-        binding.recordingTime.setText(getApplicationContext().getString(R.string.patientRecordingTime, recording.getFormattedPatientTime()));
+        this.recording = assessment.getRecordings()[taskId];
+        this.boDySSheet = assessment.getBoDySSheets()[taskId];
+        Log.d("TESTS", "Prefill: " + prefill + ", " + taskId);
+    }
+
+    private void intiWaveformSeekbar() {
+        WaveformSeekbar waveformSeekbar = binding.waveformSeekbar;
+        waveformSeekbar.init(recording.getMp3_filepath(), binding.audioTime, binding.audioDuration, binding.playBtn);
+        int eventId = recording.getEvents().size() == 0 ? (int) RecyclerView.NO_ID : 0;
+        setWaveformSeekbarProgress(eventId);
     }
 
     private void initTaskProgressBar(int taskId){
@@ -85,30 +117,6 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         binding.taskProgressNr.setText(getResources().getString(R.string.taskProgress, taskId + 1));
         binding.taskProgressBar.setProgress((int) progress);
         binding.taskName.setText(assessment.getTaskName(taskId));
-    }
-
-    private void initWaveformBar(Recording recording){
-        binding.waveformSeekbar.setSampleFrom(recording.getMp3_filepath());
-        binding.waveformSeekbar.setMaxProgress(recording.getPatientTime());
-        binding.audioDuration.setText(Utils.formatTime((long) binding.waveformSeekbar.getMaxProgress()));
-        binding.audioTime.setText(Utils.formatTime((long) binding.waveformSeekbar.getProgress()));
-
-        binding.waveformSeekbar.setOnProgressChanged((waveformSeekBar, progress, fromUser) -> {
-            if(fromUser) {
-
-                if(progress < 0){
-                    progress = 0;
-                }
-
-                if(progress > waveformSeekBar.getMaxProgress()) {
-                    progress = waveformSeekBar.getMaxProgress();
-                }
-                binding.audioTime.setText(Utils.formatTime((long) progress));
-            }
-        });
-
-        int eventId = recording.getEvents().size() == 0 ? (int) RecyclerView.NO_ID : 0;
-        setWaveformSeekbarProgress(eventId);
     }
 
     private void initEventRecyclerView(ArrayList<Event> events){
@@ -129,102 +137,6 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         updateCategoryAdapter(events);
     }
 
-    private void initBoDySCriteria(){
-        HashMap<String, HashMap<String, Integer>> criteriaMap = assessment.getBoDySCriteria();
-        List<String> mainCriteriaList = assessment.getMainCriteriaList();
-
-        for (String mainCriteria: mainCriteriaList) {
-            HashMap<String, Integer> criteriaValues = criteriaMap.get(mainCriteria);
-
-            assert criteriaValues != null;
-            setClickListenerOnCriteria(mainCriteria, criteriaValues);
-            setClickListenerOnCriteriaScores(mainCriteria);
-        }
-    }
-
-    private void setClickListenerOnCriteria(String mainCriteria, HashMap<String, Integer> criteriaValues){
-        for (String criteria : criteriaValues.keySet()) {
-            int btnId = getResources().getIdentifier(criteria, "id", this.getPackageName());
-            MaterialButton btn = findViewById(btnId);
-            btn.setCheckable(true);
-
-            btn.setOnClickListener(view -> {
-                toggleBtnBackgroundColor((MaterialButton) view);
-
-                int changeChecked = criteriaValues.get(criteria) == 0? 1: 0;
-                Objects.requireNonNull(criteriaValues.put(criteria, changeChecked));
-                assessment.updateScores(mainCriteria, -1);
-                updateScoringVisuals();
-            });
-        }
-    }
-
-    /*Stack Overflow:
-    https://stackoverflow.com/questions/5944987/how-to-create-a-popup-window-popupwindow-in-android
-    https://stackoverflow.com/questions/3221488/blur-or-dim-background-when-android-popupwindow-active/29950606#29950606
-     */
-    private void setClickListenerOnCriteriaScores(String mainCriteria) {
-        int btnId = getResources().getIdentifier(mainCriteria+"Score", "id", this.getPackageName());
-        MaterialButton mainCriteriaBtn = findViewById(btnId);
-
-        mainCriteriaBtn.setOnClickListener(view -> {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View scorePopupView = inflater.inflate(R.layout.bodys_score_popup_window, null);
-
-            PopupWindow popupWindow = initPopupWindow(scorePopupView, view);
-            blurBackground(popupWindow);
-            setOnTouchClosePopupListener(popupWindow);
-            setOnClickScoreBtnListener(popupWindow, mainCriteria, mainCriteriaBtn);
-        });
-    }
-
-    private void setOnClickScoreBtnListener(PopupWindow popupWindow, String mainCriteria, MaterialButton mainCriteriaBtn){
-        GridLayout scoreBoard = popupWindow.getContentView().findViewById(R.id.scoreBoardPopup);
-        for (int i = 0; i < scoreBoard.getChildCount(); i++) {
-            MaterialButton scoreBtn = (MaterialButton) scoreBoard.getChildAt(i);
-
-            scoreBtn.setOnClickListener(view -> {
-                MaterialButton btn = (MaterialButton) view;
-                int score = Integer.valueOf(btn.getText().toString());
-                assessment.updateScores(mainCriteria, score);
-                updateScoringVisuals();
-                dismissPopupWindow(popupWindow);
-            });
-        }
-    }
-
-    private void toggleBtnBackgroundColor(MaterialButton btn){
-        if(!btn.isChecked()) {
-            btn.setBackgroundColor(getColor(R.color.lightGray));
-        } else {
-            btn.setBackgroundColor(getColor(R.color.lightBlue));
-        }
-    }
-    private void updateScoringVisuals(){
-        HashMap<String, Integer> boDySScores = assessment.getBoDySScores();
-
-        List<String> emptyMarkingsCriteria = assessment.getMainCriteriaWithEmptyMarkings();
-
-        for(String criteria: boDySScores.keySet()) {
-            int btnId = getResources().getIdentifier(criteria+"Score", "id", this.getPackageName());
-            MaterialButton btn = findViewById(btnId);
-
-            if(emptyMarkingsCriteria.contains(criteria)) {
-                btn.setText(String.valueOf(4));
-                btn.setClickable(false);
-            } else {
-                btn.setClickable(true);
-                int score = boDySScores.get(criteria);
-
-                if(score == -1) {
-                    btn.setText("--");
-                } else {
-                    btn.setText(String.valueOf(score));
-                }
-            }
-        }
-    }
-
     private void listenEventLabelingBtn(){
         binding.eventModeBtn.setOnClickListener(view -> {
             binding.bodysEventLabeling.getRoot().setVisibility(View.VISIBLE);
@@ -234,6 +146,8 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     }
 
     private void listenMarkingBtn(){
+        BoDySMarkingView boDySMarkingView = binding.bodysMarkingSheet.getRoot();
+        boDySMarkingView.setBoDySSheet(boDySSheet);
         binding.markingModeBtn.setOnClickListener(view -> {
             binding.bodysEventLabeling.getRoot().setVisibility(View.GONE);
             binding.bodysMarkingSheet.getRoot().setVisibility(View.VISIBLE);
@@ -242,24 +156,52 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     }
 
     private void listenScoringBtn() {
+        BoDySScoringView boDySScoringView = binding.bodysScoringSheet.getRoot();
+        boDySScoringView.setBoDySSheet(boDySSheet);
         binding.scoringModeBtn.setOnClickListener(view -> {
             binding.bodysEventLabeling.getRoot().setVisibility(View.GONE);
             binding.bodysMarkingSheet.getRoot().setVisibility(View.GONE);
             binding.bodysScoringSheet.getRoot().setVisibility(View.VISIBLE);
-            updateScoringVisuals();
+            boDySScoringView.updateScoringVisuals();
         });
     }
 
     private void listenSkipBtn(){
         binding.skipPrefillBtn.setOnClickListener(view -> {
-            if(taskId < 7) {
-                navigateToNextActivity(this, RecordingActivity.class);
-            } else{
-                navigateToNextActivity(this, MenuActivity.class);
+            if(!prefill) {
+                notPrefillNavigation();
+            } else {
+                prefillNavigation();
             }
         });
     }
 
+    private void notPrefillNavigation(){
+        if(boDySSheet.hasEmptyScores()) {
+            showScoringMissingDialog();
+            return;
+        }
+
+        recording.setEvaluated(true);
+        navigateToNextActivity(this, BoDySOverviewPageActivity.class);
+    }
+
+    private void showScoringMissingDialog(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Fehlende Bewertungen")
+                .setMessage("Bitte gebe alle Kriterien eine Bewertung.")
+                .setPositiveButton("Ok", null)
+                .show();
+    }
+
+    private void prefillNavigation(){
+        if(taskId < 7) {
+            assessment.startNewTaskRound();
+            navigateToNextActivity(this, RecordingActivity.class);
+        } else{
+            navigateToNextActivity(this, BoDySOverviewPageActivity.class);
+        }
+    }
 
     private void listenEditBtn(){
         binding.bodysEventLabeling.editEventBtn.setOnClickListener(view -> {
@@ -268,6 +210,19 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         });
     }
 
+    private void listenPlayAudioBtn() {
+        binding.playBtn.setOnClickListener(view -> binding.waveformSeekbar.startWaveformAudio());
+    }
+
+    private void listenBackwardAudioBtn() {
+        binding.backwardBtn.setOnClickListener(view ->
+            binding.waveformSeekbar.changeAudioPlayback(-1, binding.playBtn)
+        );
+    }
+    private void listenForwardAudioBtn() {
+        binding.forwardBtn.setOnClickListener(view ->
+            binding.waveformSeekbar.changeAudioPlayback(1, binding.playBtn));
+    }
     private void listenEventBookmarkBtn(){
         binding.eventBookmarkBtn.setOnClickListener(view -> {
             long eventStart = (long) binding.waveformSeekbar.getProgress();
@@ -282,34 +237,6 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         });
     }
 
-    private PopupWindow initPopupWindow(View scorePopupView, View btnView){
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // lets taps outside the popup also dismiss it
-        final PopupWindow popupWindow = new PopupWindow(scorePopupView, width, height, focusable);
-        popupWindow.setBackgroundDrawable(null);
-        popupWindow.showAtLocation(btnView, Gravity.CENTER, 0, 0);
-        return popupWindow;
-    }
-
-    private void blurBackground(PopupWindow popupWindow){
-        View container = (View) popupWindow.getContentView().getParent();
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
-        p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-        p.dimAmount = 0.3f;
-        wm.updateViewLayout(container, p);
-    }
-
-    private void setOnTouchClosePopupListener(PopupWindow popupWindow){
-        popupWindow.getContentView().findViewById(R.id.popupCloseBtn).setOnTouchListener((v, e) ->  dismissPopupWindow(popupWindow));
-    }
-
-    private boolean dismissPopupWindow(PopupWindow popupWindow){
-        popupWindow.dismiss();
-        return true;
-    }
-
     private void updateCategoryAdapter(ArrayList<Event> events){
         Event selectedEvent;
         if(events.size() == 0 || eventAdapter.isDeleteMode()){
@@ -320,7 +247,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
             selectedEvent = events.get(eventAdapter.getCheckPosition());
         }
 
-        categoryAdapter = new CategoryAdapter(new ArrayList<>(assessment.getBoDySCriteria().keySet()), getApplicationContext(), selectedEvent, this);
+        categoryAdapter = new CategoryAdapter(new ArrayList<>(assessment.getCurrentSheet().getBoDySCriteria().keySet()), getApplicationContext(), selectedEvent, this);
         binding.bodysEventLabeling.eventCategoryRecyclerView.setAdapter(categoryAdapter);
     }
 
@@ -363,13 +290,19 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     public void prepareIntent(Intent intent) {
         intent.putExtra("assessmentNr", assessmentNr);
 
-        assessment.startNewTaskRound();
-        assessment.setTaskId(taskId + 1);
+        if(taskId == 7) {
+            intent.putExtra("assessmentNew", false);
+        }
     }
 
     @Override
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr", -1);
+        prefill = intent.getBooleanExtra("prefill", false);
+
+        if(!prefill) {
+            taskId = intent.getIntExtra("assessmentTaskId", -1);
+        }
     }
 
     @Override

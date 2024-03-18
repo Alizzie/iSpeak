@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="60dp">
+
+
+        <TextView
+            android:id="@+id/taskName"
+            style="@style/AppTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/boDySName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/patientId"
+            style="@style/TextBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/patientData"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/taskName" />
+
+        <TextView
+            android:id="@+id/caseId"
+            style="@style/TextBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/caseData"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/patientId" />
+
+        <TextView
+            android:id="@+id/patientDiagnosis"
+            style="@style/TextBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/patientDiagnosis"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/caseId" />
+
+        <TextView
+            android:id="@+id/caseDate"
+            style="@style/TextBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/patientDiagnosis" />
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.5">
+
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/taskProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:progress="20"
+                app:indicatorColor="@color/darkBlue"
+                app:indicatorSize="150dp"
+                app:trackColor="@color/colorAccent"
+                app:trackThickness="7dp" />
+
+            <TextView
+                android:id="@+id/taskProgressNr"
+                style="@style/TitleBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:text="@string/taskOverviewProgress" />
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/taskOverviewTitle"
+            style="@style/TitleBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:text="@string/taskOverviewDE"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/caseDate" />
+
+        <TextView
+            android:id="@+id/totalTasksScore"
+            style="@style/TextBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/taskOverviewScoringDE"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/taskOverviewTitle" />
+
+        <Button
+            android:id="@+id/startRecordingBtn"
+            style="@style/Button"
+            android:layout_width="200dp"
+            android:layout_height="70dp"
+            android:text="@string/startWithRecordingTaskBtnDE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/startRecordingBtnNotActivated"
+            style="@style/ButtonNotActivated"
+            android:layout_width="200dp"
+            android:layout_height="70dp"
+            android:text="@string/startWithRecordingTaskBtnDE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:clickable="false"
+            android:visibility="gone"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <GridLayout
+        android:id="@+id/tasksViewsWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="60dp"
+        android:columnCount="2"
+        android:rowCount="5">
+
+        <include
+            android:id="@+id/boDySTask0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_recording" />
+
+        <include
+            android:id="@+id/boDySTask1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_recording" />
+
+        <include
+            android:id="@+id/boDySTask2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_recording" />
+
+        <include
+            android:id="@+id/boDySTask3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_recording" />
+
+        <include
+            android:id="@+id/boDySTask4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_recording" />
+
+        <include
+            android:id="@+id/boDySTask5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_recording" />
+
+        <include
+            android:id="@+id/boDySTask6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_recording" />
+
+        <include
+            android:id="@+id/boDySTask7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_recording" />
+
+        <Button
+            android:id="@+id/finishBoDySBtnNotActivated"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:layout_row="4"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+            style="@style/ButtonNotActivated"
+            android:text="@string/sendBtnDE"
+            android:clickable="false"
+            />
+
+        <Button
+            android:id="@+id/finishBoDySBtn"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:layout_row="4"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center"
+            style="@style/Button"
+            android:text="@string/sendBtnDE"
+            android:clickable="true"
+            android:visibility="gone"
+            />
+
+    </GridLayout>
+
+</LinearLayout>

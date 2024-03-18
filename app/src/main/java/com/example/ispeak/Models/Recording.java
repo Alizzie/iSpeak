@@ -1,33 +1,41 @@
 package com.example.ispeak.Models;
 
-import android.os.Environment;
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.example.ispeak.Interfaces.FolderStructureCreator;
-import com.example.ispeak.Interfaces.WriteCSVInterface;
 import com.example.ispeak.Utils.Utils;
-
-import java.io.File;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Recording {
 
     //private String wav_filepath, mp3_filepath;
     private String mp3_filepath;
-    private long totalTime, patientTime;
-    private int taskId;
-    private ArrayList<Event> events;
+    private final long totalTime;
+    private final long patientTime;
+    private final ArrayList<Event> events;
+    private boolean isEvaluated;
+    private int evaluationScore;
 
-    public Recording(String mp3_filepath, long totalTime, long patientTime, int taskId, ArrayList<Event> events) {
+    public Recording(String mp3_filepath, long totalTime, long patientTime, ArrayList<Event> events) {
         this.mp3_filepath = mp3_filepath;
         this.totalTime = totalTime;
         this.patientTime = patientTime;
-        this.taskId = taskId;
         this.events = events;
+        this.isEvaluated = false;
+        this.evaluationScore = 0;
+    }
+
+    public boolean isEvaluated() {
+        return isEvaluated;
+    }
+
+    public int getEvaluationScore() {
+        return evaluationScore;
+    }
+
+    public void setEvaluated(boolean evaluated) {
+        isEvaluated = evaluated;
+    }
+
+    public void setEvaluationScore(int evaluationScore) {
+        this.evaluationScore = evaluationScore;
     }
 
     public String getMp3_filepath() {
