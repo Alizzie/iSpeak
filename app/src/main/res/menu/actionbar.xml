@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_back"
+        android:title="Back"
+        android:icon="@drawable/tick"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/action_exit"
+        android:title="Home"
+        android:icon="@drawable/tick"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_skip"
+        android:title="Skip task"
+        android:icon="@drawable/tick"
+        app:showAsAction="never"/>
+
+</menu>

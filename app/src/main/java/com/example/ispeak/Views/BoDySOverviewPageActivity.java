@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -65,7 +67,7 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
 
     private void initProgressBar(){
 
-        float progress = (100 / assessment.getMaxRecordingNr()) * (nextTask);
+        float progress = ((float) 100 / assessment.getMaxRecordingNr()) * (nextTask);
         progress = Math.max(progress, 0);
 
         binding.taskProgressBar.setProgress((int) progress);
@@ -92,7 +94,7 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
             }
 
             if(isRecordingEvaluated(recordings[i], boDySSheets[i], taskStatus, taskScore)) {
-                activateNextEvaluationTask(i);
+                activateNextEvaluationTask(i, true);
                 nextTask = i + 1;
                 continue;
             }
@@ -102,11 +104,11 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
 
         if(evaluationMode) {
             disableRecordingMode();
-            activateNextEvaluationTask(nextTask);
+            activateNextEvaluationTask(nextTask, false);
         }
     }
 
-    private void activateNextEvaluationTask(int taskId){
+    private void activateNextEvaluationTask(int taskId, boolean isEvaluated){
 
         if(taskId >= assessment.getMaxRecordingNr()) {
             return;
@@ -118,10 +120,20 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         TextView taskName = taskOverview.findViewById(R.id.taskName);
         TextView taskDuration = taskOverview.findViewById(R.id.taskDuration);
         TextView taskScore = taskOverview.findViewById(R.id.taskScore);
+        TextView taskStatus = taskOverview.findViewById(R.id.taskStatus);
+        ImageView playImage = taskOverview.findViewById(R.id.playImage);
 
         taskName.setTextColor(getColor(R.color.black));
         taskDuration.setTextColor(getColor(R.color.black));
         taskScore.setTextColor(getColor(R.color.black));
+        playImage.setImageResource(R.drawable.play_24_darkblue);
+
+        if(isEvaluated){
+            taskStatus.setTextColor(getColor(R.color.green));
+            taskStatus.setText(getString(R.string.scoringStatusPositiveDE));
+        } else {
+            taskStatus.setTextColor(getColor(R.color.red));
+        }
 
         listenTaskOveview(taskOverview, taskId);
     }
@@ -144,7 +156,7 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
             taskStatus.setText(getString(R.string.scoringStatusPositiveDE));
             taskScore.setText(String.valueOf(sheet.getTotalScore()));
             totalScorePoints = totalScorePoints + sheet.getTotalScore();
-            binding.totalTasksScore.setText(String.valueOf(totalScorePoints));
+            binding.totalTasksScore.setText(getString(R.string.taskOverviewScoringDE, totalScorePoints));
             return true;
         }
 
@@ -208,5 +220,11 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr", -1);
         intent.getBooleanExtra("assessmentNew", true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.actionbar, menu);
+        return true;
     }
 }

@@ -44,6 +44,8 @@ public class BoDySNotesPopup extends PopupWindow {
         userText.setText(oldNotes);
 
         setOnTouchClosePopupListener(popupWindow);
+        setOnTouchResetPopupListener(popupWindow);
+        setOnTouchConfirmBtn(popupWindow);
         blurBackground(popupWindow, context);
 
         popupWindow.setOutsideTouchable(false);
@@ -73,7 +75,27 @@ public class BoDySNotesPopup extends PopupWindow {
         popupWindow.getContentView().findViewById(R.id.popupCloseBtn).setOnTouchListener((v, e) ->  dismissPopupWindow(popupWindow));
     }
 
+    private void setOnTouchResetPopupListener(PopupWindow popupWindow) {
+        popupWindow.getContentView().findViewById(R.id.popupResetBtn).setOnTouchListener((v, e) -> resetEditText());
+    }
+
+    private void setOnTouchConfirmBtn(PopupWindow popupWindow) {
+        popupWindow.getContentView().findViewById(R.id.popupConfirmBtn).setOnTouchListener((v, e) -> saveEditText(popupWindow));
+    }
+
     private boolean dismissPopupWindow(PopupWindow popupWindow){
+        popupWindow.dismiss();
+        return true;
+    }
+
+    private boolean resetEditText(){
+        String emptyString = "";
+        userText.setText(emptyString);
+        observer.onSaveNote(criteria, emptyString);
+        return true;
+    }
+
+    private boolean saveEditText(PopupWindow popupWindow){
         String note = userText.getText().toString();
         observer.onSaveNote(criteria, note);
         popupWindow.dismiss();

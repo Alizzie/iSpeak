@@ -154,7 +154,7 @@
     <string name="taskOverview">Task Overview</string>
     <string name="taskOverviewDE">Aufgabenübersicht</string>
     <string name="taskOverviewScoringDE">Gesamtpunktzahl: %1$d</string>
-    <string name="taskOverviewProgress">%1$d%%</string>
+    <string name="taskOverviewProgress">%1$.1f%%</string>
 
 
 

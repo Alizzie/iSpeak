@@ -1,9 +1,5 @@
 package com.example.ispeak.Models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
-
 import com.example.ispeak.Interfaces.FolderStructureCreator;
 import com.example.ispeak.Interfaces.WriteCSVInterface;
 import com.example.ispeak.Utils.Utils;
@@ -14,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Assessment implements FolderStructureCreator, WriteCSVInterface {
+public abstract class Assessment implements FolderStructureCreator, WriteCSVInterface {
 
     protected String assessmentFolderPath, assessmentName;
     protected Recording[] recordings;
@@ -44,6 +40,8 @@ public class Assessment implements FolderStructureCreator, WriteCSVInterface {
         }
     }
 
+
+
     @Override
     public void createFolderStructure() {
         Utils.createFolder(assessmentFolderPath + File.separator + "Recordings");
@@ -71,11 +69,6 @@ public class Assessment implements FolderStructureCreator, WriteCSVInterface {
 
     public void setTaskId(int taskId) {
         this.taskId = taskId;
-    }
-
-    @Override
-    public List<String[]> onWriteCSV() {
-        return null;
     }
 
     public String getTaskName(int taskId) {

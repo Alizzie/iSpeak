@@ -1,5 +1,6 @@
 package com.example.ispeak.Utils;
 
+import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Environment;
 import android.util.Log;
@@ -50,6 +51,16 @@ public class Utils {
         } else {
             Log.d("DIRECTORY", "ALREADY EXISTS: " + directory.getAbsolutePath());
         }
+    }
+
+    public static File[] getFilesFromInternalStorageFolder(String folderName) {
+        File directory = new File(folderName);
+
+        if(!directory.exists()){
+            return null;
+        }
+
+        return directory.listFiles();
     }
 
     public static void setMediaPlayer(String path, MediaPlayer mediaPlayer) {

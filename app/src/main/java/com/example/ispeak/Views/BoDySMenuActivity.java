@@ -2,7 +2,6 @@ package com.example.ispeak.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 
 import androidx.annotation.Nullable;
@@ -11,7 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Patient;
+import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.databinding.ActivityBodysMenuBinding;
+
+import java.io.File;
 
 public class BoDySMenuActivity extends AppCompatActivity implements IntentHandler {
 
@@ -25,12 +27,16 @@ public class BoDySMenuActivity extends AppCompatActivity implements IntentHandle
 
         retrieveIntent(this);
         listenBtnNewAssessment();
+        listenBtnContinueAssessment();
     }
 
     private void listenBtnNewAssessment(){
         BoDyS boDyS = new BoDyS();
         Patient.getInstance().addAssessment(boDyS);
         binding.newAssessment.setOnClickListener(view -> navigateToNextActivity(this, BoDySOverviewPageActivity.class));
+    }
+
+    private void listenBtnContinueAssessment(){
     }
 
     @Override
