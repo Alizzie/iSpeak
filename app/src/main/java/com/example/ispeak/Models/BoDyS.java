@@ -55,7 +55,9 @@ public class BoDyS extends Assessment{
         currentSheet.getInfos();
         saveTaskResultsInCSV();
 
-        continueBoDyS(taskId + 1);
+        if(taskId+1 < maxRecordingNr) {
+            continueBoDyS(taskId + 1);
+        }
     }
 
     public void saveEvaluationData(){

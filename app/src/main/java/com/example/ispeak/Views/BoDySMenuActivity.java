@@ -1,17 +1,13 @@
 package com.example.ispeak.Views;
 
 import android.content.Intent;
-import android.graphics.PathEffect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ispeak.Interfaces.IntentHandler;
-import com.example.ispeak.Models.Assessment;
-import com.example.ispeak.Models.AssessmentFactory;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Utils.Utils;

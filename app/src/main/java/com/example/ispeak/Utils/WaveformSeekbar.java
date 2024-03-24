@@ -27,7 +27,7 @@ public class WaveformSeekbar extends WaveformSeekBar {
     private TextView audioTime, audioDuration;
     private ImageView playBtn;
     private Drawable playImg, pauseImg;
-    private boolean isPaused;
+    private boolean isPaused, hasStarted;
     
     public WaveformSeekbar(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -50,6 +50,7 @@ public class WaveformSeekbar extends WaveformSeekBar {
         this.playImg = ContextCompat.getDrawable(getContext(), R.drawable.play_24);
         this.pauseImg = ContextCompat.getDrawable(getContext(), R.drawable.pause_24);
         this.isPaused = false;
+        this.hasStarted = false;
         
         initMediaPlayer();
         initWaveformBar();
@@ -85,7 +86,7 @@ public class WaveformSeekbar extends WaveformSeekBar {
 
         if(mediaPlayer.isPlaying() && !isPaused){
             this.setProgress(mediaPlayer.getCurrentPosition());
-            handler.postDelayed(this::updateProgress, 10);
+            handler.postDelayed(this::updateProgress, 250);
             playBtn.setBackground(pauseImg);
         } else {
             handler.removeCallbacksAndMessages(null);
@@ -94,16 +95,25 @@ public class WaveformSeekbar extends WaveformSeekBar {
     }
 
     public void changeAudioPlayback(int direction, ImageButton playBtn) {
+
+        if(!hasStarted) {
+            return;
+        }
+
         mediaPlayer.pause();
         isPaused = true;
         playBtn.setBackground(playImg);
 
-        int newTime = mediaPlayer.getCurrentPosition() + direction * 100;
+        int newTime = Math.max(mediaPlayer.getCurrentPosition() + direction * 100, 0);
+        newTime = Math.min(mediaPlayer.getDuration(), newTime);
+
         mediaPlayer.seekTo(newTime);
         this.setProgress(mediaPlayer.getCurrentPosition());
     }
 
     public void startWaveformAudio() {
+
+        hasStarted = true;
 
         if(mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
@@ -112,6 +122,7 @@ public class WaveformSeekbar extends WaveformSeekBar {
             mediaPlayer.start();
             isPaused = false;
         }
+
         updateProgress();
     }
 

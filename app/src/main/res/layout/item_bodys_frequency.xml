@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:id="@+id/cardViewItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp"
+    android:layout_marginBottom="20dp"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/criteriaText"
+            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/center"
+            android:text="@string/ATM"
+            style="@style/TitleBlack"
+            android:ellipsize="end"
+            android:singleLine="true"/>
+        
+        <View
+            android:id="@+id/center"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"/>
+
+        <GridLayout
+            android:id="@+id/frequencyBar"
+            android:layout_toEndOf="@id/center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rowCount="1"
+            android:columnCount="8">
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:background="@drawable/quadrat_with_border"/>
+            <View
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:background="@drawable/quadrat_with_border"/>
+            <View
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_row="0"
+                android:layout_column="3"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_row="0"
+                android:layout_column="4"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_row="0"
+                android:layout_column="5"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_row="0"
+                android:layout_column="6"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_row="0"
+                android:layout_column="7"
+                android:background="@drawable/quadrat_with_border" />
+        </GridLayout>
+
+        <ImageView
+            android:id="@+id/displaySubCriteriaArrow"
+            android:layout_alignParentEnd="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/keyboard_arrow_down_24"
+            android:contentDescription="Down arrow"
+            android:tag="arrow down"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="5dp"
+            android:id="@+id/subCriteriaRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/criteriaText"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        app:dividerColor="@color/colorAccent"
+        android:layout_marginBottom="10dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/criteriaText"
+            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/center"
+            android:text="@string/ATM1"
+            android:textAlignment="textStart"
+            style="@style/TextBlack"
+            android:ellipsize="end"
+            android:singleLine="true"/>
+
+        <View
+            android:id="@+id/center"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"/>
+
+        <GridLayout
+            android:id="@+id/frequencyBar"
+            android:layout_toEndOf="@id/center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:rowCount="1"
+            android:columnCount="8">
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:background="@drawable/quadrat_with_border"/>
+            <View
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:layout_row="0"
+                android:layout_column="3"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:layout_row="0"
+                android:layout_column="4"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:layout_row="0"
+                android:layout_column="5"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:layout_row="0"
+                android:layout_column="6"
+                android:background="@drawable/quadrat_with_border"/>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="20dp"
+                android:layout_row="0"
+                android:layout_column="7"
+                android:background="@drawable/quadrat_with_border" />
+        </GridLayout>
+
+    </RelativeLayout>
+</LinearLayout>

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.Assessment;
-import com.example.ispeak.Models.AssessmentFactory;
+import com.example.ispeak.Utils.AssessmentFactory;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.databinding.ActivityMainBinding;
