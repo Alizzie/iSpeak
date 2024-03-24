@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.util.Log;
 
+import com.example.ispeak.Utils.BoDySScoringView;
+import com.example.ispeak.Utils.ReadCSV;
 import com.example.ispeak.Utils.WriteCSV;
 
 import java.io.File;
@@ -13,6 +15,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class BoDyS extends Assessment{
@@ -40,14 +45,22 @@ public class BoDyS extends Assessment{
         boDySSheets[taskId] = this.currentSheet;
     }
 
+    public void continueBoDyS(int taskId){
+        this.taskId = taskId;
+        this.currentSheet = new BoDySSheet();
+        boDySSheets[taskId] = this.currentSheet;
+    }
+
     public void startNewTaskRound(){
         currentSheet.getInfos();
         saveTaskResultsInCSV();
-        recordings[taskId].setEvaluationScore(currentSheet.getTotalScore());
 
-        taskId = taskId + 1;
-        currentSheet = new BoDySSheet();
-        boDySSheets[taskId] = this.currentSheet;
+        continueBoDyS(taskId + 1);
+    }
+
+    public void saveEvaluationData(){
+        currentSheet.setPrefill(false);
+        updateTaskResultsInCSV();
     }
 
     public BoDySSheet[] getBoDySSheets() {
@@ -58,10 +71,16 @@ public class BoDyS extends Assessment{
         return currentSheet;
     }
 
+    public void setCurrentSheet(BoDySSheet currentSheet) {
+        this.currentSheet = currentSheet;
+    }
+
     @Override
     public List<String[]> onWriteCSV() {
-        ArrayList<String> criteriaArray = new ArrayList<>(Arrays.asList("TaskNr"));
-        ArrayList<String> markingsArray = new ArrayList<>(Arrays.asList(String.valueOf(taskId)));
+        ArrayList<String> criteriaArray = new ArrayList<>(Arrays.asList("TaskNr", "Status"));
+
+        String prefill = currentSheet.isPrefill() ? "Prefill" : "Evaluated";
+        ArrayList<String> markingsArray = new ArrayList<>(Arrays.asList(String.valueOf(taskId), prefill));
 
 
         List<String> mainKeys = currentSheet.getMainCriteriaList().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
@@ -84,5 +103,64 @@ public class BoDyS extends Assessment{
     @Override
     public String getTaskName(int taskId){
         return BODYSDIC.get(taskId);
+    }
+
+    @Override
+    public void retrieveConcreteAssessment(File csvDir) {
+
+        File dataFile = new File(csvDir, "Assessment.csv");
+        ArrayList<String[]> lines = readLines(dataFile);
+        String[] headline = lines.get(0);
+
+        for(int i = 1; i < lines.size(); i++) {
+            String[] line = lines.get(i);
+            restoreBoDysSheet(headline, line);
+        }
+    }
+
+    private void restoreBoDysSheet(String[] headline, String[] line){
+        BoDySSheet boDySSheet = new BoDySSheet();
+        int taskId = Integer.parseInt(line[0]);
+        boolean prefill = Objects.equals(line[1], "Prefill");
+
+        String mainCriteriaFocus = "";
+        for(int lineIndex = 2; lineIndex < headline.length; lineIndex++){
+
+            if(containsNumber(headline[lineIndex]) && headline[lineIndex].length() == 4){
+                int marking = Integer.parseInt(line[lineIndex]);
+                restoreMarking(boDySSheet, mainCriteriaFocus, headline[lineIndex], marking);
+            } else {
+                mainCriteriaFocus = headline[lineIndex];
+                int score = Integer.parseInt(line[lineIndex]);
+                boDySSheet.updateScores(headline[lineIndex], score, true);
+            }
+        }
+
+        boDySSheet.setPrefill(prefill);
+        boDySSheets[taskId] = boDySSheet;
+    }
+
+    private void restoreMarking(BoDySSheet boDySSheet, String mainCriteriaFocus, String criteria, int marking){
+        boDySSheet.updateMarkings(mainCriteriaFocus, criteria, marking);
+//
+//        if(marking == 1) {
+//            boDySSheet.updateScores(mainCriteriaFocus, -1);
+//        }
+    }
+
+    private ArrayList<String[]> readLines(File dataFile){
+        ArrayList<String[]> lines = new ArrayList<>();
+
+        if(dataFile.exists()){
+            ReadCSV readCSV = new ReadCSV();
+            lines = readCSV.readAssessmentDataCSVNote(dataFile.getAbsolutePath());
+        }
+
+        return lines;
+    }
+    private static boolean containsNumber(String input) {
+        Pattern pattern = Pattern.compile(".*\\d.*");
+        Matcher matcher = pattern.matcher(input);
+        return matcher.matches();
     }
 }

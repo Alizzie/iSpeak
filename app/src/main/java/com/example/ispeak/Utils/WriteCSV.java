@@ -21,8 +21,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -38,7 +40,6 @@ public class WriteCSV extends ViewModel {
         try {
 
             FileWriter outputFile;
-
             if(assessment.getTaskId() == 0) {
                 File file = new File(filepath);
                 outputFile = new FileWriter(file);
@@ -46,10 +47,7 @@ public class WriteCSV extends ViewModel {
                 outputFile = new FileWriter(filepath, true);
             }
 
-            CSVWriter writer = new CSVWriter(outputFile, ',',
-                    CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                    CSVWriter.DEFAULT_LINE_END);
+            CSVWriter writer = getCSVWriter(outputFile);
 
             List<String[]> results = assessment.onWriteCSV();
 
@@ -67,13 +65,34 @@ public class WriteCSV extends ViewModel {
         }
     }
 
+    public void updateDataCSVNote(Assessment assessment, String filepath){
+        List<String[]> lines;
+        int lineNumber = assessment.getTaskId() + getPatientDataLines();
+        try {
+            CSVReader reader = new CSVReader(new FileReader(filepath));
+            lines = reader.readAll();
+            reader.close();
+
+            List<String[]> results = assessment.onWriteCSV();
+            if (lineNumber >= 0 && lineNumber < lines.size()) {
+                lines.set(lineNumber, results.get(1));
+            }
+
+            CSVWriter writer = new CSVWriter(new FileWriter(filepath));
+            writer.writeAll(lines);
+            writer.close();
+
+        } catch (IOException | CsvException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void storeEventDataCSVNote(Assessment assessment, String filepath){
         Recording recording = assessment.getRecordings()[assessment.getTaskId()];
         ArrayList<Event> events = recording.getEvents();
+
         try {
-
             FileWriter outputFile;
-
             if(assessment.getTaskId() == 0) {
                 File file = new File(filepath);
                 outputFile = new FileWriter(file);
@@ -81,20 +100,18 @@ public class WriteCSV extends ViewModel {
                 outputFile = new FileWriter(filepath, true);
             }
 
-            CSVWriter writer = new CSVWriter(outputFile, ',',
-                    CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                    CSVWriter.DEFAULT_LINE_END);
+            CSVWriter writer = getCSVWriter(outputFile);
+
+            if(checkIfFileIsEmpty(new FileReader(filepath)) && events.size() != 0){
+                List<String[]> data = events.get(0).onWriteCSV();
+                writePatientData(writer);
+                writer.writeNext(data.get(0));
+            }
 
             for(int i = 0; i < events.size(); i++) {
 
-                List<String[]> datas = events.get(i).onWriteCSV();
-                if(i == 0 && assessment.getTaskId() == 0) {
-                    writePatientData(writer);
-                    writer.writeNext(datas.get(0));
-                }
-
-                writer.writeNext(datas.get(1));
+                List<String[]> data = events.get(i).onWriteCSV();
+                writer.writeNext(data.get(1));
             }
 
             writer.close();
@@ -103,14 +120,60 @@ public class WriteCSV extends ViewModel {
         }
     }
 
+    public void updateEventDataCSVNote(Assessment assessment, String filepath){
+        List<String[]> lines;
+        List<String[]> newLines = new ArrayList<>();
+        Recording recording = assessment.getRecordings()[assessment.getTaskId()];
+        ArrayList<Event> events = recording.getEvents();
+
+        try {
+            CSVReader reader = new CSVReader(new FileReader(filepath));
+            lines = reader.readAll();
+            reader.close();
+
+            List<String[]> eventsData = new ArrayList<>();
+            for(int i = 0; i < events.size(); i++) {
+                eventsData.add(events.get(i).onWriteCSV().get(1));
+            }
+
+            boolean addedOnce = false;
+            for (int i = 0; i < lines.size(); i++) {
+
+                String[] line = lines.get(i);
+                if(i < getPatientDataLines()) {
+                    newLines.add(line);
+                    continue;
+                }
+
+                int taskId = Integer.parseInt(line[0]);
+                int searchedTaskId = assessment.getTaskId();
+
+                if(taskId > searchedTaskId && !addedOnce) {
+                    newLines.addAll(eventsData);
+                    addedOnce = true;
+                }
+
+                if (taskId != searchedTaskId){
+                    newLines.add(line);
+                }
+
+            }
+
+
+            CSVWriter writer = new CSVWriter(new FileWriter(filepath));
+            writer.writeAll(newLines);
+            writer.close();
+
+        } catch (IOException | CsvException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void sumTotalAssessment(List<String> files) {
 
         try{
             FileWriter outputFile = new FileWriter(files.get(0));
-            CSVWriter writer = new CSVWriter(outputFile, ',',
-                    CSVWriter.NO_QUOTE_CHARACTER,
-                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                    CSVWriter.DEFAULT_LINE_END);
+            CSVWriter writer = getCSVWriter(outputFile);
 
             writePatientData(writer);
 
@@ -168,6 +231,29 @@ public class WriteCSV extends ViewModel {
         patientData.add(new String[] {Patient.getInstance().getPatientId(), Patient.getInstance().getCaseId(), Patient.getInstance().getDiagnosis(), Patient.getInstance().getFormattedDate()});
         patientData.add(new String[] {});
         writer.writeAll(patientData);
+    }
+
+    private int getPatientDataLines(){
+        return 4;
+    }
+
+    private CSVWriter getCSVWriter(FileWriter outputFile) {
+        return new CSVWriter(outputFile, ',',
+                CSVWriter.NO_QUOTE_CHARACTER,
+                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                CSVWriter.DEFAULT_LINE_END);
+    }
+
+    private boolean checkIfFileIsEmpty(FileReader file){
+        CSVReader reader = new CSVReader(file);
+        List<String[]> lines = null;
+        try {
+            lines = reader.readAll();
+        } catch (IOException | CsvException e) {
+            throw new RuntimeException(e);
+        }
+
+        return lines.isEmpty();
     }
 
 }

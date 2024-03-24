@@ -2,14 +2,19 @@ package com.example.ispeak.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ispeak.Interfaces.IntentHandler;
+import com.example.ispeak.Models.Assessment;
+import com.example.ispeak.Models.AssessmentFactory;
 import com.example.ispeak.Models.Patient;
+import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.databinding.ActivityMainBinding;
 
+import java.io.File;
 import java.util.Objects;
 
 
@@ -44,8 +49,26 @@ public class MainActivity extends AppCompatActivity implements IntentHandler {
 
 
             patientInfo = Patient.getInstance(patientId, caseId, diagnosis, getApplicationContext());
+            restoreAssessments();
             navigateToNextActivity(this, MenuActivity.class);
         });
+    }
+
+    public void restoreAssessments() {
+        File[] assessmentFiles = Utils.getFilesFromInternalStorageFolder(Patient.getInstance().getPatientFolderPath());
+        if(assessmentFiles != null) {
+            for(File file : assessmentFiles) {
+                String fileName = file.getName();
+                AssessmentFactory.AssessmentNames assessmentName = AssessmentFactory.AssessmentNames.valueOf(fileName);
+                Log.d("TESTFILES", String.valueOf(assessmentName));
+                Assessment assessment = AssessmentFactory.createAssessment(assessmentName);
+
+                if(assessment != null) {
+                    assessment.retrieveAssessment(file);
+                    Patient.getInstance().addAssessment(assessment);
+                }
+            }
+        }
     }
 
     private boolean checkIdLength(String patientId, String caseId){

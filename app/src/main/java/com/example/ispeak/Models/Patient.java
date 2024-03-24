@@ -56,6 +56,29 @@ public class Patient implements FolderStructureCreator {
         }
     }
 
+    public void addAssessment(Assessment assessment, int index) {
+        if (assessment != null) {
+            if (assessmentList == null) {
+                assessmentList = new ArrayList<>();
+            }
+            assessmentList.add(index, assessment);
+        }
+    }
+
+    public int findAssessment(Class<? extends Assessment> assessmentClass){
+        if (assessmentList == null) {
+            assessmentList = new ArrayList<>();
+        }
+
+        for(int i = 0; i < assessmentList.size(); i++) {
+            if(assessmentClass.isInstance(assessmentList.get(i))){
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     public String getPatientId(){
         return this.patientId;
     }
@@ -93,11 +116,16 @@ public class Patient implements FolderStructureCreator {
     @Override
     public void createFolderStructure() {
 
+//        patientFolderPath = applicationContext.getExternalFilesDir(Environment.DIRECTORY_DCIM) +
+//                File.separator + patientId +
+//                File.separator + "iSpeak" +
+//                File.separator + date +
+//                "_" + caseId;
+
         patientFolderPath = applicationContext.getExternalFilesDir(Environment.DIRECTORY_DCIM) +
                 File.separator + patientId +
                 File.separator + "iSpeak" +
-                File.separator + date +
-                "_" + caseId;
+                File.separator + caseId;
 
         Utils.createFolder(patientFolderPath);
     }

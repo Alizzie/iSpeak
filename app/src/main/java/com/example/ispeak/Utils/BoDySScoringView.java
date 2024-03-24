@@ -2,6 +2,7 @@ package com.example.ispeak.Utils;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,6 +64,7 @@ public class BoDySScoringView extends ConstraintLayout implements ScoreBoardObse
         HashMap<String, Integer> boDySScores = assessmentSheet.getBoDySScores();
 
         List<String> emptyMarkingsCriteria = assessmentSheet.getMainCriteriaWithEmptyMarkings();
+        Log.d("TESTSMARKINGS", emptyMarkingsCriteria.toString());
 
         for(String criteria: boDySScores.keySet()) {
             int btnId = getResources().getIdentifier(criteria+"Score", "id", getContext().getPackageName());
@@ -74,6 +76,7 @@ public class BoDySScoringView extends ConstraintLayout implements ScoreBoardObse
             } else {
                 btn.setClickable(true);
                 int score = boDySScores.get(criteria);
+                Log.d("TESTSMARKINGS", String.valueOf(score));
 
                 if(score == -1) {
                     btn.setText("--");
@@ -87,7 +90,7 @@ public class BoDySScoringView extends ConstraintLayout implements ScoreBoardObse
 
     @Override
     public void onScoreBoardClicked(String criteria, int score) {
-        assessmentSheet.updateScores(criteria, score);
+        assessmentSheet.updateScores(criteria, score, false);
         updateScoringVisuals();
     }
 }

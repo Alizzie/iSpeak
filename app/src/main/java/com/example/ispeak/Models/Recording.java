@@ -1,41 +1,27 @@
 package com.example.ispeak.Models;
 
+import com.example.ispeak.Interfaces.ReadEventCSVInterface;
 import com.example.ispeak.Utils.Utils;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class Recording {
+public class Recording implements ReadEventCSVInterface {
 
     //private String wav_filepath, mp3_filepath;
     private String mp3_filepath;
     private final long totalTime;
     private final long patientTime;
-    private final ArrayList<Event> events;
-    private boolean isEvaluated;
-    private int evaluationScore;
+    private ArrayList<Event> events;
+
+    public Recording(String mp3_filepath, long time){
+        this(mp3_filepath, time, time, new ArrayList<>());
+    }
 
     public Recording(String mp3_filepath, long totalTime, long patientTime, ArrayList<Event> events) {
         this.mp3_filepath = mp3_filepath;
         this.totalTime = totalTime;
         this.patientTime = patientTime;
         this.events = events;
-        this.isEvaluated = false;
-        this.evaluationScore = 0;
-    }
-
-    public boolean isEvaluated() {
-        return isEvaluated;
-    }
-
-    public int getEvaluationScore() {
-        return evaluationScore;
-    }
-
-    public void setEvaluated(boolean evaluated) {
-        isEvaluated = evaluated;
-    }
-
-    public void setEvaluationScore(int evaluationScore) {
-        this.evaluationScore = evaluationScore;
     }
 
     public String getMp3_filepath() {
@@ -67,6 +53,21 @@ public class Recording {
 
     public void removeEvent(int position){
         events.remove(position);
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+    }
+
+    @Override
+    public Event onReadCSV(String[] line, int eventId, int taskId) {
+        long timeStart = Utils.parseTimeToMilliseconds(line[1]);
+        long timeEnd = Utils.parseTimeToMilliseconds(line[2]);
+
+        String[] labels = line[3].split("/");
+        ArrayList<String> eventLabels = new ArrayList<>(Arrays.asList(labels));
+
+        return new Event(eventId, taskId, timeStart, timeEnd, eventLabels);
     }
 
 }

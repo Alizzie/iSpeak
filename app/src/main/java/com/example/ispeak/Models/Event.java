@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.example.ispeak.Interfaces.ReadEventCSVInterface;
 import com.example.ispeak.Interfaces.WriteCSVInterface;
 import com.example.ispeak.Utils.Utils;
 import com.opencsv.CSVWriter;
@@ -28,6 +29,15 @@ public class Event implements WriteCSVInterface {
     }
     public Event(int eventId, int taskId, long timeStart){
         this(eventId, taskId, timeStart, timeStart, 0, "");
+    }
+
+    public Event(int eventId, int taskId, long timeStart, long timeEnd, ArrayList<String> eventLabels){
+        this.eventId = eventId;
+        this.taskId = taskId;
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.eventLabels = eventLabels;
+        calculateDuration();
     }
 
     public void setTimeStart(long timeStart) {

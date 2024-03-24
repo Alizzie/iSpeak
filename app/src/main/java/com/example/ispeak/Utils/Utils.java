@@ -38,6 +38,25 @@ public class Utils {
         return text;
     }
 
+    public static long parseTimeToMilliseconds(String formattedTime) {
+        String[] parts = formattedTime.split(":");
+
+        if (parts.length != 3) {
+            throw new IllegalArgumentException("Invalid time format: " + formattedTime);
+        }
+
+        int minutes = Integer.parseInt(parts[0]);
+        int seconds = Integer.parseInt(parts[1]);
+        int milliseconds = Integer.parseInt(parts[2]);
+
+        long totalTimeInMillis =
+                (long) minutes * 60 * 1000 +
+                seconds * 1000L +
+                milliseconds * 100;
+
+        return totalTimeInMillis;
+    }
+
     public static void createFolder(String path) {
 
         File directory = new File(path);
@@ -69,6 +88,18 @@ public class Utils {
             mediaPlayer.prepare();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void deleteFromDir(File directory){
+        if(directory.isDirectory()) {
+            File[] files = directory.listFiles();
+
+            if(files != null) {
+                for(File file : files) {
+                    file.delete();
+                }
+            }
         }
     }
 }

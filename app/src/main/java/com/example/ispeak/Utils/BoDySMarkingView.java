@@ -79,7 +79,7 @@ public class BoDySMarkingView extends ConstraintLayout implements NotesObserver 
 
                 int changeChecked = criteriaValues.get(criteria) == 0? 1: 0;
                 Objects.requireNonNull(criteriaValues.put(criteria, changeChecked));
-                assessmentSheet.updateScores(mainCriteria, -1);
+                assessmentSheet.updateScores(mainCriteria, -1, false);
             });
         }
     }

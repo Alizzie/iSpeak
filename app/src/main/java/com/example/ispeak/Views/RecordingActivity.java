@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,7 +40,7 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
     private int eventCounter = 0;
     private boolean eventRegistered;
     private Patient patientInfo;
-    private int assessmentNr;
+    private int assessmentNr, taskId;
     private Assessment assessment;
     private ArrayList<Event> eventList = new ArrayList<>();
     private ArrayList<Recording> trialList = new ArrayList<>();
@@ -68,6 +69,9 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
         microphone = new Microphone(this);
         adapter = new RecordingTrialAdapter(trialList, this);
 
+        taskId = assessment.getTaskId();
+        Log.d("TESTS", String.valueOf(taskId));
+
         initTaskProgressBar();
         increaseTrialRun();
         initRecordingRecyclerView();
@@ -75,7 +79,6 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
     }
 
     private void initTaskProgressBar(){
-        int taskId = assessment.getTaskId();
         float maxProgress = binding.taskProgressBar.getMax();
         float progress = (maxProgress / assessment.getMaxRecordingNr()) * (taskId + 1);
         binding.taskProgressBar.setProgress((int) progress);
@@ -104,7 +107,7 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
     private void saveRecording(Recording recording) {
         File file = new File(recording.getMp3_filepath());
         File dest = new File(assessment.getFolderPath() + File.separator + "Recordings" +
-                File.separator + "recording" + assessment.getTaskId() + ".3gp");
+                File.separator + "recording" + taskId + ".3gp");
 
         boolean success = file.renameTo(dest);
         if(success) {
@@ -185,7 +188,7 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
         }
 
         long timeStart = binding.patientTimeChrono.getTimeElapsed();
-        Event event = new Event(eventCounter, assessment.getTaskId(), timeStart);
+        Event event = new Event(eventCounter, taskId, timeStart);
         eventList.add(event);
     }
 
@@ -264,7 +267,7 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
 
     private void updateOutputAudioPath(int trialId) {
         outputAudio = assessment.getFolderPath() + File.separator + "Recordings" +
-                File.separator + "recording" + assessment.getTaskId() + "_trial_" + trialId + ".3gp";
+                File.separator + "recording" + taskId + "_trial_" + trialId + ".3gp";
     }
 
     @Override

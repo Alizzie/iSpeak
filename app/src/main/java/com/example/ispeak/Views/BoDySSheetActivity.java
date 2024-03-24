@@ -76,6 +76,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     private void init() {
         retrieveIntent(this);
         initPatientData();
+        initBoDySSheet();
 
         intiWaveformSeekbar();
         initTaskProgressBar(taskId);
@@ -92,16 +93,15 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         assessment = (BoDyS) Patient.getInstance().getAssessmentList().get(assessmentNr);
         binding.patientId.setText(patientInfo.getPatientId());
         binding.patientDiagnosis.setText(patientInfo.getDiagnosis());
+    }
 
-        if(prefill) {
-            this.taskId = assessment.getTaskId();
-        } else {
-            assessment.setTaskId(taskId);
-        }
+    private void initBoDySSheet(){
+        taskId = assessment.getTaskId();
 
         this.recording = assessment.getRecordings()[taskId];
         this.boDySSheet = assessment.getBoDySSheets()[taskId];
-        Log.d("TESTS", "Prefill: " + prefill + ", " + taskId);
+        this.boDySSheet.setPrefill(prefill);
+        assessment.setCurrentSheet(this.boDySSheet);
     }
 
     private void intiWaveformSeekbar() {
@@ -182,7 +182,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
             return;
         }
 
-        recording.setEvaluated(true);
+        assessment.saveEvaluationData();
         navigateToNextActivity(this, BoDySOverviewPageActivity.class);
     }
 
@@ -289,20 +289,12 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     @Override
     public void prepareIntent(Intent intent) {
         intent.putExtra("assessmentNr", assessmentNr);
-
-        if(taskId == 7) {
-            intent.putExtra("assessmentNew", false);
-        }
     }
 
     @Override
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr", -1);
         prefill = intent.getBooleanExtra("prefill", false);
-
-        if(!prefill) {
-            taskId = intent.getIntExtra("assessmentTaskId", -1);
-        }
     }
 
     @Override

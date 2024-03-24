@@ -11,6 +11,8 @@ public class BoDySSheet {
     private HashMap<String, HashMap<String, Integer>> boDySCriteriaMarking = createBoDySCriteria();
     private HashMap<String, Integer> boDySScores = createBoDySScores();
     private HashMap<String, String> boDySNotes = createBoDySNotes();
+    private boolean prefill;
+    private int totalScore;
 
     public HashMap<String, String> getBoDySNotes() {
         return boDySNotes;
@@ -50,10 +52,24 @@ public class BoDySSheet {
         return false;
     }
 
-    public void updateScores(String key, int score) {
-        if(checkUnmarkedMainCriteria(key)) {
+
+    public void updateMarkings(String mainKey, String key, int marked) {
+        if(!boDySCriteriaMarking.keySet().contains(mainKey)){
+            return;
+        }
+
+        if(!boDySCriteriaMarking.get(mainKey).keySet().contains(key)){
+            return;
+        }
+
+        boDySCriteriaMarking.get(mainKey).put(key, marked);
+    }
+
+    public void updateScores(String key, int score, boolean restoreProcess) {
+        if(checkUnmarkedMainCriteria(key) && !restoreProcess) {
             boDySScores.put(key, 4);
         } else {
+            boDySScores.put(key, score);
             boDySScores.put(key, score);
         }
     }
@@ -76,7 +92,7 @@ public class BoDySSheet {
 
     public int getTotalScore(){
         Collection<Integer> scores = boDySScores.values();
-        int totalScore = scores.stream().reduce(0,(x, y) -> x + y);
+        totalScore = scores.stream().reduce(0,(x, y) -> x + y);
         return totalScore;
     }
 
@@ -98,6 +114,14 @@ public class BoDySSheet {
         for (String main : boDySNotes.keySet()) {
             Log.d("TESTBODYSNOTES", main + ": " + boDySNotes.get(main));
         }
+    }
+
+    public boolean isPrefill() {
+        return prefill;
+    }
+
+    public void setPrefill(boolean prefill) {
+        this.prefill = prefill;
     }
 
     private HashMap<String, HashMap<String, Integer>> createBoDySCriteria(){
