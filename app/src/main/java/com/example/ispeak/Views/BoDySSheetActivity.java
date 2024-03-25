@@ -183,7 +183,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         }
 
         assessment.saveEvaluationData();
-        navigateToNextActivity(this, BoDySFrequencyObservationActivity.class);
+        navigateToNextActivity(this, BoDySOverviewPageActivity.class);
     }
 
     private void showScoringMissingDialog(){
@@ -200,7 +200,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
             navigateToNextActivity(this, RecordingActivity.class);
         } else{
             assessment.startNewTaskRound();
-            navigateToNextActivity(this, BoDySOverviewPageActivity.class);
+            navigateToNextActivity(this, BoDySNotesActivity.class);
         }
     }
 

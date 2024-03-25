@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.BoDyS;
+import com.example.ispeak.Models.Microphone;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.databinding.ActivityBodysMenuBinding;
@@ -42,7 +43,6 @@ public class BoDySMenuActivity extends AppCompatActivity implements IntentHandle
                 return;
             }
 
-            assessmentNr = 0;
             startNewAssessment();
 
         });
@@ -81,16 +81,18 @@ public class BoDySMenuActivity extends AppCompatActivity implements IntentHandle
 
     private void startNewAssessment(){
         BoDyS boDyS = new BoDyS();
+        assessmentNr = 0;
         Patient.getInstance().addAssessment(boDyS, assessmentNr);
         Utils.deleteFromDir(new File(boDyS.getFolderPath() + File.separator + "Recordings"));
         Utils.deleteFromDir(new File(boDyS.getFolderPath() + File.separator + "CSV"));
 
-        navigateToNextActivity(this, BoDySOverviewPageActivity.class);
+        navigateToNextActivity(this, MicrophoneConnectionActivity.class);
     }
 
     @Override
     public void prepareIntent(Intent intent) {
         intent.putExtra("assessmentNr", assessmentNr);
+        intent.getIntExtra("assessmentTaskId", 0);
     }
 
     @Override

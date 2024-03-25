@@ -79,9 +79,9 @@ public class BoDySSubCriteriaAdapter extends RecyclerView.Adapter<BoDySSubCriter
                 BoDySSheet sheet = assessment.getBoDySSheets()[i];
 
                 if(!sheet.isPrefill() && hasMarking(sheet, criteria)) {
-                    childView.setBackgroundColor(context.getColor(R.color.darkGrayBlue));
+                    childView.setBackgroundColor(context.getColor(R.color.darkBlue));
                 } else {
-                    childView.setBackground(context.getDrawable(R.drawable.quadrat_with_border));
+                    childView.setBackground(context.getDrawable(R.drawable.quadrat_with_border_lightblue));
                 }
             }
         }

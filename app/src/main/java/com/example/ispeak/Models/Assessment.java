@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public abstract class Assessment implements FolderStructureCreator, WriteCSVInterface {
 
@@ -20,6 +21,8 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
     protected Recording[] recordings;
     protected int taskId;
     protected int maxRecordingNr;
+    protected Set<String> circumstances;
+    protected Set<String> notes;
 
     public Assessment(String assessmentName, int maxRecordingNr){
         this.assessmentName = assessmentName;
@@ -38,10 +41,6 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         List<String> csvFiles = new ArrayList<>(Arrays.asList(csvFolder + "Assessment.csv", csvFolder + "Events.csv"));
         writeCSV.storeDataCSVNote(this, csvFiles.get(0));
         writeCSV.storeEventDataCSVNote(this, csvFiles.get(1));
-
-//        if(taskId == 7) {
-//            writeCSV.sumTotalAssessment(csvFiles);
-//        }
     }
 
     protected void updateTaskResultsInCSV(){
@@ -60,51 +59,15 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
     }
 
 
-    public void updateRecordingList(Recording recording){
-        this.recordings[taskId] = recording;
-    }
-
-    public Recording[] getRecordings() {
-        return recordings;
-    }
-
-
-    public String getFolderPath() {
-        return assessmentFolderPath;
-    }
-    public int getTaskId(){return taskId;}
-
-    public int getMaxRecordingNr() {
-        return maxRecordingNr;
-    }
-
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getTaskName(int taskId) {
-        return "";
-    }
-
     public void retrieveAssessment(File file) {
         File recordingsDir = new File(file, "Recordings");
         File csvDir = new File(file, "CSV");
 
         if (recordingsDir.exists() && recordingsDir.isDirectory() && csvDir.exists() && csvDir.isDirectory()) {
             retrieveRecordings(recordingsDir, csvDir);
-            //readAssessmentData(csvDir);
             this.retrieveConcreteAssessment(csvDir);
         }
     }
-
-//    private void readAssessmentData(File csvDir){
-//        File dataFile = new File(csvDir, "Assessment.csv");
-//
-//        if(dataFile.exists()){
-//            ReadCSV readCSV = new ReadCSV();
-//            readCSV.readAssessmentDataCSVNote(dataFile.getAbsolutePath());
-//        }
-//    }
 
     private void retrieveRecordings(File recordingsDir, File csvDir){
         File[] recordingFiles = recordingsDir.listFiles();
@@ -149,4 +112,69 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
     }
 
     public abstract void retrieveConcreteAssessment(File csvDir);
+
+    public void updateRecordingList(Recording recording){
+        this.recordings[taskId] = recording;
+    }
+
+    public Recording[] getRecordings() {
+        return recordings;
+    }
+
+
+    public String getFolderPath() {
+        return assessmentFolderPath;
+    }
+    public int getTaskId(){return taskId;}
+
+    public int getMaxRecordingNr() {
+        return maxRecordingNr;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getTaskName(int taskId) {
+        return "";
+    }
+
+    public Set<String> getCircumstances() {
+        return circumstances;
+    }
+
+    public Set<String> getNotes() {
+        return notes;
+    }
+
+    public String getFormattedCircumstances(){
+        if(circumstances.size() == 0) {
+            return "/";
+        } else {
+            return String.join(", ", circumstances);
+        }
+    }
+
+    public String getFormattedNotes(){
+        if(notes.size() == 0) {
+            return "/";
+        } else {
+            return String.join(", ", notes);
+        }
+    }
+
+    public void addCircumstances(String circumstance) {
+        this.circumstances.add(circumstance);
+    }
+
+    public void addNotes(String note) {
+        this.notes.add(note);
+    }
+    public void removeCircumstances(String circumstance) {
+        this.circumstances.remove(circumstance);
+    }
+
+    public void removeNotes(String note) {
+        this.notes.remove(note);
+    }
 }

@@ -32,9 +32,9 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
     private ActivityBodysOverviewPageBinding binding;
     private int assessmentNr;
     private BoDyS assessment;
-    private boolean evaluationMode;
     private int nextTask;
     private int totalScorePoints;
+    private boolean isPrefill;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,9 +45,22 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         retrieveIntent(this);
         init();
         listenStartRecordingBtn();
+        listenStartFrequencyObservationBtn();
+        listenEditInfoBox();
     }
 
     private void init(){
+        this.isPrefill = false;
+        initPatientData();
+        initTasks();
+        initProgressBar();
+
+        if(nextTask >= assessment.getMaxRecordingNr()){
+            listenFinishBtn();
+        }
+    }
+
+    private void initPatientData(){
         Patient patient = Patient.getInstance();
         binding.patientId.setText(getString(R.string.patientData, patient.getPatientId()));
         binding.caseId.setText(getString(R.string.caseData, patient.getCaseId()));
@@ -56,13 +69,8 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         binding.totalTasksScore.setText(getString(R.string.taskOverviewScoringDE, 0));
 
         this.assessment = (BoDyS) patient.getAssessmentList().get(this.assessmentNr);
-
-        initTasks();
-        initProgressBar();
-
-        if(nextTask >= assessment.getMaxRecordingNr()){
-            listenFinishBtn();
-        }
+        binding.circumstancesInfo.setText("Begleitumstände: " + assessment.getFormattedCircumstances());
+        binding.commentsInfo.setText("Anmerkungen: " + assessment.getFormattedNotes());
     }
 
     private void initProgressBar(){
@@ -193,14 +201,28 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
 
     private void listenStartRecordingBtn(){
         binding.startRecordingBtn.setOnClickListener(view -> {
+            isPrefill = true;
             assessment.continueBoDyS(nextTask);
             navigateToNextActivity(this, MicrophoneConnectionActivity.class);
         });
     }
 
+    private void listenEditInfoBox(){
+        binding.notesInfoBox.setOnClickListener(view -> {
+            navigateToNextActivity(this, BoDySNotesActivity.class);
+        });
+    }
+
     private void disableRecordingMode(){
         binding.startRecordingBtn.setVisibility(View.GONE);
-        binding.startRecordingBtnNotActivated.setVisibility(View.VISIBLE);
+//        binding.startRecordingBtnNotActivated.setVisibility(View.VISIBLE);
+        binding.startFrequencyObservation.setVisibility(View.VISIBLE);
+        binding.textView3.setVisibility(View.VISIBLE);
+    }
+
+    private void listenStartFrequencyObservationBtn(){
+        binding.startFrequencyObservation.setOnClickListener(view ->
+                navigateToNextActivity(this, BoDySFrequencyObservationActivity.class));
     }
 
     private void listenFinishBtn(){
@@ -221,10 +243,7 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
     @Override
     public void prepareIntent(Intent intent) {
         intent.putExtra("assessmentNr", assessmentNr);
-
-        if(evaluationMode) {
-            intent.putExtra("prefill", false);
-        }
+        intent.putExtra("prefill", isPrefill);
     }
 
     @Override

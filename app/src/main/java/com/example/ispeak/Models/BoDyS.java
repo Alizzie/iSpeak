@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -42,7 +43,9 @@ public class BoDyS extends Assessment{
         super("BoDyS", 8);
         this.boDySSheets = new BoDySSheet[this.maxRecordingNr];
         this.currentSheet = new BoDySSheet();
-        boDySSheets[taskId] = this.currentSheet;
+        this.boDySSheets[taskId] = this.currentSheet;
+        this.circumstances = new HashSet<>();
+        this.notes = new HashSet<>();
     }
 
     public void continueBoDyS(int taskId){
@@ -63,18 +66,6 @@ public class BoDyS extends Assessment{
     public void saveEvaluationData(){
         currentSheet.setPrefill(false);
         updateTaskResultsInCSV();
-    }
-
-    public BoDySSheet[] getBoDySSheets() {
-        return boDySSheets;
-    }
-
-    public BoDySSheet getCurrentSheet(){
-        return currentSheet;
-    }
-
-    public void setCurrentSheet(BoDySSheet currentSheet) {
-        this.currentSheet = currentSheet;
     }
 
     @Override
@@ -100,11 +91,6 @@ public class BoDyS extends Assessment{
         }
 
         return new ArrayList<>(Arrays.asList(criteriaArray.toArray(new String[0]), markingsArray.toArray(new String[0])));
-    }
-
-    @Override
-    public String getTaskName(int taskId){
-        return BODYSDIC.get(taskId);
     }
 
     @Override
@@ -144,10 +130,6 @@ public class BoDyS extends Assessment{
 
     private void restoreMarking(BoDySSheet boDySSheet, String mainCriteriaFocus, String criteria, int marking){
         boDySSheet.updateMarkings(mainCriteriaFocus, criteria, marking);
-//
-//        if(marking == 1) {
-//            boDySSheet.updateScores(mainCriteriaFocus, -1);
-//        }
     }
 
     private ArrayList<String[]> readLines(File dataFile){
@@ -160,9 +142,28 @@ public class BoDyS extends Assessment{
 
         return lines;
     }
+
     private static boolean containsNumber(String input) {
         Pattern pattern = Pattern.compile(".*\\d.*");
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
     }
+
+    public BoDySSheet[] getBoDySSheets() {
+        return boDySSheets;
+    }
+
+    public BoDySSheet getCurrentSheet(){
+        return currentSheet;
+    }
+
+    public void setCurrentSheet(BoDySSheet currentSheet) {
+        this.currentSheet = currentSheet;
+    }
+
+    @Override
+    public String getTaskName(int taskId){
+        return BODYSDIC.get(taskId);
+    }
+
 }

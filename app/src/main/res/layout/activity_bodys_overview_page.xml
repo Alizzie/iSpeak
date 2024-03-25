@@ -58,6 +58,51 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/patientDiagnosis" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/notesInfoBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/caseDate"
+            android:layout_marginTop="20dp"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/circumstancesInfo"
+                style="@style/TextBlack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="Begleitumstände: /"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/commentsInfo"
+                style="@style/TextBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anmerkungen: /"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circumstancesInfo"
+                android:lines="1"
+                android:ellipsize="end"/>
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="20dp"
+                android:layout_height="14dp"
+                android:src="@drawable/edit_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="0dp"
@@ -93,10 +138,10 @@
             style="@style/TitleBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="40dp"
             android:text="@string/taskOverviewDE"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/caseDate" />
+            app:layout_constraintTop_toBottomOf="@+id/notesInfoBox" />
 
         <TextView
             android:id="@+id/totalTasksScore"
@@ -104,6 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/taskOverviewScoringDE"
+            app:layout_constraintBottom_toBottomOf="@+id/startFrequencyObservation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/taskOverviewTitle" />
 
@@ -113,19 +159,47 @@
             android:layout_width="200dp"
             android:layout_height="70dp"
             android:text="@string/startWithRecordingTaskBtnDE"
+            app:layout_constraintBottom_toTopOf="@id/textView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="visible"/>
+
+<!--        <Button-->
+<!--            android:id="@+id/startRecordingBtnNotActivated"-->
+<!--            style="@style/Button"-->
+<!--            android:layout_width="250dp"-->
+<!--            android:layout_height="70dp"-->
+<!--            android:text="Beobachtungshäufigkeit"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            android:clickable="false"-->
+<!--            android:visibility="visible"/>-->
+
+        <ImageView
+            android:id="@+id/startFrequencyObservation"
+            style="@style/ButtonNotActivated"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/baseline_insert_chart_24"
+            android:text="@string/startWithRecordingTaskBtnDE"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/textView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:text="Beobachtungen"
+            style="@style/TextBlack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <Button
-            android:id="@+id/startRecordingBtnNotActivated"
-            style="@style/ButtonNotActivated"
-            android:layout_width="200dp"
-            android:layout_height="70dp"
-            android:text="@string/startWithRecordingTaskBtnDE"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:clickable="false"
-            android:visibility="gone"/>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -134,7 +208,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="60dp"
+        android:layout_marginVertical="40dp"
         android:columnCount="2"
         android:rowCount="5">
 

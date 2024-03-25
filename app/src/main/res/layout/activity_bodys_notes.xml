@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="40dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/notesTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notizen zur Aufnahme"
+        style="@style/AppTitle"
+        android:layout_marginTop="40dp" />
+
+    <TextView
+        android:id="@+id/circumstancesTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Relevante Begleitumstände"
+        android:layout_marginTop="50dp"
+        style="@style/TitleBlue"
+        android:textAlignment="textStart"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/circumstancesTxtInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="+ Neuer Begleitumstand"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:inputType="text"
+        android:backgroundTint="@color/colorAccent"
+        android:imeOptions="actionDone"
+        android:imeActionId="6"
+        android:imeActionLabel="Done"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/circumstancesListView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:scrollbars="vertical">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/commentsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Weitere Bemerkungen"
+        android:layout_marginTop="50dp"
+        style="@style/TitleBlue"
+        android:textAlignment="textStart"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/commentsTxtInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="+ Neue Bemerkung"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:inputType="text"
+        android:backgroundTint="@color/colorAccent"
+        android:imeOptions="actionDone"
+        android:imeActionId="6"
+        android:imeActionLabel="Done"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/commentsListView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scrollbars="vertical">
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+    <Button
+        android:id="@+id/confirmBtn"
+        style="@style/Button"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:layout_gravity="center"
+        android:text="@string/confirmBtn" />
+
+</LinearLayout>
