@@ -46,7 +46,14 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         init();
         listenStartRecordingBtn();
         listenStartFrequencyObservationBtn();
-        listenEditInfoBox();
+
+        if(!assessment.isCompleted()){
+            listenEditInfoBox();
+        }
+
+        if(nextTask >= assessment.getMaxRecordingNr() && !assessment.isCompleted()){
+            listenFinishBtn();
+        }
     }
 
     private void init(){
@@ -55,8 +62,8 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         initTasks();
         initProgressBar();
 
-        if(nextTask >= assessment.getMaxRecordingNr()){
-            listenFinishBtn();
+        if(assessment.isCompleted()){
+            binding.completionStatus.setVisibility(View.VISIBLE);
         }
     }
 
@@ -95,7 +102,7 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
             initEvaluationMode(recordings, boDySSheets);
         }
 
-        if(checkEvaluationDone()){
+        if(checkEvaluationDone() && !assessment.isCompleted()){
             activateFinishBtn();
         }
 
@@ -235,9 +242,14 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
         dialogBuilder.setTitle("Willst du das Assessment abschliessen?")
                 .setMessage("Nach dem Abschliessen ist das Überarbeiten des Assessments nicht mehr möglich.")
-                .setPositiveButton("Ja", null)
+                .setPositiveButton("Ja", ((dialogInterface, i) -> finishBoDySAssessment()))
                 .setNegativeButton("Nein", null)
                 .show();
+    }
+
+    private void finishBoDySAssessment(){
+        assessment.finishAssessment();
+        navigateToNextActivity(this, MenuActivity.class);
     }
 
     @Override

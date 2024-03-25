@@ -80,7 +80,18 @@ public class BoDyS extends Assessment{
         for (int j = 0; j < mainKeys.size(); j++){
             String main = mainKeys.get(j);
             criteriaArray.add(main);
+            criteriaArray.add(main+"Notes");
             markingsArray.add(String.valueOf(currentSheet.getBoDySScores().get(main)));
+
+            String note = currentSheet.getBoDySNotes().get(main);
+
+            if(note != null){
+                note = note.replaceAll("\n", " / ");
+            } else {
+                note = "null";
+            }
+
+            markingsArray.add(note);
 
             List<String> keys = currentSheet.getBoDySCriteria().get(main).keySet().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 
@@ -94,13 +105,11 @@ public class BoDyS extends Assessment{
     }
 
     @Override
-    public void retrieveConcreteAssessment(File csvDir) {
+    public void retrieveConcreteAssessment(ArrayList<String[]> lines) {
 
-        File dataFile = new File(csvDir, "Assessment.csv");
-        ArrayList<String[]> lines = readLines(dataFile);
-        String[] headline = lines.get(0);
+        String[] headline = lines.get(3);
 
-        for(int i = 1; i < lines.size(); i++) {
+        for(int i = 4; i < lines.size(); i++) {
             String[] line = lines.get(i);
             restoreBoDysSheet(headline, line);
         }
@@ -117,6 +126,14 @@ public class BoDyS extends Assessment{
             if(containsNumber(headline[lineIndex]) && headline[lineIndex].length() == 4){
                 int marking = Integer.parseInt(line[lineIndex]);
                 restoreMarking(boDySSheet, mainCriteriaFocus, headline[lineIndex], marking);
+            } else if(headline[lineIndex].length() == 8){
+                String note = Objects.equals(line[lineIndex], "null") ? null : line[lineIndex];
+
+                if(note != null){
+                    note = note.replaceAll("/", "\n");
+                }
+
+                boDySSheet.updateBoDySNotes(mainCriteriaFocus, note);
             } else {
                 mainCriteriaFocus = headline[lineIndex];
                 int score = Integer.parseInt(line[lineIndex]);
@@ -130,17 +147,6 @@ public class BoDyS extends Assessment{
 
     private void restoreMarking(BoDySSheet boDySSheet, String mainCriteriaFocus, String criteria, int marking){
         boDySSheet.updateMarkings(mainCriteriaFocus, criteria, marking);
-    }
-
-    private ArrayList<String[]> readLines(File dataFile){
-        ArrayList<String[]> lines = new ArrayList<>();
-
-        if(dataFile.exists()){
-            ReadCSV readCSV = new ReadCSV();
-            lines = readCSV.readAssessmentDataCSVNote(dataFile.getAbsolutePath());
-        }
-
-        return lines;
     }
 
     private static boolean containsNumber(String input) {

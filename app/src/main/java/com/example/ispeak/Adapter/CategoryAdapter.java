@@ -22,12 +22,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private Event event;
     private Context context;
     private EventLabelingObserver observer;
+    private boolean readOnly;
 
-    public CategoryAdapter(List<String> categoryList, Context context, Event event, EventLabelingObserver observer){
+    public CategoryAdapter(List<String> categoryList, Context context, Event event, EventLabelingObserver observer, boolean readOnly){
         this.categoryList = categoryList;
         this.context = context;
         this.event = event;
         this.observer = observer;
+        this.readOnly = readOnly;
     }
 
     @NonNull
@@ -46,23 +48,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             holder.setUpLabels();
         }
 
+        if(!readOnly){
+            holder.categoryItemWrapper.setOnClickListener(view -> {
+                ColorDrawable viewColor = (ColorDrawable) view.getBackground();
+                int currentColor = viewColor.getColor();
+                int clickedColor = context.getColor(R.color.lightBlue);
+                String category = holder.categoryItem.getText().toString();
 
-        holder.categoryItemWrapper.setOnClickListener(view -> {
-            ColorDrawable viewColor = (ColorDrawable) view.getBackground();
-            int currentColor = viewColor.getColor();
-            int clickedColor = context.getColor(R.color.lightBlue);
-            String category = holder.categoryItem.getText().toString();
+                if(clickedColor == currentColor){
+                    view.setBackgroundColor(context.getColor(R.color.white));
+                    event.removeEventLabel(category);
+                } else{
+                    view.setBackgroundColor(context.getColor(R.color.lightBlue));
+                    event.addEventLabel(category);
+                }
 
-            if(clickedColor == currentColor){
-                view.setBackgroundColor(context.getColor(R.color.white));
-                event.removeEventLabel(category);
-            } else{
-                view.setBackgroundColor(context.getColor(R.color.lightBlue));
-                event.addEventLabel(category);
-            }
-
-            observer.onCategoryClick();
-        });
+                observer.onCategoryClick();
+            });
+        }
     }
 
     @Override

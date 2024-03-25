@@ -53,11 +53,11 @@ public class WriteCSV extends ViewModel {
 
             if(assessment.getTaskId() == 0){
                 writePatientData(writer);
+                writeAssessmentNotes(writer, assessment);
                 writer.writeNext(results.get(0));
             }
 
             writer.writeNext(results.get(1));
-
 
             writer.close();
         } catch (IOException e) {
@@ -67,7 +67,7 @@ public class WriteCSV extends ViewModel {
 
     public void updateDataCSVNote(Assessment assessment, String filepath){
         List<String[]> lines;
-        int lineNumber = assessment.getTaskId() + getPatientDataLines();
+        int lineNumber = assessment.getTaskId() + getPatientDataLines() + getAssessmentNotesDataLines() + 1;
         try {
             CSVReader reader = new CSVReader(new FileReader(filepath));
             lines = reader.readAll();
@@ -121,6 +121,7 @@ public class WriteCSV extends ViewModel {
     }
 
     public void updateEventDataCSVNote(Assessment assessment, String filepath){
+
         List<String[]> lines;
         List<String[]> newLines = new ArrayList<>();
         Recording recording = assessment.getRecordings()[assessment.getTaskId()];
@@ -140,7 +141,7 @@ public class WriteCSV extends ViewModel {
             for (int i = 0; i < lines.size(); i++) {
 
                 String[] line = lines.get(i);
-                if(i < getPatientDataLines()) {
+                if(i < getPatientDataLines() + 1) {
                     newLines.add(line);
                     continue;
                 }
@@ -148,7 +149,7 @@ public class WriteCSV extends ViewModel {
                 int taskId = Integer.parseInt(line[0]);
                 int searchedTaskId = assessment.getTaskId();
 
-                if(taskId > searchedTaskId && !addedOnce) {
+                if((taskId > searchedTaskId || taskId == searchedTaskId) && !addedOnce) {
                     newLines.addAll(eventsData);
                     addedOnce = true;
                 }
@@ -156,7 +157,10 @@ public class WriteCSV extends ViewModel {
                 if (taskId != searchedTaskId){
                     newLines.add(line);
                 }
+            }
 
+            if(newLines.size() == getPatientDataLines() + 1){
+                newLines.addAll(eventsData);
             }
 
 
@@ -175,10 +179,11 @@ public class WriteCSV extends ViewModel {
             FileWriter outputFile = new FileWriter(files.get(0));
             CSVWriter writer = getCSVWriter(outputFile);
 
-            writePatientData(writer);
+            readAndWriteAssessment(files.get(1), writer);
+            writer.writeNext(new String[]{});
 
-            for(int i = 1; i < files.size(); i++) {
-                readAndAppendCSV(files.get(i), writer);
+            for(int i = 2; i < files.size(); i++) {
+                readAndWriteAdditionalDataFiles(files.get(i), writer);
             }
 
             writer.close();
@@ -189,13 +194,12 @@ public class WriteCSV extends ViewModel {
         }
     }
 
-    private void readAndWriteAllCSV(String file, CSVWriter writer) {
-        try {
+    private void readAndWriteAssessment(String file, CSVWriter writer){
+        try{
             FileReader inputFile = new FileReader(file);
             CSVReader reader = new CSVReader(inputFile);
 
             List<String[]> lines = reader.readAll();
-            lines.add(new String[] {});
             writer.writeAll(lines);
 
             reader.close();
@@ -205,17 +209,16 @@ public class WriteCSV extends ViewModel {
         }
     }
 
-    private void readAndAppendCSV(String file, CSVWriter writer) {
+    private void readAndWriteAdditionalDataFiles(String file, CSVWriter writer) {
         try{
             FileReader inputFile = new FileReader(file);
             CSVReader reader = new CSVReader(inputFile);
 
-            for(int i = 0; i < 3; i++) {
+            for(int i = 0; i < getPatientDataLines(); i++) {
                 reader.readNext();
             }
 
             List<String[]> lines = reader.readAll();
-            lines.add(new String[] {});
             writer.writeAll(lines);
 
             reader.close();
@@ -234,7 +237,42 @@ public class WriteCSV extends ViewModel {
     }
 
     private int getPatientDataLines(){
-        return 4;
+        return 3;
+    }
+
+    private void writeAssessmentNotes(CSVWriter writer, Assessment assessment){
+        String circumstances = String.join("/", assessment.getCircumstances());
+        String notes = String.join("/", assessment.getNotes());
+        String isCompleted = String.valueOf(assessment.isCompleted());
+
+        writer.writeNext(new String[]{"isCompleted", "Relevant Circumstances", "Notes"});
+        writer.writeNext(new String[]{isCompleted, circumstances, notes});
+        writer.writeNext(new String[]{});
+    }
+
+    private int getAssessmentNotesDataLines(){return 3;}
+
+    public void updateAssessmentNotes(String filepath, String isCompleted, String circumstances, String notes){
+        List<String[]> lines;
+        int lineNumber = getPatientDataLines() + 1;
+
+        try {
+            CSVReader reader = new CSVReader(new FileReader(filepath));
+            lines = reader.readAll();
+            reader.close();
+
+            String[] values = new String[]{isCompleted, circumstances, notes};
+            if (lineNumber >= 0 && lineNumber < lines.size()) {
+                lines.set(lineNumber, values);
+            }
+
+            CSVWriter writer = new CSVWriter(new FileWriter(filepath));
+            writer.writeAll(lines);
+            writer.close();
+
+        } catch (IOException | CsvException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private CSVWriter getCSVWriter(FileWriter outputFile) {

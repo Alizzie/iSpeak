@@ -100,7 +100,10 @@ public class BoDySNotesActivity extends AppCompatActivity implements IntentHandl
     }
 
     private void listenContinueBtn(){
-        binding.confirmBtn.setOnClickListener(view -> navigateToNextActivity(this, BoDySOverviewPageActivity.class));
+        binding.confirmBtn.setOnClickListener(view -> {
+            Patient.getInstance().getAssessmentList().get(assessmentNr).updateAssessmentNotesInCSV();
+            navigateToNextActivity(this, BoDySOverviewPageActivity.class);
+        });
     }
 
     @Override

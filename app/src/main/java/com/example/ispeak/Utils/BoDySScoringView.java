@@ -31,9 +31,12 @@ public class BoDySScoringView extends ConstraintLayout implements ScoreBoardObse
         super(context, attrs, defStyleAttr);
     }
 
-    public void setBoDySSheet(BoDySSheet sheet) {
+    public void setBoDySSheet(BoDySSheet sheet, boolean readOnly) {
         this.assessmentSheet = sheet;
-        initBoDySCriteria();
+
+        if(!readOnly){
+            initBoDySCriteria();
+        }
     }
 
     private void initBoDySCriteria(){

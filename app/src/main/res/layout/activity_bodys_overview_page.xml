@@ -153,6 +153,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/taskOverviewTitle" />
 
+        <TextView
+            android:id="@+id/completionStatus"
+            style="@style/TextBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Completed"
+            android:textColor="@color/green"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/totalTasksScore"
+            android:visibility="invisible"/>
+
         <Button
             android:id="@+id/startRecordingBtn"
             style="@style/Button"

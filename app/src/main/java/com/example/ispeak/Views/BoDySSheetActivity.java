@@ -54,8 +54,6 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         listenEventLabelingBtn();
         listenMarkingBtn();
         listenSkipBtn();
-        listenEditBtn();
-        listenEventBookmarkBtn();
 
         if(!prefill) {
             showFullFunctionalities();
@@ -63,6 +61,11 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
             listenPlayAudioBtn();
             listenBackwardAudioBtn();
             listenForwardAudioBtn();
+        }
+
+        if(!assessment.isCompleted()){
+            listenEventBookmarkBtn();
+            listenEditBtn();
         }
     }
 
@@ -147,7 +150,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
 
     private void listenMarkingBtn(){
         BoDySMarkingView boDySMarkingView = binding.bodysMarkingSheet.getRoot();
-        boDySMarkingView.setBoDySSheet(boDySSheet);
+        boDySMarkingView.setBoDySSheet(boDySSheet, assessment.isCompleted());
         binding.markingModeBtn.setOnClickListener(view -> {
             binding.bodysEventLabeling.getRoot().setVisibility(View.GONE);
             binding.bodysMarkingSheet.getRoot().setVisibility(View.VISIBLE);
@@ -157,7 +160,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
 
     private void listenScoringBtn() {
         BoDySScoringView boDySScoringView = binding.bodysScoringSheet.getRoot();
-        boDySScoringView.setBoDySSheet(boDySSheet);
+        boDySScoringView.setBoDySSheet(boDySSheet, assessment.isCompleted());
         binding.scoringModeBtn.setOnClickListener(view -> {
             binding.bodysEventLabeling.getRoot().setVisibility(View.GONE);
             binding.bodysMarkingSheet.getRoot().setVisibility(View.GONE);
@@ -248,7 +251,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
             selectedEvent = events.get(eventAdapter.getCheckPosition());
         }
 
-        categoryAdapter = new CategoryAdapter(new ArrayList<>(assessment.getCurrentSheet().getBoDySCriteria().keySet()), getApplicationContext(), selectedEvent, this);
+        categoryAdapter = new CategoryAdapter(new ArrayList<>(assessment.getCurrentSheet().getBoDySCriteria().keySet()), getApplicationContext(), selectedEvent, this, assessment.isCompleted());
         binding.bodysEventLabeling.eventCategoryRecyclerView.setAdapter(categoryAdapter);
     }
 

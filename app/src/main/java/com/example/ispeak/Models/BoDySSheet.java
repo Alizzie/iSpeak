@@ -78,6 +78,7 @@ public class BoDySSheet {
         if(!boDySNotes.keySet().contains(criteria)){
             return;
         }
+
         boDySNotes.put(criteria, note);
     }
 

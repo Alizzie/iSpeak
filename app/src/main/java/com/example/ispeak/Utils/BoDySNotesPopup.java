@@ -24,9 +24,11 @@ public class BoDySNotesPopup extends PopupWindow {
     String criteria;
     EditText userText;
     NotesObserver observer;
-    public BoDySNotesPopup(NotesObserver observer) {
+    private boolean readOnly;
+    public BoDySNotesPopup(NotesObserver observer, boolean readOnly) {
         super();
         this.observer = observer;
+        this.readOnly = readOnly;
     }
 
     public void showPopup(Context context, View view, String criteria, String oldNotes) {
@@ -44,11 +46,17 @@ public class BoDySNotesPopup extends PopupWindow {
         userText.setText(oldNotes);
 
         setOnTouchClosePopupListener(popupWindow);
-        setOnTouchResetPopupListener(popupWindow);
-        setOnTouchConfirmBtn(popupWindow);
         blurBackground(popupWindow, context);
 
         popupWindow.setOutsideTouchable(false);
+
+        if(readOnly){
+            userText.setClickable(false);
+            userText.setEnabled(false);
+        } else {
+            setOnTouchResetPopupListener(popupWindow);
+            setOnTouchConfirmBtn(popupWindow);
+        }
     }
 
     private PopupWindow initPopupWindow(View popup, View btnView){

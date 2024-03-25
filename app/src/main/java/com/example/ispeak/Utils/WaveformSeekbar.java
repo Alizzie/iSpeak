@@ -86,7 +86,7 @@ public class WaveformSeekbar extends WaveformSeekBar {
 
         if(mediaPlayer.isPlaying() && !isPaused){
             this.setProgress(mediaPlayer.getCurrentPosition());
-            handler.postDelayed(this::updateProgress, 250);
+            handler.postDelayed(this::updateProgress, 25);
             playBtn.setBackground(pauseImg);
         } else {
             handler.removeCallbacksAndMessages(null);

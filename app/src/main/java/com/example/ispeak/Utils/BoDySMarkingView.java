@@ -21,6 +21,7 @@ import java.util.Objects;
 
 public class BoDySMarkingView extends ConstraintLayout implements NotesObserver {
     private BoDySSheet assessmentSheet;
+    private boolean readOnly;
     public BoDySMarkingView(@NonNull Context context) {
         super(context);
     }
@@ -33,9 +34,11 @@ public class BoDySMarkingView extends ConstraintLayout implements NotesObserver 
         super(context, attrs, defStyleAttr);
     }
 
-    public void setBoDySSheet(BoDySSheet sheet) {
+    public void setBoDySSheet(BoDySSheet sheet, boolean readOnly) {
         this.assessmentSheet = sheet;
+        this.readOnly = readOnly;
         assessmentSheet.getInfos();
+
         initBoDySCriteria();
     }
 
@@ -49,7 +52,10 @@ public class BoDySMarkingView extends ConstraintLayout implements NotesObserver 
             HashMap<String, Integer> criteriaValues = criteriaMap.get(mainCriteria);
 
             assert criteriaValues != null;
-            setClickListenerOnCriteria(mainCriteria, criteriaValues);
+
+            if(!readOnly){
+                setClickListenerOnCriteria(mainCriteria, criteriaValues);
+            }
         }
     }
 
@@ -58,7 +64,7 @@ public class BoDySMarkingView extends ConstraintLayout implements NotesObserver 
         MaterialButton btn = findViewById(btnId);
 
         btn.setOnClickListener(view -> {
-            BoDySNotesPopup popup = new BoDySNotesPopup(this);
+            BoDySNotesPopup popup = new BoDySNotesPopup(this, readOnly);
             popup.showPopup(this.getContext(), view, mainCriteria, assessmentSheet.getBoDySNotes().get(mainCriteria));
         });
     }
