@@ -8,14 +8,12 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ispeak.Adapter.CategoryAdapter;
 import com.example.ispeak.Adapter.EventAdapter;
 import com.example.ispeak.Interfaces.EventLabelingObserver;
-import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.BoDySSheet;
 import com.example.ispeak.Models.Event;
@@ -24,6 +22,7 @@ import com.example.ispeak.Models.Recording;
 import com.example.ispeak.R;
 import com.example.ispeak.Utils.BoDySMarkingView;
 import com.example.ispeak.Utils.BoDySScoringView;
+import com.example.ispeak.Utils.BoDySStatus;
 import com.example.ispeak.Utils.WaveformSeekbar;
 import com.example.ispeak.databinding.ActivityBodysSheetBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -31,7 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BoDySSheetActivity extends AppCompatActivity implements IntentHandler, EventLabelingObserver {
+public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver {
 
     private ActivityBodysSheetBinding binding;
     private Patient patientInfo;
@@ -42,7 +41,6 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     private int taskId;
     private Recording recording;
     private BoDySSheet boDySSheet;
-    private boolean prefill;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +53,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
         listenMarkingBtn();
         listenSkipBtn();
 
-        if(!prefill) {
+        if(!boDySSheet.getStatus().isUnknown()) {
             showFullFunctionalities();
             listenScoringBtn();
             listenPlayAudioBtn();
@@ -103,7 +101,6 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
 
         this.recording = assessment.getRecordings()[taskId];
         this.boDySSheet = assessment.getBoDySSheets()[taskId];
-        this.boDySSheet.setPrefill(prefill);
         assessment.setCurrentSheet(this.boDySSheet);
     }
 
@@ -171,7 +168,7 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
 
     private void listenSkipBtn(){
         binding.skipPrefillBtn.setOnClickListener(view -> {
-            if(!prefill) {
+            if(!boDySSheet.getStatus().isUnknown()) {
                 notPrefillNavigation();
             } else {
                 prefillNavigation();
@@ -298,7 +295,6 @@ public class BoDySSheetActivity extends AppCompatActivity implements IntentHandl
     @Override
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr", -1);
-        prefill = intent.getBooleanExtra("prefill", false);
     }
 
     @Override

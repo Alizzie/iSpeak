@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 
 import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.Assessment;
+import com.example.ispeak.R;
 import com.example.ispeak.Utils.AssessmentFactory;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Utils.Utils;
@@ -18,7 +21,7 @@ import java.io.File;
 import java.util.Objects;
 
 
-public class MainActivity extends AppCompatActivity implements IntentHandler {
+public class MainActivity extends BaseApp implements IntentHandler {
     ActivityMainBinding binding;
     Patient patientInfo;
 
@@ -113,5 +116,10 @@ public class MainActivity extends AppCompatActivity implements IntentHandler {
     @Override
     public void processReceivedIntent(Intent intent) {
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 }

@@ -6,17 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.BoDySSheet;
 import com.example.ispeak.Models.Patient;
@@ -25,17 +21,14 @@ import com.example.ispeak.R;
 import com.example.ispeak.databinding.ActivityBodysOverviewPageBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.util.ArrayList;
-
-public class BoDySOverviewPageActivity extends AppCompatActivity implements IntentHandler {
+public class BoDySOverviewPageActivity extends BaseApp {
 
     private ActivityBodysOverviewPageBinding binding;
     private int assessmentNr;
     private BoDyS assessment;
     private int nextTask;
+    private int evaluatedTasks;
     private int totalScorePoints;
-    private boolean isPrefill;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +44,12 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
             listenEditInfoBox();
         }
 
-        if(nextTask >= assessment.getMaxRecordingNr() && !assessment.isCompleted()){
+        if(evaluatedTasks >= assessment.getMaxRecordingNr() && !assessment.isCompleted()){
             listenFinishBtn();
         }
     }
 
     private void init(){
-        this.isPrefill = false;
         initPatientData();
         initTasks();
         initProgressBar();
@@ -94,10 +86,11 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         BoDySSheet[] boDySSheets = assessment.getBoDySSheets();
 
         nextTask = 0;
-        boolean recordingFinished = isAllRecordingAvailable(recordings);
+        boolean recordingFinished = isAllRecordingAvailable(recordings, boDySSheets);
 
         if(recordingFinished) {
             nextTask = 0;
+            evaluatedTasks = 0;
             disableRecordingMode();
             initEvaluationMode(recordings, boDySSheets);
         }
@@ -109,18 +102,36 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
     }
 
     private void initEvaluationMode(Recording[] recordings, BoDySSheet[] boDySSheets){
+        boolean nextTaskFound = false;
         for(int i = 0; i < recordings.length; i++ ){
 
             int taskOverviewId = getResources().getIdentifier("boDySTask" + i, "id", getPackageName());
             CardView taskOverview = findViewById(taskOverviewId);
             TextView taskStatus = taskOverview.findViewById(R.id.taskStatus);
 
-            if(((boDySSheets[i] != null) && !boDySSheets[i].isPrefill()) ) {
-                updateEvaluationMode(boDySSheets[i], false, i);
-                nextTask = i + 1;
-            } else {
-                taskStatus.setText(getString(R.string.scoringStatusNegativeDE));
+            if((boDySSheets[i] != null) && boDySSheets[i].getStatus().isSkipped()){
+                evaluatedTasks += 1;
+
+                if(!nextTaskFound){
+                    updateEvaluationMode(boDySSheets[i], false, i);
+                }
+                continue;
             }
+
+            if((boDySSheets[i] != null) && boDySSheets[i].getStatus().isPrefill()){
+                taskStatus.setText(getString(R.string.scoringStatusNegativeDE));
+
+                if(!nextTaskFound){
+                    nextTask = i;
+                    nextTaskFound = true;
+                }
+            }
+
+            if(((boDySSheets[i] != null) && boDySSheets[i].getStatus().isEvaluated()) ) {
+                evaluatedTasks += 1;
+                updateEvaluationMode(boDySSheets[i], false, i);
+            }
+
         }
 
         if(!checkEvaluationDone()) {
@@ -128,7 +139,7 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         }
     }
 
-    private boolean isAllRecordingAvailable(Recording[] recordings) {
+    private boolean isAllRecordingAvailable(Recording[] recordings, BoDySSheet[] sheets) {
 
         boolean recordingDone = true;
 
@@ -141,9 +152,9 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
             TextView taskDuration = taskOverview.findViewById(R.id.taskDuration);
             TextView taskStatus = taskOverview.findViewById(R.id.taskStatus);
 
-            updateRecordingStatus(recordings[i], taskStatus, taskName, taskDuration, i);
+            updateRecordingStatus(recordings[i], sheets[i], taskStatus, taskName, taskDuration, i);
 
-            if(recordings[i] == null) {
+            if(recordings[i] == null && sheets[i].getStatus().isUnknown()) {
                 recordingDone = false;
             } else {
                 nextTask = nextTask + 1;
@@ -153,8 +164,10 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         return recordingDone;
     }
 
-    private void updateRecordingStatus(Recording recording, TextView taskStatus, TextView taskName, TextView taskDuration, int nr) {
-        if(recording == null) {
+    private void updateRecordingStatus(Recording recording, BoDySSheet sheet, TextView taskStatus, TextView taskName, TextView taskDuration, int nr) {
+        if(sheet.getStatus().isSkipped()) {
+            taskStatus.setText("Übersprungen");
+        } else if (recording == null) {
             taskStatus.setText(getString(R.string.recordingStatusNegativeDE));
         } else {
             taskStatus.setText(getString(R.string.recordingStatusPositiveDE));
@@ -178,9 +191,13 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
         taskDuration.setTextColor(getColor(R.color.black));
         taskScore.setTextColor(getColor(R.color.black));
         taskStatus.setTextColor(getColor(R.color.black));
-        playImage.setImageResource(R.drawable.play_24_darkblue);
+
+        if(sheet.getStatus().isSkipped()){
+            return;
+        }
 
         listenTaskOveview(taskOverview, nr);
+        playImage.setImageResource(R.drawable.play_24_darkblue);
 
         if(!last) {
             taskStatus.setText(getString(R.string.scoringStatusPositiveDE));
@@ -192,7 +209,7 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
     }
 
     private boolean checkEvaluationDone(){
-        return nextTask == assessment.getMaxRecordingNr();
+        return evaluatedTasks == assessment.getMaxRecordingNr();
     }
 
     private void activateFinishBtn(){
@@ -208,7 +225,6 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
 
     private void listenStartRecordingBtn(){
         binding.startRecordingBtn.setOnClickListener(view -> {
-            isPrefill = true;
             assessment.continueBoDyS(nextTask);
             navigateToNextActivity(this, MicrophoneConnectionActivity.class);
         });
@@ -255,17 +271,10 @@ public class BoDySOverviewPageActivity extends AppCompatActivity implements Inte
     @Override
     public void prepareIntent(Intent intent) {
         intent.putExtra("assessmentNr", assessmentNr);
-        intent.putExtra("prefill", isPrefill);
     }
 
     @Override
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr", -1);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.actionbar, menu);
-        return true;
     }
 }

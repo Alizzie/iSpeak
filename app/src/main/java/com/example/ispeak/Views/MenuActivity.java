@@ -7,18 +7,15 @@ package com.example.ispeak.Views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.ispeak.Interfaces.IntentHandler;
-import com.example.ispeak.Models.Assessment;
-import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.R;
 import com.example.ispeak.databinding.ActivityMenuBinding;
 
-public class MenuActivity extends AppCompatActivity implements IntentHandler {
+public class MenuActivity extends BaseApp {
 
     ActivityMenuBinding binding;
     Patient patientInfo;
@@ -57,5 +54,15 @@ public class MenuActivity extends AppCompatActivity implements IntentHandler {
     @Override
     public void processReceivedIntent(Intent intent) {
 
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        MenuItem homeItem = menu.findItem(R.id.action_return_home);
+        if(homeItem!= null) {
+            homeItem.setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 }

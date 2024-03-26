@@ -78,8 +78,10 @@ public class BoDySSubCriteriaAdapter extends RecyclerView.Adapter<BoDySSubCriter
                 View childView = frequencyBar.getChildAt(i);
                 BoDySSheet sheet = assessment.getBoDySSheets()[i];
 
-                if(!sheet.isPrefill() && hasMarking(sheet, criteria)) {
+                if(sheet.getStatus().isEvaluated() && hasMarking(sheet, criteria)) {
                     childView.setBackgroundColor(context.getColor(R.color.darkBlue));
+                } else if (sheet.getStatus().isSkipped()) {
+                    childView.setBackgroundColor(context.getColor(R.color.colorAccent));
                 } else {
                     childView.setBackground(context.getDrawable(R.drawable.quadrat_with_border_lightblue));
                 }

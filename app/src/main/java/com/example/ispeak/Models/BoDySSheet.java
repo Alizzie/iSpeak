@@ -2,6 +2,8 @@ package com.example.ispeak.Models;
 
 import android.util.Log;
 
+import com.example.ispeak.Utils.BoDySStatus;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,8 +13,11 @@ public class BoDySSheet {
     private HashMap<String, HashMap<String, Integer>> boDySCriteriaMarking = createBoDySCriteria();
     private HashMap<String, Integer> boDySScores = createBoDySScores();
     private HashMap<String, String> boDySNotes = createBoDySNotes();
-    private boolean prefill;
-    private int totalScore;
+    private BoDySStatus status;
+
+    public BoDySSheet(){
+        this.status = BoDySStatus.UNKNOWN;
+    }
 
     public HashMap<String, String> getBoDySNotes() {
         return boDySNotes;
@@ -45,11 +50,7 @@ public class BoDySSheet {
         HashMap<String, Integer> criteriaValues = boDySCriteriaMarking.get(criteria);
         Collection<Integer> values = criteriaValues.values();
 
-        if(!values.contains(1)){
-            return true;
-        }
-
-        return false;
+        return !values.contains(1);
     }
 
 
@@ -84,16 +85,12 @@ public class BoDySSheet {
 
     public boolean hasEmptyScores(){
         Collection<Integer> values = boDySScores.values();
-        if(values.contains(-1)){
-            return true;
-        }
-
-        return false;
+        return values.contains(-1);
     }
 
     public int getTotalScore(){
         Collection<Integer> scores = boDySScores.values();
-        totalScore = scores.stream().reduce(0,(x, y) -> x + y);
+        int totalScore = scores.stream().reduce(0, (x, y) -> x + y);
         return totalScore;
     }
 
@@ -115,14 +112,6 @@ public class BoDySSheet {
         for (String main : boDySNotes.keySet()) {
             Log.d("TESTBODYSNOTES", main + ": " + boDySNotes.get(main));
         }
-    }
-
-    public boolean isPrefill() {
-        return prefill;
-    }
-
-    public void setPrefill(boolean prefill) {
-        this.prefill = prefill;
     }
 
     private HashMap<String, HashMap<String, Integer>> createBoDySCriteria(){
@@ -213,6 +202,11 @@ public class BoDySSheet {
         return boDySNotes;
     }
 
+    public BoDySStatus getStatus() {
+        return status;
+    }
 
-
+    public void setStatus(BoDySStatus status) {
+        this.status = status;
+    }
 }

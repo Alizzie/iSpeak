@@ -6,17 +6,17 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ispeak.Adapter.RecordingTrialAdapter;
-import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Event;
@@ -24,14 +24,13 @@ import com.example.ispeak.Models.Microphone;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Models.Recording;
 import com.example.ispeak.R;
-import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.databinding.ActivityRecordingBinding;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class RecordingActivity extends AppCompatActivity implements IntentHandler {
+public class RecordingActivity extends BaseApp {
 
     private ActivityRecordingBinding binding;
     private RecordingTrialAdapter adapter;
@@ -70,7 +69,8 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
         adapter = new RecordingTrialAdapter(trialList, this);
 
         taskId = assessment.getTaskId();
-        Log.d("TESTS", String.valueOf(taskId));
+        assessment = (BoDyS) assessment;
+        Log.d("TESTS", String.valueOf(((BoDyS) assessment).getCurrentSheet().getStatus()));
 
         initTaskProgressBar();
         increaseTrialRun();
@@ -107,7 +107,7 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
     private void saveRecording(Recording recording) {
         File file = new File(recording.getMp3_filepath());
         File dest = new File(assessment.getFolderPath() + File.separator + "Recordings" +
-                File.separator + "recording" + taskId + ".3gp");
+                File.separator + "recording_" + taskId + ".3gp");
 
         boolean success = file.renameTo(dest);
         if(success) {
@@ -279,5 +279,25 @@ public class RecordingActivity extends AppCompatActivity implements IntentHandle
     @Override
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr", -1);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        MenuItem menuItem = menu.findItem(R.id.action_skip_task);
+        if(menuItem != null){
+            menuItem.setVisible(true);
+            menuItem.setOnMenuItemClickListener((item) -> {
+                assessment.skipTaskRound();
+                if(taskId < assessment.getMaxRecordingNr() - 1) {
+                    navigateToNextActivity(this, RecordingActivity.class);
+                } else{
+                    navigateToNextActivity(this, BoDySNotesActivity.class);
+                }
+                return true;
+            });
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 }

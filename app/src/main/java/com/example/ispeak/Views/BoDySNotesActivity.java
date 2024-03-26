@@ -8,14 +8,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ispeak.Adapter.CircumstancesAdapter;
 import com.example.ispeak.Adapter.NotesAdapter;
 import com.example.ispeak.Adapter.SimpleCheckboxAdapter;
-import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.databinding.ActivityBodysNotesBinding;
@@ -26,7 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BoDySNotesActivity extends AppCompatActivity implements IntentHandler {
+public class BoDySNotesActivity extends BaseApp {
 
     private ActivityBodysNotesBinding binding;
     private int assessmentNr;

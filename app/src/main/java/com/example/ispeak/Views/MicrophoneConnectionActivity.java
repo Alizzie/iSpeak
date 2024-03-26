@@ -14,7 +14,7 @@ import com.example.ispeak.Models.Microphone;
 import com.example.ispeak.R;
 import com.example.ispeak.databinding.ActivityMicrophoneConnectionBinding;
 
-public class MicrophoneConnectionActivity extends AppCompatActivity implements IntentHandler {
+public class MicrophoneConnectionActivity extends BaseApp {
 
     private ActivityMicrophoneConnectionBinding binding;
     private Microphone microphone;

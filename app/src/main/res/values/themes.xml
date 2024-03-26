@@ -230,6 +230,4 @@
         <item name="android:windowBlurBehindEnabled" tools:targetApi="s">true</item>
     </style>
 
-
-
 </resources>

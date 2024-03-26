@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BoDySFrequencyObservationActivity extends AppCompatActivity implements IntentHandler {
+public class BoDySFrequencyObservationActivity extends BaseApp {
     private ActivityFrequencyObservationBinding binding;
     private int assessmentNr;
     private BoDyS assessment;

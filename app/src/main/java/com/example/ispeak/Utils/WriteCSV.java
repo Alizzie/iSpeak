@@ -89,6 +89,11 @@ public class WriteCSV extends ViewModel {
 
     public void storeEventDataCSVNote(Assessment assessment, String filepath){
         Recording recording = assessment.getRecordings()[assessment.getTaskId()];
+
+        if(recording == null) {
+            return;
+        }
+
         ArrayList<Event> events = recording.getEvents();
 
         try {

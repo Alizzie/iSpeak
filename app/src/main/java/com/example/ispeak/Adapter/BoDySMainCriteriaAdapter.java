@@ -130,8 +130,10 @@ public class BoDySMainCriteriaAdapter extends RecyclerView.Adapter<BoDySMainCrit
                 View childView = frequencyBar.getChildAt(i);
                 BoDySSheet sheet = assessment.getBoDySSheets()[i];
 
-                if(!sheet.isPrefill() && hasMarking(sheet, mainCriteria)) {
+                if(sheet.getStatus().isEvaluated() && hasMarking(sheet, mainCriteria)) {
                     childView.setBackgroundColor(context.getColor(R.color.darkGrayBlue));
+                } else if (sheet.getStatus().isSkipped()) {
+                    childView.setBackgroundColor(context.getColor(R.color.colorAccent));
                 } else {
                     childView.setBackground(context.getDrawable(R.drawable.quadrat_with_border));
                 }

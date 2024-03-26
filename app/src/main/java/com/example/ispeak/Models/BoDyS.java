@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.util.Log;
 
 import com.example.ispeak.Utils.BoDySScoringView;
+import com.example.ispeak.Utils.BoDySStatus;
 import com.example.ispeak.Utils.ReadCSV;
 import com.example.ispeak.Utils.WriteCSV;
 
@@ -54,8 +55,19 @@ public class BoDyS extends Assessment{
         boDySSheets[taskId] = this.currentSheet;
     }
 
+    @Override
     public void startNewTaskRound(){
-        currentSheet.getInfos();
+        currentSheet.setStatus(BoDySStatus.PREFILL);
+        saveTaskResultsInCSV();
+
+        if(taskId+1 < maxRecordingNr) {
+            continueBoDyS(taskId + 1);
+        }
+    }
+
+    @Override
+    public void skipTaskRound() {
+        currentSheet.setStatus(BoDySStatus.SKIPPED);
         saveTaskResultsInCSV();
 
         if(taskId+1 < maxRecordingNr) {
@@ -64,7 +76,7 @@ public class BoDyS extends Assessment{
     }
 
     public void saveEvaluationData(){
-        currentSheet.setPrefill(false);
+        currentSheet.setStatus(BoDySStatus.EVALUATED);
         updateTaskResultsInCSV();
     }
 
@@ -72,8 +84,8 @@ public class BoDyS extends Assessment{
     public List<String[]> onWriteCSV() {
         ArrayList<String> criteriaArray = new ArrayList<>(Arrays.asList("TaskNr", "Status"));
 
-        String prefill = currentSheet.isPrefill() ? "Prefill" : "Evaluated";
-        ArrayList<String> markingsArray = new ArrayList<>(Arrays.asList(String.valueOf(taskId), prefill));
+        String statusName = currentSheet.getStatus().getStatusName();
+        ArrayList<String> markingsArray = new ArrayList<>(Arrays.asList(String.valueOf(taskId), statusName));
 
 
         List<String> mainKeys = currentSheet.getMainCriteriaList().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
@@ -118,7 +130,7 @@ public class BoDyS extends Assessment{
     private void restoreBoDysSheet(String[] headline, String[] line){
         BoDySSheet boDySSheet = new BoDySSheet();
         int taskId = Integer.parseInt(line[0]);
-        boolean prefill = Objects.equals(line[1], "Prefill");
+        String status = line[1];
 
         String mainCriteriaFocus = "";
         for(int lineIndex = 2; lineIndex < headline.length; lineIndex++){
@@ -141,7 +153,7 @@ public class BoDyS extends Assessment{
             }
         }
 
-        boDySSheet.setPrefill(prefill);
+        boDySSheet.setStatus(BoDySStatus.fromString(status));
         boDySSheets[taskId] = boDySSheet;
     }
 

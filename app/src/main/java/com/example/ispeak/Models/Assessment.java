@@ -18,6 +18,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class Assessment implements FolderStructureCreator, WriteCSVInterface {
 
@@ -131,7 +133,9 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
                 File recordingFile = recordingFiles[i];
                 Recording recording = retrieveRecording(recordingFile);
                 recording.setEvents(retrieveRecordingEvents(csvDir, recording, i));
-                recordings[i] = recording;
+
+                int recordingIndex = calculateRecordingIndex(recording.getMp3_filepath());
+                recordings[recordingIndex] = recording;
             }
         }
     }
@@ -157,6 +161,21 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         return null;
     }
 
+    private int calculateRecordingIndex(String input){
+        int underscoreIndex = input.indexOf('_');
+        if (underscoreIndex != -1) {
+            String numberString = input.substring(underscoreIndex + 1, input.lastIndexOf('.'));
+            try {
+                return Integer.parseInt(numberString);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return -1;
+            }
+        } else {
+            return -1;
+        }
+    }
+
     private long calculateRecordingTime(File recordingFile){
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(recordingFile.getAbsolutePath());
@@ -165,6 +184,8 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
     }
 
     public abstract void retrieveConcreteAssessment(ArrayList<String[]> lines);
+    public abstract void skipTaskRound();
+    public abstract void startNewTaskRound();
 
     public void updateRecordingList(Recording recording){
         this.recordings[taskId] = recording;

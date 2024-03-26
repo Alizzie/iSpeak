@@ -1,23 +1,29 @@
 package com.example.ispeak.Views;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 
 import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Microphone;
 import com.example.ispeak.Models.Patient;
+import com.example.ispeak.R;
 import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.databinding.ActivityBodysMenuBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 
-public class BoDySMenuActivity extends AppCompatActivity implements IntentHandler {
+public class BoDySMenuActivity extends BaseApp {
 
     ActivityBodysMenuBinding binding;
     private int assessmentNr;
