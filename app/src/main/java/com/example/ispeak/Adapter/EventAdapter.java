@@ -28,7 +28,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public EventAdapter(List<Event> eventList, Context context, EventLabelingObserver observer) {
         this.eventList = eventList;
         this.context = context;
-        this.checkPosition = 0;
+        this.checkPosition = RecyclerView.NO_POSITION;
         this.observer = observer;
     }
 
@@ -36,6 +36,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public void toggleDeleteMode(){
         deleteMode = !deleteMode;
         notifyItemRangeChanged(0, getItemCount());
+        observer.onEventClick(checkPosition);
     }
 
     public void notifyAdapterItemInserted(int eventId) {
@@ -50,12 +51,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             notifyListRemovedObserver(position);
             notifyItemRemoved(position);
 
-            if (position == checkPosition) {
-                checkPosition = RecyclerView.NO_POSITION;
-            } else if (position < checkPosition) {
-                checkPosition--;
-            }
+            checkPosition = RecyclerView.NO_POSITION;
         }
+
+        toggleDeleteMode();
     }
 
     private void notifyListRemovedObserver(int position) {
@@ -130,6 +129,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         private void tickItem(){
             if(checkPosition == RecyclerView.NO_POSITION) {
+                eventItem.setBackgroundColor(context.getColor(R.color.white));
                 return;
             }
             if(deleteMode) {

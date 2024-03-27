@@ -81,7 +81,7 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
         initPatientData();
         initBoDySSheet();
 
-        intiWaveformSeekbar();
+        initWaveformSeekbar();
         initTaskProgressBar(taskId);
 
         ArrayList<Event> events = recording.getEvents();
@@ -106,11 +106,10 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
         assessment.setCurrentSheet(this.boDySSheet);
     }
 
-    private void intiWaveformSeekbar() {
+    private void initWaveformSeekbar() {
         WaveformSeekbar waveformSeekbar = binding.waveformSeekbar;
         waveformSeekbar.init(recording.getMp3_filepath(), binding.audioTime, binding.audioDuration, binding.playBtn);
-        int eventId = recording.getEvents().size() == 0 ? (int) RecyclerView.NO_ID : 0;
-        setWaveformSeekbarProgress(eventId);
+        setWaveformSeekbarProgress((int) RecyclerView.NO_ID);
     }
 
     private void initTaskProgressBar(int taskId){
@@ -246,7 +245,7 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
         if(events.size() == 0 || eventAdapter.isDeleteMode()){
             selectedEvent = null;
         } else if (eventAdapter.getCheckPosition() == RecyclerView.NO_POSITION){
-            selectedEvent = events.get(0);
+            selectedEvent = null;
         } else {
             selectedEvent = events.get(eventAdapter.getCheckPosition());
         }
