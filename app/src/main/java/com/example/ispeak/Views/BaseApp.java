@@ -1,6 +1,8 @@
 package com.example.ispeak.Views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,6 +12,8 @@ import androidx.appcompat.view.menu.MenuBuilder;
 
 import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.R;
+
+import java.util.Objects;
 
 public abstract class BaseApp extends AppCompatActivity implements IntentHandler {
 
@@ -37,5 +41,19 @@ public abstract class BaseApp extends AppCompatActivity implements IntentHandler
             navigateToNextActivity(this, MenuActivity.class);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void enableNavBackArrow(){
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(this instanceof MainActivity || this instanceof MenuActivity){
+            return;
+        }
+        navigateToNextActivity(this, MenuActivity.class);
     }
 }

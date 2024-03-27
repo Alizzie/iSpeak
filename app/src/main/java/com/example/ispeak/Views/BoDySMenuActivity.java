@@ -24,6 +24,7 @@ import com.example.ispeak.databinding.ActivityBodysMenuBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
+import java.util.Objects;
 
 public class BoDySMenuActivity extends BaseApp {
 
@@ -39,6 +40,7 @@ public class BoDySMenuActivity extends BaseApp {
         assessmentNr = Patient.getInstance().findAssessment(BoDyS.class);
 
         retrieveIntent(this);
+        enableNavBackArrow();
         listenBtnNewAssessment();
 
         if(isExisting()){
@@ -117,5 +119,15 @@ public class BoDySMenuActivity extends BaseApp {
 
     @Override
     public void processReceivedIntent(Intent intent) {
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            navigateToNextActivity(this, MenuActivity.class);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

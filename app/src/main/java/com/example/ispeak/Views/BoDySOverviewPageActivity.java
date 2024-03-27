@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
@@ -20,6 +22,8 @@ import com.example.ispeak.Models.Recording;
 import com.example.ispeak.R;
 import com.example.ispeak.databinding.ActivityBodysOverviewPageBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.Objects;
 
 public class BoDySOverviewPageActivity extends BaseApp {
 
@@ -51,6 +55,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
 
     private void init(){
         initPatientData();
+        enableNavBackArrow();
         initTasks();
         initProgressBar();
 
@@ -276,5 +281,15 @@ public class BoDySOverviewPageActivity extends BaseApp {
     @Override
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr", -1);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            navigateToNextActivity(this, BoDySMenuActivity.class);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -3,10 +3,12 @@ package com.example.ispeak.Views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class BoDySNotesActivity extends BaseApp {
@@ -35,9 +38,14 @@ public class BoDySNotesActivity extends BaseApp {
         binding = ActivityBodysNotesBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
 
+        init();
+        listenContinueBtn();
+    }
+
+    private void init(){
+        enableNavBackArrow();
         initCircumstancesListView();
         initCommentsListView();
-        listenContinueBtn();
     }
 
     private void initCircumstancesListView(){
@@ -112,5 +120,15 @@ public class BoDySNotesActivity extends BaseApp {
     @Override
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr",  -1);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            navigateToNextActivity(this, BoDySOverviewPageActivity.class);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

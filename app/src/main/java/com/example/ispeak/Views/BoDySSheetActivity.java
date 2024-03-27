@@ -61,6 +61,7 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
             listenPlayAudioBtn();
             listenBackwardAudioBtn();
             listenForwardAudioBtn();
+            enableNavBackArrow();
         }
 
         if(!assessment.isCompleted()){
@@ -330,6 +331,8 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
         int itemId = item.getItemId();
         if(itemId == R.id.action_return_home) {
             binding.waveformSeekbar.stopWaveformAudio();
+        } else if (itemId == android.R.id.home) {
+            navigateToNextActivity(this, BoDySOverviewPageActivity.class);
         }
 
         return super.onOptionsItemSelected(item);

@@ -20,20 +20,20 @@
         android:id="@+id/criteriaFrequencyRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/confirmBtn"
         android:layout_marginTop="50dp"
         android:layout_marginHorizontal="20dp"/>
+<!--    android:layout_above="@id/confirmBtn"-->
 
-    <Button
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/confirmBtn"
-        style="@style/Button"
-        android:layout_width="250dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
-        android:layout_gravity="center"
-        android:text="@string/confirmBtn" />
+<!--    <Button-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:id="@+id/confirmBtn"-->
+<!--        style="@style/Button"-->
+<!--        android:layout_width="250dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:layout_marginBottom="40dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:text="@string/confirmBtn" />-->
 
 </RelativeLayout>

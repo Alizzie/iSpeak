@@ -22,14 +22,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ISpeak"
         tools:targetApi="31">
-        <activity android:name=".Views.BoDySNotesActivity"/>
-        <activity android:name=".Views.BoDySFrequencyObservationActivity"/>
-        <activity android:name=".Views.BoDySOverviewPageActivity"/>
+        
+        <activity
+            android:name=".Views.BoDySNotesActivity"
+            android:parentActivityName=".Views.BoDySOverviewPageActivity"/>
+
+        <activity
+            android:name=".Views.BoDySFrequencyObservationActivity"
+            android:parentActivityName=".Views.BoDySOverviewPageActivity"/>
+
+        <activity
+            android:name=".Views.BoDySOverviewPageActivity"
+            android:parentActivityName=".Views.BoDySMenuActivity"/>
+
         <activity android:name=".Views.BoDySSheetActivity"/>
         <activity android:name=".Views.RecordingActivity"/>
-        <activity android:name=".Views.MicrophoneConnectionActivity"/>
-        <activity android:name=".Views.BoDySMenuActivity"/>
+
+        <activity
+            android:name=".Views.MicrophoneConnectionActivity"
+            android:parentActivityName=".Views.MenuActivity"/>
+
+        <activity
+            android:name=".Views.BoDySMenuActivity"
+            android:parentActivityName=".Views.MenuActivity"/>
+
         <activity android:name=".Views.MenuActivity"/>
+
         <activity
             android:name=".Views.MainActivity"
             android:exported="true">

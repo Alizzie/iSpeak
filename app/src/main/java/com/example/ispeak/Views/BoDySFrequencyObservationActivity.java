@@ -3,7 +3,9 @@ package com.example.ispeak.Views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +23,7 @@ import com.example.ispeak.databinding.ActivityFrequencyObservationBinding;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class BoDySFrequencyObservationActivity extends BaseApp {
     private ActivityFrequencyObservationBinding binding;
@@ -34,12 +37,12 @@ public class BoDySFrequencyObservationActivity extends BaseApp {
         setContentView(binding.getRoot());
 
         init();
-        listenConfirmBtn();
-
+        //listenConfirmBtn();
     }
 
     private void init(){
         this.assessment = (BoDyS) Patient.getInstance().getAssessmentList().get(assessmentNr);
+        enableNavBackArrow();
         initFrequencyObservationRecyclerView();
     }
 
@@ -53,9 +56,9 @@ public class BoDySFrequencyObservationActivity extends BaseApp {
         binding.criteriaFrequencyRecyclerView.setAdapter(adapter);
     }
 
-    private void listenConfirmBtn(){
-        binding.confirmBtn.setOnClickListener(view -> navigateToNextActivity(this, BoDySOverviewPageActivity.class));
-    }
+//    private void listenConfirmBtn(){
+//        binding.confirmBtn.setOnClickListener(view -> navigateToNextActivity(this, BoDySOverviewPageActivity.class));
+//    }
 
     @Override
     public void prepareIntent(Intent intent) {
@@ -65,5 +68,15 @@ public class BoDySFrequencyObservationActivity extends BaseApp {
     @Override
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr", -1);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            navigateToNextActivity(this, BoDySOverviewPageActivity.class);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

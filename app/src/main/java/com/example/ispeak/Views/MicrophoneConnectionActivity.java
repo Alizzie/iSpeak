@@ -2,9 +2,12 @@ package com.example.ispeak.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +16,8 @@ import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Microphone;
 import com.example.ispeak.R;
 import com.example.ispeak.databinding.ActivityMicrophoneConnectionBinding;
+
+import java.util.Objects;
 
 public class MicrophoneConnectionActivity extends BaseApp {
 
@@ -35,6 +40,7 @@ public class MicrophoneConnectionActivity extends BaseApp {
 
     private void init(){
         retrieveIntent(this);
+        enableNavBackArrow();
         microphone = new Microphone(this);
     }
 
@@ -82,5 +88,20 @@ public class MicrophoneConnectionActivity extends BaseApp {
     public void processReceivedIntent(Intent intent) {
         assessmentNr = intent.getIntExtra("assessmentNr", -1);
         assessmentTaskId = intent.getIntExtra("assessmentTaskId", 0);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            navigateToNextActivity(this, BoDySMenuActivity.class);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        navigateToNextActivity(this, MenuActivity.class);
     }
 }

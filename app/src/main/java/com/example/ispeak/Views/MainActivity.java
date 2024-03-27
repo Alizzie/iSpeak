@@ -21,7 +21,7 @@ import java.io.File;
 import java.util.Objects;
 
 
-public class MainActivity extends BaseApp implements IntentHandler {
+public class MainActivity extends BaseApp {
     ActivityMainBinding binding;
     Patient patientInfo;
 
