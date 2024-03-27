@@ -64,8 +64,15 @@ public class Recording implements ReadEventCSVInterface {
         long timeStart = Utils.parseTimeToMilliseconds(line[1]);
         long timeEnd = Utils.parseTimeToMilliseconds(line[2]);
 
-        String[] labels = line[3].split("/");
-        ArrayList<String> eventLabels = new ArrayList<>(Arrays.asList(labels));
+        String labels = line[3];
+        ArrayList<String> eventLabels;
+
+        if(labels.trim().isEmpty()) {
+            eventLabels = new ArrayList<>();
+        } else {
+            String[] formattedLabels = labels.split("/");
+            eventLabels = new ArrayList<>(Arrays.asList(formattedLabels));
+        }
 
         return new Event(eventId, taskId, timeStart, timeEnd, eventLabels);
     }
