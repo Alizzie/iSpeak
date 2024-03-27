@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -176,24 +178,6 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
         });
     }
 
-    private void notPrefillNavigation(){
-        if(boDySSheet.hasEmptyScores()) {
-            showScoringMissingDialog();
-            return;
-        }
-
-        assessment.saveEvaluationData();
-        navigateToNextActivity(this, BoDySOverviewPageActivity.class);
-    }
-
-    private void showScoringMissingDialog(){
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Fehlende Bewertungen")
-                .setMessage("Bitte gebe alle Kriterien eine Bewertung.")
-                .setPositiveButton("Ok", null)
-                .show();
-    }
-
     private void prefillNavigation(){
         if(taskId < assessment.getMaxRecordingNr() - 1) {
             assessment.startNewTaskRound();
@@ -202,6 +186,17 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
             assessment.startNewTaskRound();
             navigateToNextActivity(this, BoDySNotesActivity.class);
         }
+    }
+
+    private void notPrefillNavigation(){
+        if(boDySSheet.hasEmptyScores()) {
+            showScoringMissingDialog();
+            return;
+        }
+
+        assessment.saveEvaluationData();
+        binding.waveformSeekbar.stopWaveformAudio();
+        navigateToNextActivity(this, BoDySOverviewPageActivity.class);
     }
 
     private void listenEditBtn(){
@@ -220,6 +215,7 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
             binding.waveformSeekbar.changeAudioPlayback(-1, binding.playBtn)
         );
     }
+
     private void listenForwardAudioBtn() {
         binding.forwardBtn.setOnClickListener(view ->
             binding.waveformSeekbar.changeAudioPlayback(1, binding.playBtn));
@@ -236,6 +232,13 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
 
             binding.eventModeBtn.performClick();
         });
+    }
+    private void showScoringMissingDialog(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Fehlende Bewertungen")
+                .setMessage("Bitte gebe alle Kriterien eine Bewertung.")
+                .setPositiveButton("Ok", null)
+                .show();
     }
 
     private void updateCategoryAdapter(ArrayList<Event> events){
@@ -320,5 +323,16 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
     public void onCategoryClick() {
         setEventLabels(recording.getEvents());
         eventAdapter.notifyItemChanged(eventAdapter.getCheckPosition());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int itemId = item.getItemId();
+        if(itemId == R.id.action_return_home) {
+            binding.waveformSeekbar.stopWaveformAudio();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
