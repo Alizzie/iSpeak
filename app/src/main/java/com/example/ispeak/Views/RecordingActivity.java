@@ -69,8 +69,6 @@ public class RecordingActivity extends BaseApp {
         adapter = new RecordingTrialAdapter(trialList, this);
 
         taskId = assessment.getTaskId();
-        assessment = (BoDyS) assessment;
-        Log.d("TESTS", String.valueOf(((BoDyS) assessment).getCurrentSheet().getStatus()));
 
         initTaskProgressBar();
         increaseTrialRun();
@@ -200,10 +198,14 @@ public class RecordingActivity extends BaseApp {
 
     private void updatePlayBtn(Button playBtn, String playMode) {
          if (playMode.equalsIgnoreCase("Stop")){
-            playBtn.setText(getResources().getString(R.string.retryRecordingBtn));
+            playBtn.setText(getString(R.string.retryRecordingBtn));
             microphone.stopRecording();
-        } else {
-            playBtn.setText(getResources().getString(R.string.stopRecordingBtn));
+        } else if (playMode.equalsIgnoreCase("Retry")) {
+             playBtn.setText(getString(R.string.startRecordingBtn));
+             microphone.resetRecording(binding.waveformView);
+             resetEventCounter();
+         } else {
+            playBtn.setText(getString(R.string.stopRecordingBtn));
             increaseTrialRun();
             microphone.startRecording(binding.waveformView, outputAudio);
         }
@@ -217,7 +219,7 @@ public class RecordingActivity extends BaseApp {
             adapter = new RecordingTrialAdapter(trialList, getApplicationContext());
             binding.recyclerTrial.setAdapter(adapter);
             binding.recyclerTrial.smoothScrollToPosition(trialList.size() - 1);
-        } else {
+        } else if(playMode.equalsIgnoreCase("Retry")){
             binding.waveformView.setVisibility(View.VISIBLE);
             binding.recyclerTrial.setVisibility(View.GONE);
         }
@@ -226,10 +228,15 @@ public class RecordingActivity extends BaseApp {
     private void updateBtnLayout(String playMode) {
         if (playMode.equalsIgnoreCase("Stop")) {
             binding.btnConfirm.setVisibility(View.VISIBLE);
-            binding.btnPauseRecording.setVisibility(View.INVISIBLE);
-            binding.btnEventDetected.setVisibility(View.INVISIBLE);
-        } else {
-            binding.btnConfirm.setVisibility(View.INVISIBLE);
+            binding.btnPauseRecording.setVisibility(View.GONE);
+            binding.btnEventDetected.setVisibility(View.GONE);
+        } else if (playMode.equalsIgnoreCase("Retry")) {
+            binding.btnPauseRecordingNotActivated.setVisibility(View.VISIBLE);
+            binding.btnEventDetectedNotActivated.setVisibility(View.VISIBLE);
+            binding.btnConfirm.setVisibility(View.GONE);
+        } else{
+            binding.btnPauseRecordingNotActivated.setVisibility(View.GONE);
+            binding.btnEventDetectedNotActivated.setVisibility(View.GONE);
             binding.btnPauseRecording.setVisibility(View.VISIBLE);
             binding.btnEventDetected.setVisibility(View.VISIBLE);
         }
@@ -243,13 +250,12 @@ public class RecordingActivity extends BaseApp {
             long totalTimeElapsed = binding.totalTimeChrono.getTimeElapsed();
             long patientTimeElapsed = binding.patientTimeChrono.getTimeElapsed();
             trialList.add(new Recording(outputAudio, totalTimeElapsed, patientTimeElapsed, eventList));
-        } else {
+        } else if (playMode.equalsIgnoreCase("Start")) {
             long base = SystemClock.elapsedRealtime();
             binding.totalTimeChrono.setBase(base);
             binding.totalTimeChrono.start();
             binding.patientTimeChrono.setBase(base);
             binding.patientTimeChrono.start();
-            resetEventCounter();
         }
     }
 

@@ -44,16 +44,16 @@ public class MainActivity extends BaseApp implements IntentHandler {
             boolean correctInputLength = checkIdLength(patientId, caseId);
             String diagnosis = retrieveDiagnosis(diagnosisId);
 
-//            if (correctInputLength && diagnosis != "NaN") {
-//                patientInfo = Patient.getInstance(patientId, caseId, diagnosis, this);
-//
-//                navigateToNextActivity(this, MenuActivity.class);
-//            }
+            if (correctInputLength && diagnosis != "NaN") {
+                patientInfo = Patient.getInstance(patientId, caseId, diagnosis, this);
+
+                restoreAssessments();
+                navigateToNextActivity(this, MenuActivity.class);
+            }
 
 
-            patientInfo = Patient.getInstance(patientId, caseId, diagnosis, getApplicationContext());
-            restoreAssessments();
-            navigateToNextActivity(this, MenuActivity.class);
+//            patientInfo = Patient.getInstance(patientId, caseId, diagnosis, getApplicationContext());
+//            navigateToNextActivity(this, MenuActivity.class);
         });
     }
 
@@ -67,8 +67,11 @@ public class MainActivity extends BaseApp implements IntentHandler {
                 Assessment assessment = AssessmentFactory.createAssessment(assessmentName);
 
                 if(assessment != null) {
-                    assessment.retrieveAssessment(file);
-                    Patient.getInstance().addAssessment(assessment);
+                    boolean existing = assessment.retrieveAssessment(file);
+
+                    if(existing){
+                        Patient.getInstance().addAssessment(assessment);
+                    }
                 }
             }
         }

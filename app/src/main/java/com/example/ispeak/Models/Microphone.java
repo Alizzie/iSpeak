@@ -85,14 +85,12 @@ public class Microphone {
 
     public void startRecording(WaveformView waveformView, String outputAudio) {
         isActive = true;
-        isPaused = false;
         startMediaPlayer(outputAudio);
         startAudioRecorder(waveformView);
     }
 
     public void stopRecording(){
         isActive = false;
-        Log.d("PLAYBACKK", String.valueOf(mediaRecorder == null));
         releaseMediaRecorder();
         releaseAudioRecorder();
     }
@@ -113,6 +111,13 @@ public class Microphone {
         visualizeRecording(waveformView);
     }
 
+    public void resetRecording(WaveformView waveformView){
+        isPaused = false;
+        isActive = false;
+        waveformView.clearWaveform();
+        visualizeRecording(waveformView);
+    }
+
     private void startMediaPlayer(String outputAudio){
         prepareMediaRecorder(outputAudio);
         mediaRecorder.start();
@@ -121,13 +126,13 @@ public class Microphone {
     private void startAudioRecorder(WaveformView waveformView) {
         prepareAudioRecorder();
         audioRecord.startRecording();
-
         visualizeRecording(waveformView);
     }
 
     private void visualizeRecording(WaveformView waveformView) {
         new Thread(() -> {
             try {
+                Log.d("AUDIORECORDD", String.valueOf(audioRecord));
                 while (!isPaused && isActive) {
                     int bytesRead = audioRecord.read(audioBuffer, 0, BUFFER_SIZE);
                     if (bytesRead > 0) {
@@ -139,6 +144,7 @@ public class Microphone {
                     }
                 }
             } catch (Exception e) {
+                Log.e("AudioRecord", "Exception in the visualizeRecording thread");
                 e.printStackTrace();
             }
         }).start();
@@ -164,14 +170,27 @@ public class Microphone {
     }
 
     private void releaseMediaRecorder(){
-        mediaRecorder.stop();
-        mediaRecorder.release();
-        mediaRecorder = null;
+        if (mediaRecorder != null) {
+            try {
+                mediaRecorder.stop();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+            mediaRecorder.release();
+            mediaRecorder = null;
+        }
     }
 
     private void releaseAudioRecorder(){
-        if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+        Log.d("TESTSSS, ", "RECORDER");
+        if (audioRecord != null && audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+            try {
+                audioRecord.stop();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
             audioRecord.release();
+            audioRecord = null;
         }
     }
 

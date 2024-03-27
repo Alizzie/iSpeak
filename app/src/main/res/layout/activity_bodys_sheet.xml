@@ -269,7 +269,8 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
-                    android:text="@string/skipBoDyS" />
+                    android:text="@string/skipBoDyS"
+                    android:textSize="20dp"/>
 
             </RelativeLayout>
 

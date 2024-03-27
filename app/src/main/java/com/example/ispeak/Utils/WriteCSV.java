@@ -131,6 +131,7 @@ public class WriteCSV extends ViewModel {
         List<String[]> newLines = new ArrayList<>();
         Recording recording = assessment.getRecordings()[assessment.getTaskId()];
         ArrayList<Event> events = recording.getEvents();
+        Log.d("TESTSS", String.valueOf(recording.getEvents().size()));
 
         try {
             CSVReader reader = new CSVReader(new FileReader(filepath));
@@ -143,6 +144,8 @@ public class WriteCSV extends ViewModel {
             }
 
             boolean addedOnce = false;
+            int searchedTaskId = assessment.getTaskId();
+            int taskId = searchedTaskId;
             for (int i = 0; i < lines.size(); i++) {
 
                 String[] line = lines.get(i);
@@ -151,8 +154,8 @@ public class WriteCSV extends ViewModel {
                     continue;
                 }
 
-                int taskId = Integer.parseInt(line[0]);
-                int searchedTaskId = assessment.getTaskId();
+                taskId = Integer.parseInt(line[0]);
+                Log.d("TESTSS", taskId + " " + searchedTaskId);
 
                 if((taskId > searchedTaskId || taskId == searchedTaskId) && !addedOnce) {
                     newLines.addAll(eventsData);
@@ -168,6 +171,14 @@ public class WriteCSV extends ViewModel {
                 newLines.addAll(eventsData);
             }
 
+            if(taskId < searchedTaskId) {
+                newLines.addAll(eventsData);
+            }
+
+            if(lines.size() == 0){
+                storeEventDataCSVNote(assessment, filepath);
+                return;
+            }
 
             CSVWriter writer = new CSVWriter(new FileWriter(filepath));
             writer.writeAll(newLines);

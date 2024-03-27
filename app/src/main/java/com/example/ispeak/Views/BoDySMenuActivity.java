@@ -87,7 +87,7 @@ public class BoDySMenuActivity extends BaseApp {
 
     private void startNewAssessment(){
         BoDyS boDyS = new BoDyS();
-        assessmentNr = 0;
+        assessmentNr = Patient.getInstance().getAssessmentList().size();
         Patient.getInstance().addAssessment(boDyS, assessmentNr);
         Utils.deleteFromDir(new File(boDyS.getFolderPath() + File.separator + "Recordings"));
         Utils.deleteFromDir(new File(boDyS.getFolderPath() + File.separator + "CSV"));

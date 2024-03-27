@@ -120,11 +120,28 @@ public class BoDyS extends Assessment{
     public void retrieveConcreteAssessment(ArrayList<String[]> lines) {
 
         String[] headline = lines.get(3);
+        int assessmentDataOffset = 4;
 
-        for(int i = 4; i < lines.size(); i++) {
-            String[] line = lines.get(i);
-            restoreBoDysSheet(headline, line);
+        for(int i = 0; i < getMaxRecordingNr(); i++) {
+
+            Log.d("TESTSS", "INDEX" + " " + i);
+            if((i + assessmentDataOffset) >= lines.size() && (recordings[i] != null)){
+                Log.d("TESTSS", "NEW BODYS: " + " " + i);
+                boDySSheets[i] = new BoDySSheet();
+            } else if (recordings[i] == null) {
+                break;
+            } else {
+                String[] line = lines.get(i + assessmentDataOffset);
+                if(recordings[i] == null) {
+                    break;
+                }
+                restoreBoDysSheet(headline, line);
+            }
+
+
         }
+
+
     }
 
     private void restoreBoDysSheet(String[] headline, String[] line){
@@ -165,6 +182,17 @@ public class BoDyS extends Assessment{
         Pattern pattern = Pattern.compile(".*\\d.*");
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
+    }
+
+    private int getNumberOfRecordings(){
+        int number = 0;
+        for(Recording recording : recordings){
+            if(recording != null){
+                number += 1;
+            }
+        }
+
+        return number;
     }
 
     public BoDySSheet[] getBoDySSheets() {

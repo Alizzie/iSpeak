@@ -74,7 +74,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
 
     private void initProgressBar(){
 
-        float progress = ((float) 100 / assessment.getMaxRecordingNr()) * (nextTask);
+        float progress = ((float) 100 / assessment.getMaxRecordingNr()) * (evaluatedTasks);
         progress = Math.max(progress, 0);
 
         binding.taskProgressBar.setProgress((int) progress);
@@ -154,7 +154,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
 
             updateRecordingStatus(recordings[i], sheets[i], taskStatus, taskName, taskDuration, i);
 
-            if(recordings[i] == null && sheets[i].getStatus().isUnknown()) {
+            if(recordings[i] == null && ((sheets[i] == null) || sheets[i].getStatus().isUnknown())) {
                 recordingDone = false;
             } else {
                 nextTask = nextTask + 1;
@@ -165,10 +165,10 @@ public class BoDySOverviewPageActivity extends BaseApp {
     }
 
     private void updateRecordingStatus(Recording recording, BoDySSheet sheet, TextView taskStatus, TextView taskName, TextView taskDuration, int nr) {
-        if(sheet.getStatus().isSkipped()) {
-            taskStatus.setText("Übersprungen");
-        } else if (recording == null) {
+        if((recording == null) || (sheet == null)) {
             taskStatus.setText(getString(R.string.recordingStatusNegativeDE));
+        } else if (sheet.getStatus().isSkipped()) {
+            taskStatus.setText("Übersprungen");
         } else {
             taskStatus.setText(getString(R.string.recordingStatusPositiveDE));
             taskDuration.setText(recording.getFormattedPatientTime());
@@ -258,8 +258,8 @@ public class BoDySOverviewPageActivity extends BaseApp {
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
         dialogBuilder.setTitle("Willst du das Assessment abschliessen?")
                 .setMessage("Nach dem Abschliessen ist das Überarbeiten des Assessments nicht mehr möglich.")
-                .setPositiveButton("Ja", ((dialogInterface, i) -> finishBoDySAssessment()))
-                .setNegativeButton("Nein", null)
+                .setPositiveButton("Abschliessen", ((dialogInterface, i) -> finishBoDySAssessment()))
+                .setNegativeButton("Weiter bearbeiten", null)
                 .show();
     }
 

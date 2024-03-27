@@ -82,7 +82,7 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
     }
 
 
-    public void retrieveAssessment(File file) {
+    public boolean retrieveAssessment(File file) {
         File recordingsDir = new File(file, "Recordings");
         File csvDir = new File(file, "CSV");
         ArrayList<String[]> lines = readLines(new File(csvDir, "Assessment.csv"));
@@ -90,9 +90,16 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         if (recordingsDir.exists() && recordingsDir.isDirectory() && csvDir.exists() && csvDir.isDirectory()) {
             retrieveRecordings(recordingsDir, csvDir);
             //lines.get(0) = notes headline
+
+            if(lines.size() == 0) {
+                return false;
+            }
+
             retrieveNotes(lines.get(1));
             this.retrieveConcreteAssessment(lines);
         }
+
+        return true;
     }
 
     private void retrieveNotes(String[] notes) {
@@ -135,7 +142,13 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
                 recording.setEvents(retrieveRecordingEvents(csvDir, recording, i));
 
                 int recordingIndex = calculateRecordingIndex(recording.getMp3_filepath());
-                recordings[recordingIndex] = recording;
+
+                Log.d("TESTSS", recordingFile.getAbsolutePath() + " " + +recordingIndex);
+                if(recordingIndex != -1){
+                    recordings[recordingIndex] = recording;
+                } else{
+                    Utils.deleteFromDir(recordingFile);
+                }
             }
         }
     }

@@ -235,6 +235,18 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="50dp"
             android:layout_alignParentStart="true"
+            android:visibility="gone"
+            android:text="@string/pauseRecordingBtn" />
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="120dp"
+            android:id="@+id/btnPauseRecordingNotActivated"
+            style="@style/ButtonNotActivated"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="50dp"
+            android:layout_alignParentStart="true"
+            android:clickable="false"
             android:text="@string/pauseRecordingBtn" />
 
         <Button
@@ -245,6 +257,18 @@
             android:layout_marginTop="20dp"
             android:layout_alignParentEnd="true"
             style="@style/Button"
+            android:visibility="gone"
+            android:text="@string/eventDetectedBtn" />
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="120dp"
+            android:id="@+id/btnEventDetectedNotActivated"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentEnd="true"
+            style="@style/ButtonNotActivated"
+            android:clickable="false"
             android:text="@string/eventDetectedBtn" />
 
         <Button

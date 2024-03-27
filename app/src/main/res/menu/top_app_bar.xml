@@ -1,10 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_skip_task"
-        android:title="Skip"
-        app:showAsAction="always"
-        android:visible="false"/>
 
     <item android:id="@+id/action_return_home"
         android:title="Dashboard"
@@ -12,10 +8,17 @@
         app:showAsAction="always"
         android:visible="true"/>
 
+    <item android:id="@+id/action_skip_task"
+        android:title="Skip"
+        android:icon="@drawable/navigation_arrow_forward_24"
+        app:showAsAction="withText"
+        android:visible="false"/>
+
     <item android:id="@+id/action_patient_profile"
         android:title="Patient Profile "
         android:icon="@drawable/navigation_profile_24"
-        app:showAsAction="withText"/>
+        app:showAsAction="withText"
+        android:visible="false"/>
 
     <item android:id="@+id/action_logout"
         android:title="Logout"
