@@ -3,9 +3,11 @@ package com.example.ispeak.Views;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +40,12 @@ public class BoDySMenuActivity extends BaseApp {
 
         retrieveIntent(this);
         listenBtnNewAssessment();
-        listenBtnContinueAssessment();
+
+        if(isExisting()){
+            listenBtnContinueAssessment();
+        } else {
+            disableBtnContinueAssessment();
+        }
     }
 
     private void listenBtnNewAssessment(){
@@ -56,17 +63,17 @@ public class BoDySMenuActivity extends BaseApp {
 
     private void listenBtnContinueAssessment(){
         binding.oldAssessment.setOnClickListener(view -> {
-            if(!isExisting()) {
-                showNoExistingAssessmentMessage();
-                return;
-            }
-
             navigateToNextActivity(this, BoDySOverviewPageActivity.class);
         });
     }
 
     private boolean isExisting(){
         return assessmentNr != -1;
+    }
+
+    private void disableBtnContinueAssessment(){
+        binding.oldAssessment.setVisibility(View.GONE);
+        binding.oldAssessmentNotActivated.setVisibility(View.VISIBLE);
     }
 
     private void showNoExistingAssessmentMessage(){
@@ -80,14 +87,21 @@ public class BoDySMenuActivity extends BaseApp {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("Existierender BoDyS Assessment")
                 .setMessage("Es existiert bereits ein BoDyS Assessment. Möchten Sie diese verwerfen und mit einem neuen beginnen?")
-                .setPositiveButton("Okay", ((dialogInterface, i) -> startNewAssessment()))
+                .setPositiveButton("Okay", ((dialogInterface, i) -> showFinishedAssessmentConfirmation()))
                 .setNegativeButton("Abbrechen", null)
+                .show();
+    }
+
+    private void showFinishedAssessmentConfirmation(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("BoDyS Assessment wurde bereits abgeschickt - TBD: Case")
+                .setPositiveButton("Okay", ((dialogInterface, i) -> startNewAssessment()))
                 .show();
     }
 
     private void startNewAssessment(){
         BoDyS boDyS = new BoDyS();
-        assessmentNr = Patient.getInstance().getAssessmentList().size();
+        assessmentNr = assessmentNr == -1? 0 : assessmentNr;
         Patient.getInstance().addAssessment(boDyS, assessmentNr);
         Utils.deleteFromDir(new File(boDyS.getFolderPath() + File.separator + "Recordings"));
         Utils.deleteFromDir(new File(boDyS.getFolderPath() + File.separator + "CSV"));

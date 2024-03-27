@@ -43,7 +43,7 @@
     <!--BoDyS Menu-->
     <string name="boDySAssessmentSelection">Would you like to start a new assessment or import an old assessment?</string>
     <string name="newBoDySAssessment">New Assessment</string>
-    <string name="oldBoDySAssessment">Old Assessment</string>
+    <string name="continueBoDySAssessment">Continue Assessment</string>
 
     <!--Microphone Connection-->
     <string name="microCheckTitle">Microphone check</string>
