@@ -24,27 +24,29 @@ public class Patient implements FolderStructureCreator {
     private List<Assessment> assessmentList;
     private Context applicationContext;
 
-    private Patient(String patientId, String caseId, String diagnosis, Context context) {
-        this.patientId = patientId;
-        this.caseId = caseId;
-        this.diagnosis = diagnosis;
-        this.date = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        this.applicationContext = context;
-        createFolderStructure();
-    }
-
-    public static Patient getInstance(String patientId, String caseId, String diagnosis, Context context) {
-        if (instance == null) {
-            instance = new Patient(patientId, caseId, diagnosis, context);
-        }
-        return instance;
+    private Patient() {
     }
 
     public static Patient getInstance() {
         if (instance == null) {
-            instance = new Patient("", "", "", null);
+            instance = new Patient();
         }
+
         return instance;
+    }
+
+    public void setPatientData(String patientId, String caseId, String diagnosis, Context context){
+        if (instance == null) {
+            instance = new Patient();
+        }
+
+        this.patientId = patientId;
+        this.caseId = caseId;
+        this.diagnosis = diagnosis;
+        this.date = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        this.assessmentList = null;
+        this.applicationContext = context;
+        createFolderStructure();
     }
 
     public void addAssessment(Assessment assessment) {

@@ -67,31 +67,37 @@
             android:layout_marginTop="20dp"
             android:clickable="true">
 
-            <TextView
-                android:id="@+id/circumstancesInfo"
-                style="@style/TextBlack"
+            <LinearLayout
+                android:layout_marginVertical="5dp"
                 android:layout_width="match_parent"
+                android:minWidth="170dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:ellipsize="end"
-                android:lines="1"
-                android:text="Begleitumstände: /"
-                android:textAlignment="textStart"
                 app:layout_constraintEnd_toStartOf="@+id/imageView3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/commentsInfo"
-                style="@style/TextBlack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Anmerkungen: /"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/circumstancesInfo"
-                android:lines="1"
-                android:ellipsize="end"/>
+                <TextView
+                    android:id="@+id/circumstancesInfo"
+                    style="@style/TextBlack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="Begleitumstände: /"
+                    android:textAlignment="textStart" />
+
+                <TextView
+                    android:id="@+id/commentsInfo"
+                    style="@style/TextBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="Anmerkungen: /" />
+
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageView3"

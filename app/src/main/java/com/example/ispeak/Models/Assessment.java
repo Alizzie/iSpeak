@@ -37,6 +37,8 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         this.maxRecordingNr = maxRecordingNr;
         this.recordings = new Recording[maxRecordingNr];
         this.isCompleted = false;
+        this.circumstances = new HashSet<>();
+        this.notes = new HashSet<>();
         assessmentFolderPath = Patient.getInstance().getPatientFolderPath() +
                 File.separator + assessmentName;
         createFolderStructure();
@@ -107,17 +109,17 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         String[] circumstances = notes[1].split("/");
         String[] comments = notes[2].split("/");
 
-        if(circumstances.length == 1 && circumstances[0].equals("/")){
-            return;
-        }
-
-        if(comments.length == 1 && comments[0].equals("/")){
-            return;
-        }
-
         this.isCompleted = isCompleted;
-        this.circumstances = new HashSet<>(Arrays.asList(circumstances));
-        this.notes = new HashSet<>(Arrays.asList(comments));
+
+        if(circumstances.length >= 1 && !notes[1].trim().isEmpty() && !notes[1].equals("/")){
+            this.circumstances = new HashSet<>(Arrays.asList(circumstances));
+        }
+
+        if(comments.length >= 1 && !notes[2].trim().isEmpty() && !notes[2].equals("/")){
+            this.notes = new HashSet<>(Arrays.asList(comments));
+        }
+
+        Log.d("TESTSSSSSS", this.circumstances.toString());
     }
 
     protected ArrayList<String[]> readLines(File dataFile){

@@ -45,8 +45,6 @@ public class BoDyS extends Assessment{
         this.boDySSheets = new BoDySSheet[this.maxRecordingNr];
         this.currentSheet = new BoDySSheet();
         this.boDySSheets[taskId] = this.currentSheet;
-        this.circumstances = new HashSet<>();
-        this.notes = new HashSet<>();
     }
 
     public void continueBoDyS(int taskId){

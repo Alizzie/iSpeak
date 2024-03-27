@@ -45,7 +45,8 @@ public class MainActivity extends BaseApp implements IntentHandler {
             String diagnosis = retrieveDiagnosis(diagnosisId);
 
             if (correctInputLength && diagnosis != "NaN") {
-                patientInfo = Patient.getInstance(patientId, caseId, diagnosis, this);
+                patientInfo = Patient.getInstance();
+                patientInfo.setPatientData(patientId, caseId, diagnosis, this);
 
                 restoreAssessments();
                 navigateToNextActivity(this, MenuActivity.class);
