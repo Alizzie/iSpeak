@@ -18,7 +18,7 @@ import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Event;
 import com.example.ispeak.Models.Patient;
-import com.example.ispeak.databinding.ActivityFrequencyObservationBinding;
+import com.example.ispeak.databinding.ActivityBodysFrequencyObservationBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,14 +26,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class BoDySFrequencyObservationActivity extends BaseApp {
-    private ActivityFrequencyObservationBinding binding;
+    private ActivityBodysFrequencyObservationBinding binding;
     private int assessmentNr;
     private BoDyS assessment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityFrequencyObservationBinding.inflate(LayoutInflater.from(this));
+        binding = ActivityBodysFrequencyObservationBinding.inflate(LayoutInflater.from(this));
         setContentView(binding.getRoot());
 
         init();

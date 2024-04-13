@@ -7,6 +7,7 @@ import com.example.ispeak.Utils.BoDySStatus;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class BoDySSheet {
@@ -175,7 +176,7 @@ public class BoDySSheet {
     }
 
     private HashMap<String, Integer> createBoDySScores(){
-        HashMap<String, Integer> boDySScores = new HashMap<>();
+        HashMap<String, Integer> boDySScores = new LinkedHashMap<>();
         boDySScores.put("ATM", 4);
         boDySScores.put("STL", 4);
         boDySScores.put("STQ", 4);

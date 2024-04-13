@@ -43,6 +43,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
         init();
         listenStartRecordingBtn();
         listenStartFrequencyObservationBtn();
+        listenStartScoreOverviewBtn();
 
         if(!assessment.isCompleted()){
             listenEditInfoBox();
@@ -70,7 +71,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
         binding.caseId.setText(getString(R.string.caseData, patient.getCaseId()));
         binding.patientDiagnosis.setText(patient.getDiagnosis());
         binding.caseDate.setText(patient.getFormattedDate());
-        binding.totalTasksScore.setText(getString(R.string.taskOverviewScoringDE, 0));
+//        binding.totalTasksScore.setText(getString(R.string.taskOverviewScoringDE, 0));
 
         this.assessment = (BoDyS) patient.getAssessmentList().get(this.assessmentNr);
         binding.circumstancesInfo.setText("Begleitumstände: " + assessment.getFormattedCircumstances());
@@ -208,7 +209,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
             taskStatus.setTextColor(getColor(R.color.green));
             taskScore.setText(String.valueOf(sheet.getTotalScore()));
             totalScorePoints = totalScorePoints + sheet.getTotalScore();
-            binding.totalTasksScore.setText(getString(R.string.taskOverviewScoringDE, totalScorePoints));
+//            binding.totalTasksScore.setText(getString(R.string.taskOverviewScoringDE, totalScorePoints));
         }
     }
 
@@ -250,6 +251,10 @@ public class BoDySOverviewPageActivity extends BaseApp {
     private void listenStartFrequencyObservationBtn(){
         binding.startFrequencyObservation.setOnClickListener(view ->
                 navigateToNextActivity(this, BoDySFrequencyObservationActivity.class));
+    }
+
+    private void listenStartScoreOverviewBtn(){
+        binding.startScoresOverview.setOnClickListener(view -> navigateToNextActivity(this, BoDySScoreOverviewActivity.class));
     }
 
     private void listenFinishBtn(){

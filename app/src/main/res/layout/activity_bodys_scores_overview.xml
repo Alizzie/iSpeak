@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/scoresOverviewTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Skalenwerte"
+        style="@style/AppTitle"
+        android:layout_marginTop="40dp" />
+
+    <GridLayout
+        android:layout_below="@id/scoresOverviewTitle"
+        android:id="@+id/scoresViewWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginHorizontal="20dp"
+        android:columnCount="2"
+        android:rowCount="5">
+
+        <include
+            android:id="@+id/ATM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_score" />
+
+        <include
+            android:id="@+id/STS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_score" />
+
+        <include
+            android:id="@+id/ART"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_score" />
+
+        <include
+            android:id="@+id/RDF"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_score" />
+
+        <include
+            android:id="@+id/STL"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_score" />
+
+        <include
+            android:id="@+id/STQ"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_score" />
+
+        <include
+            android:id="@+id/RES"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_score" />
+
+        <include
+            android:id="@+id/MOD"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="3"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_score" />
+
+        <include
+            android:id="@+id/TEM"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_margin="10dp"
+            layout="@layout/item_bodys_score" />
+
+    </GridLayout>
+
+
+</RelativeLayout>

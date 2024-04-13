@@ -54,7 +54,8 @@
             android:text="@string/number0"
             android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="@+id/taskDuration"
-            app:layout_constraintTop_toTopOf="@+id/taskName" />
+            app:layout_constraintTop_toTopOf="@+id/taskName"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/taskDuration"

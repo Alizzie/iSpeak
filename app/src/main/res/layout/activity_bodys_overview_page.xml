@@ -149,15 +149,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/notesInfoBox" />
 
-        <TextView
-            android:id="@+id/totalTasksScore"
-            style="@style/TextBlack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/taskOverviewScoringDE"
-            app:layout_constraintBottom_toBottomOf="@+id/startFrequencyObservation"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/taskOverviewTitle" />
+<!--        <TextView-->
+<!--            android:id="@+id/totalTasksScore"-->
+<!--            style="@style/TextBlack"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/taskOverviewScoringDE"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/startFrequencyObservation"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/taskOverviewTitle" />-->
 
         <TextView
             android:id="@+id/completionStatus"
@@ -169,7 +169,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/totalTasksScore"
+            app:layout_constraintTop_toBottomOf="@id/taskOverviewTitle"
             android:visibility="invisible"/>
 
         <Button
@@ -180,7 +180,7 @@
             android:text="@string/startWithRecordingTaskBtnDE"
             app:layout_constraintBottom_toTopOf="@id/textView3"
             app:layout_constraintEnd_toEndOf="parent"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
 <!--        <Button-->
 <!--            android:id="@+id/startRecordingBtnNotActivated"-->
@@ -201,23 +201,44 @@
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/baseline_insert_chart_24"
-            android:text="@string/startWithRecordingTaskBtnDE"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/textView3"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textView3"
             app:layout_constraintStart_toStartOf="@+id/textView3" />
 
         <TextView
             android:id="@+id/textView3"
+            style="@style/TextBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:text="Beobachtungen"
-            style="@style/TextBlack"
+            android:layout_marginRight="20dp"
+            android:text="Beobachtung"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView4" />
+
+        <ImageView
+            android:id="@+id/startScoresOverview"
+            style="@style/ButtonNotActivated"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/looks_one_24"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent" />
 
-
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/TextBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scores"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/startScoresOverview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

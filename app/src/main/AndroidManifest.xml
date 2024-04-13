@@ -28,6 +28,10 @@
             android:parentActivityName=".Views.BoDySOverviewPageActivity"/>
 
         <activity
+            android:name=".Views.BoDySScoreOverviewActivity"
+            android:parentActivityName=".Views.BoDySScoreOverviewActivity"/>
+
+        <activity
             android:name=".Views.BoDySFrequencyObservationActivity"
             android:parentActivityName=".Views.BoDySOverviewPageActivity"/>
 

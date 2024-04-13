@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class BoDyS extends Assessment{
-    public static final HashMap<Integer, String> BODYSDIC;
+    public static final HashMap<Integer, String> BODYSDIC, BODYSCRITERIA;
     private BoDySSheet[] boDySSheets;
     private BoDySSheet currentSheet;
 
@@ -38,6 +38,17 @@ public class BoDyS extends Assessment{
         BODYSDIC.put(5, "Nach 2");
         BODYSDIC.put(6, "Les 2");
         BODYSDIC.put(7, "Bild 2");
+
+        BODYSCRITERIA = new HashMap<>();
+        BODYSCRITERIA.put(0, "ATM");
+        BODYSCRITERIA.put(1, "STL");
+        BODYSCRITERIA.put(2, "STQ");
+        BODYSCRITERIA.put(3, "STS");
+        BODYSCRITERIA.put(4, "ART");
+        BODYSCRITERIA.put(5, "RES");
+        BODYSCRITERIA.put(6, "TEM");
+        BODYSCRITERIA.put(7, "RDF");
+        BODYSCRITERIA.put(8, "MOD");
     }
 
     public BoDyS(){
