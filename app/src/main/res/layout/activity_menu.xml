@@ -112,62 +112,63 @@
             android:layout_rowWeight="1"
             android:layout_column="0"
             android:layout_columnWeight="1"
-            android:layout_marginEnd="1dp"
             android:layout_marginBottom="1dp"
             android:text="@string/menuBoDySAssessment"
             style="@style/ButtonMenu"
-            app:shapeAppearance="@style/ButtonShapeLeftTopCorner"
+            app:shapeAppearance="@style/ButtonShapeBothTopCorner"
             app:icon="@drawable/assessment_24"
             app:iconGravity="textTop"
             app:iconPadding="10dp"
             app:iconSize="80dp"/>
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="0"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:layout_marginStart="1dp"
-            android:layout_marginBottom="1dp"
-            style="@style/ButtonMenu"
-            app:shapeAppearance="@style/ButtonShapeRightTopCorner"
-            android:text="Assessment"/>
+<!--        android:layout_marginEnd="1dp"-->
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="1"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:layout_columnWeight="1"
-            android:layout_marginEnd="1dp"
-            style="@style/ButtonMenu"
-            app:shapeAppearance="@style/ButtonShapeNoCorner"
-            android:text="Assessment"/>
+<!--        <Button-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_row="0"-->
+<!--            android:layout_rowWeight="1"-->
+<!--            android:layout_column="1"-->
+<!--            android:layout_columnWeight="1"-->
+<!--            android:layout_marginStart="1dp"-->
+<!--            android:layout_marginBottom="1dp"-->
+<!--            style="@style/ButtonMenu"-->
+<!--            app:shapeAppearance="@style/ButtonShapeRightTopCorner"-->
+<!--            android:text="Assessment"/>-->
+
+<!--        <Button-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_row="1"-->
+<!--            android:layout_rowWeight="1"-->
+<!--            android:layout_column="0"-->
+<!--            android:layout_columnWeight="1"-->
+<!--            android:layout_marginEnd="1dp"-->
+<!--            style="@style/ButtonMenu"-->
+<!--            app:shapeAppearance="@style/ButtonShapeNoCorner"-->
+<!--            android:text="Assessment"/>-->
 <!--            app:icon="@drawable/assessment_24"-->
 <!--            app:iconGravity="textTop"-->
 <!--            app:iconPadding="10dp"-->
 <!--            app:iconSize="80dp" />-->
 
-        <Button
-            android:id="@+id/changePatientBtn"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_row="1"
-            android:layout_rowWeight="1"
-            android:layout_column="1"
-            android:layout_columnWeight="1"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
-            android:text="@string/menuPatient"
-            style="@style/ButtonMenu"
-            app:shapeAppearance="@style/ButtonShapeNoCorner"
-            app:icon="@drawable/manage_accounts_24"
-            app:iconGravity="textTop"
-            app:iconPadding="10dp"
-            app:iconSize="80dp" />
+<!--        <Button-->
+<!--            android:id="@+id/changePatientBtn"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_row="1"-->
+<!--            android:layout_rowWeight="1"-->
+<!--            android:layout_column="1"-->
+<!--            android:layout_columnWeight="1"-->
+<!--            android:layout_marginStart="1dp"-->
+<!--            android:layout_marginTop="1dp"-->
+<!--            android:text="Assessment"-->
+<!--            style="@style/ButtonMenu"-->
+<!--            app:shapeAppearance="@style/ButtonShapeNoCorner"-->
+<!--            app:icon="@drawable/manage_accounts_24"-->
+<!--            app:iconGravity="textTop"-->
+<!--            app:iconPadding="10dp"-->
+<!--            app:iconSize="80dp" />-->
 
     </GridLayout>
 

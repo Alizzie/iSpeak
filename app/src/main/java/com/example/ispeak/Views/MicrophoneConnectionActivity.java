@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -103,5 +104,20 @@ public class MicrophoneConnectionActivity extends BaseApp {
     @Override
     public void onBackPressed() {
         navigateToNextActivity(this, MenuActivity.class);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        MenuItem menuItem = menu.findItem(R.id.action_skip_task);
+        if(menuItem != null){
+            menuItem.setVisible(true);
+            menuItem.setOnMenuItemClickListener((item) -> {
+                navigateToNextActivity(this, RecordingActivity.class);
+                return true;
+            });
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 }

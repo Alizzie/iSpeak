@@ -118,8 +118,6 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         if(comments.length >= 1 && !notes[2].trim().isEmpty() && !notes[2].equals("/")){
             this.notes = new HashSet<>(Arrays.asList(comments));
         }
-
-        Log.d("TESTSSSSSS", this.circumstances.toString());
     }
 
     protected ArrayList<String[]> readLines(File dataFile){
@@ -142,10 +140,8 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
                 File recordingFile = recordingFiles[i];
                 Recording recording = retrieveRecording(recordingFile);
                 recording.setEvents(retrieveRecordingEvents(csvDir, recording, i));
-
                 int recordingIndex = calculateRecordingIndex(recording.getMp3_filepath());
 
-                Log.d("TESTSS", recordingFile.getAbsolutePath() + " " + +recordingIndex);
                 if(recordingIndex != -1){
                     recordings[recordingIndex] = recording;
                 } else{

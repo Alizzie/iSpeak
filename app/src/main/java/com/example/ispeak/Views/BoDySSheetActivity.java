@@ -54,6 +54,7 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
         listenEventLabelingBtn();
         listenMarkingBtn();
         listenSkipBtn();
+        listenInfoBoDySBtn();
 
         if(!boDySSheet.getStatus().isUnknown()) {
             showFullFunctionalities();
@@ -86,6 +87,7 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
         initTaskProgressBar(taskId);
 
         ArrayList<Event> events = recording.getEvents();
+        Log.d("TESTREC", events.size()+ " ");
         initEventRecyclerView(events);
         initCategoryListView(events);
 
@@ -233,6 +235,45 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
             binding.eventModeBtn.performClick();
         });
     }
+    private void listenInfoBoDySBtn(){
+        binding.infoBoDySBtn.setOnClickListener(view -> {
+            if(binding.toggleButton.getCheckedButtonId() == binding.eventModeBtn.getId()){
+                showInfoEventDialog();
+            } else if (binding.toggleButton.getCheckedButtonId() == binding.markingModeBtn.getId()){
+                showInfoMarkingDialog();
+            } else if (binding.toggleButton.getCheckedButtonId() == binding.scoringModeBtn.getId()) {
+                showInfoScoringDialog();
+            }
+        });
+    }
+
+    private void showInfoEventDialog(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Events")
+                .setMessage("Füge neue Events durch das Lesezeichen rechts, unter der Signalwelle hinzu. \nEvents können mit Kategorien markiert werden." +
+                        "Die Kategorien sind bisher noch nicht fest definiert und werden im Laufe des Entwicklungsprozesses noch festgelegt!")
+                .setPositiveButton("Ok", null)
+                .show();
+    }
+
+    private void showInfoMarkingDialog(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Beobachtungen")
+                .setMessage("Beobachtungen im Audio können durch das Klicken der Kriterien hinzugefügt werden." +
+                        "\nMarkierte Beobachtungen sind blau gekennzeichnet. Diese können durch ein erneutes Klicken auf das Feld wieder entfernt werden." +
+                        "\nDurch das Klicken an den blauen Hauptmerkmalen gelangt man zu den Notizen.")
+                .setPositiveButton("Ok", null)
+                .show();
+    }
+
+    private void showInfoScoringDialog(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Scoring")
+                .setMessage("0: Schwere Störung \n4: Keine Störung" )
+                .setPositiveButton("Ok", null)
+                .show();
+    }
+
     private void showScoringMissingDialog(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("Fehlende Bewertungen")

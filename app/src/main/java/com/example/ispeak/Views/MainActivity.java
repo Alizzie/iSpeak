@@ -44,7 +44,7 @@ public class MainActivity extends BaseApp {
             boolean correctInputLength = checkIdLength(patientId, caseId);
             String diagnosis = retrieveDiagnosis(diagnosisId);
 
-            if (correctInputLength && diagnosis != "NaN") {
+            if (correctInputLength && !diagnosis.equals("NaN")) {
                 patientInfo = Patient.getInstance();
                 patientInfo.setPatientData(patientId, caseId, diagnosis, this);
 

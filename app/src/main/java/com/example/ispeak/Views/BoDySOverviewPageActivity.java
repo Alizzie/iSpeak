@@ -158,8 +158,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
             TextView taskStatus = taskOverview.findViewById(R.id.taskStatus);
 
             updateRecordingStatus(recordings[i], sheets[i], taskStatus, taskName, taskDuration, i);
-
-            if(recordings[i] == null && ((sheets[i] == null) || sheets[i].getStatus().isUnknown())) {
+            if(recordings[i] == null && (sheets[i].getStatus().isUnknown())) {
                 recordingDone = false;
             } else {
                 nextTask = nextTask + 1;
@@ -170,7 +169,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
     }
 
     private void updateRecordingStatus(Recording recording, BoDySSheet sheet, TextView taskStatus, TextView taskName, TextView taskDuration, int nr) {
-        if((recording == null) || (sheet == null)) {
+        if((recording == null) && sheet.getStatus().isUnknown()) {
             taskStatus.setText(getString(R.string.recordingStatusNegativeDE));
         } else if (sheet.getStatus().isSkipped()) {
             taskStatus.setText("Übersprungen");

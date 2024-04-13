@@ -68,14 +68,15 @@ public class Microphone {
         AudioDeviceInfo[] audioDevices = audioManager.getDevices(AudioManager.GET_DEVICES_INPUTS);
 
         // TODO: Set false after deploy
-        boolean externalMicro = true;
+        boolean externalMicro = false;
 
         for (AudioDeviceInfo device : audioDevices) {
             int deviceTyp = device.getType();
+            Log.d("TESTAUDIO", String.valueOf(deviceTyp));
 
             if (deviceTyp == AudioDeviceInfo.TYPE_USB_HEADSET) {
                 externalMicro = true;
-                audioRecord.setPreferredDevice(device);
+//                audioRecord.setPreferredDevice(device);
                 break;
             }
         }

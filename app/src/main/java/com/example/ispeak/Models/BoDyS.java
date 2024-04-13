@@ -122,30 +122,27 @@ public class BoDyS extends Assessment{
 
         for(int i = 0; i < getMaxRecordingNr(); i++) {
 
-            Log.d("TESTSS", "INDEX" + " " + i);
-            if((i + assessmentDataOffset) >= lines.size() && (recordings[i] != null)){
-                Log.d("TESTSS", "NEW BODYS: " + " " + i);
+            if((i + assessmentDataOffset) >= lines.size()){
                 boDySSheets[i] = new BoDySSheet();
-            } else if (recordings[i] == null) {
-                break;
             } else {
                 String[] line = lines.get(i + assessmentDataOffset);
-                if(recordings[i] == null) {
-                    break;
-                }
-                restoreBoDysSheet(headline, line);
+                restoreBoDysSheet(headline, line, recordings[i]);
             }
-
-
         }
 
 
     }
 
-    private void restoreBoDysSheet(String[] headline, String[] line){
+    private void restoreBoDysSheet(String[] headline, String[] line, Recording recording){
         BoDySSheet boDySSheet = new BoDySSheet();
         int taskId = Integer.parseInt(line[0]);
         String status = line[1];
+
+        if(recording == null) {
+            boDySSheet.setStatus(BoDySStatus.fromString(status));
+            boDySSheets[taskId] = boDySSheet;
+            return;
+        }
 
         String mainCriteriaFocus = "";
         for(int lineIndex = 2; lineIndex < headline.length; lineIndex++){
