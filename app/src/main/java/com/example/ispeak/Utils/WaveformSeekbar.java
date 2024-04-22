@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -75,12 +74,14 @@ public class WaveformSeekbar extends WaveformSeekBar {
             return;
         }
         
-        audioDuration.setText(Utils.formatTime((long) mediaPlayer.getDuration()));
-        audioTime.setText(Utils.formatTime((long) this.getProgress()));
+        updateTimeText();
 
-        this.setOnProgressChanged((waveformSeekBar, progress, fromUser) -> {
-            this.audioTime.setText(Utils.formatTime((long) progress));
-        });
+        this.setOnProgressChanged((waveformSeekBar, progress, fromUser) -> this.audioTime.setText(Utils.formatAudioTimeToStringPresentation((long) progress)));
+    }
+
+    private void updateTimeText(){
+        audioDuration.setText(Utils.formatAudioTimeToStringPresentation(mediaPlayer.getDuration()));
+        audioTime.setText(Utils.formatAudioTimeToStringPresentation((long) this.getProgress()));
     }
 
     private void updateProgress(){
@@ -105,11 +106,14 @@ public class WaveformSeekbar extends WaveformSeekBar {
         isPaused = true;
         playBtn.setBackground(playImg);
 
+        mediaPlayer.seekTo(calculateNewTime(direction));
+        this.setProgress(mediaPlayer.getCurrentPosition());
+    }
+
+    private int calculateNewTime(int direction){
         int newTime = Math.max(mediaPlayer.getCurrentPosition() + direction * 100, 0);
         newTime = Math.min(mediaPlayer.getDuration(), newTime);
-
-        mediaPlayer.seekTo(newTime);
-        this.setProgress(mediaPlayer.getCurrentPosition());
+        return newTime;
     }
 
     public void startWaveformAudio() {
@@ -128,7 +132,6 @@ public class WaveformSeekbar extends WaveformSeekBar {
     }
 
     public void stopWaveformAudio(){
-        Log.d("TESTSS", "TESTSSS");
         mediaPlayer.stop();
         if (hasStarted && mediaPlayer != null) {
             try {
@@ -137,9 +140,5 @@ public class WaveformSeekbar extends WaveformSeekBar {
                 e.printStackTrace();
             }
         }
-    }
-
-    public boolean isPaused() {
-        return isPaused;
     }
 }

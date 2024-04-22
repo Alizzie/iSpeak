@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ispeak.Interfaces.EventLabelingObserver;
+import com.example.ispeak.Interfaces.IEventLabelingListener;
 import com.example.ispeak.Models.Event;
 import com.example.ispeak.R;
 
@@ -21,10 +21,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private List<String> categoryList;
     private Event event;
     private Context context;
-    private EventLabelingObserver observer;
+    private IEventLabelingListener observer;
     private boolean readOnly;
 
-    public CategoryAdapter(List<String> categoryList, Context context, Event event, EventLabelingObserver observer, boolean readOnly){
+    public CategoryAdapter(List<String> categoryList, Context context, Event event, IEventLabelingListener observer, boolean readOnly){
         this.categoryList = categoryList;
         this.context = context;
         this.event = event;

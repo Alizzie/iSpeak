@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ispeak.Interfaces.EventLabelingObserver;
+import com.example.ispeak.Interfaces.IEventLabelingListener;
 import com.example.ispeak.Models.Event;
 import com.example.ispeak.R;
 
@@ -23,9 +23,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     private Context context;
     private int checkPosition;
     private boolean deleteMode = false;
-    private EventLabelingObserver observer;
+    private IEventLabelingListener observer;
 
-    public EventAdapter(List<Event> eventList, Context context, EventLabelingObserver observer) {
+    public EventAdapter(List<Event> eventList, Context context, IEventLabelingListener observer) {
         this.eventList = eventList;
         this.context = context;
         this.checkPosition = RecyclerView.NO_POSITION;

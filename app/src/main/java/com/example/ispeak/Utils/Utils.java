@@ -8,10 +8,29 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static String formatTime(long time){
+    public static String changeDateFormatFromYMDToDMY(String date){
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+
+        Date newDate = null;
+        try {
+            newDate = inputFormat.parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return outputFormat.format(newDate);
+    }
+
+    public static String formatAudioTimeToStringPresentation(long time){
         DecimalFormat df = new DecimalFormat("00");
 
         int hours = (int) (time / (3600 * 1000));
@@ -58,17 +77,10 @@ public class Utils {
     }
 
     public static void createFolder(String path) {
-
         File directory = new File(path);
 
         if (!directory.exists()) {
-            if (directory.mkdirs()) {
-                Log.d("DIRECTORY", "SUCCESS: " + directory.getAbsolutePath());
-            } else {
-                Log.e("DIRECTORY", "FAIL");
-            }
-        } else {
-            Log.d("DIRECTORY", "ALREADY EXISTS: " + directory.getAbsolutePath());
+            directory.mkdirs();
         }
     }
 
@@ -82,16 +94,7 @@ public class Utils {
         return directory.listFiles();
     }
 
-    public static void setMediaPlayer(String path, MediaPlayer mediaPlayer) {
-        try {
-            mediaPlayer.setDataSource(path);
-            mediaPlayer.prepare();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void deleteFromDir(File directory){
+    public static void deleteFilesFromDir(File directory){
         if(directory.isDirectory()) {
             File[] files = directory.listFiles();
 
@@ -101,5 +104,11 @@ public class Utils {
                 }
             }
         }
+    }
+
+    public static boolean containsNumber(String input) {
+        Pattern pattern = Pattern.compile(".*\\d.*");
+        Matcher matcher = pattern.matcher(input);
+        return matcher.matches();
     }
 }

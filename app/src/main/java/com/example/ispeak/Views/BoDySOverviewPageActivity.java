@@ -17,13 +17,10 @@ import androidx.cardview.widget.CardView;
 
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.BoDySSheet;
-import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Models.Recording;
 import com.example.ispeak.R;
 import com.example.ispeak.databinding.ActivityBodysOverviewPageBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import java.util.Objects;
 
 public class BoDySOverviewPageActivity extends BaseApp {
 
@@ -32,15 +29,29 @@ public class BoDySOverviewPageActivity extends BaseApp {
     private BoDyS assessment;
     private int nextTask;
     private int evaluatedTasks;
-    private int totalScorePoints;
+    private Recording[] recordings;
+    BoDySSheet[] boDySSheets;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityBodysOverviewPageBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
+        enableNavBackArrow();
+    }
 
+    @Override
+    public void init(){
         retrieveIntent(this);
-        init();
+        initPatientInfo();
+        initAssessmentInfo();
+        initTasks();
+        initProgressBar();
+
+        if(assessment.isCompleted()){
+            binding.completionStatus.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void listenBtn() {
         listenStartRecordingBtn();
         listenStartFrequencyObservationBtn();
         listenStartScoreOverviewBtn();
@@ -54,32 +65,28 @@ public class BoDySOverviewPageActivity extends BaseApp {
         }
     }
 
-    private void init(){
-        initPatientData();
-        enableNavBackArrow();
-        initTasks();
-        initProgressBar();
-
-        if(assessment.isCompleted()){
-            binding.completionStatus.setVisibility(View.VISIBLE);
-        }
+    @Override
+    public void setBinding() {
+        binding = ActivityBodysOverviewPageBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
     }
 
-    private void initPatientData(){
-        Patient patient = Patient.getInstance();
-        binding.patientId.setText(getString(R.string.patientData, patient.getPatientId()));
-        binding.caseId.setText(getString(R.string.caseData, patient.getCaseId()));
-        binding.patientDiagnosis.setText(patient.getDiagnosis());
-        binding.caseDate.setText(patient.getFormattedDate());
-//        binding.totalTasksScore.setText(getString(R.string.taskOverviewScoringDE, 0));
+    private void initPatientInfo(){
+        binding.patientId.setText(getString(R.string.patientData, patientInfo.getPatientId()));
+        binding.caseId.setText(getString(R.string.caseData, patientInfo.getCaseId()));
+        binding.patientDiagnosis.setText(patientInfo.getDiagnosis());
+        binding.caseDate.setText(patientInfo.getFormattedDate());
+    }
 
-        this.assessment = (BoDyS) patient.getAssessmentList().get(this.assessmentNr);
-        binding.circumstancesInfo.setText("Begleitumstände: " + assessment.getFormattedCircumstances());
-        binding.commentsInfo.setText("Anmerkungen: " + assessment.getFormattedNotes());
+    private void initAssessmentInfo() {
+        this.assessment = (BoDyS) patientInfo.getAssessmentList().get(this.assessmentNr);
+        this.recordings = assessment.getRecordings();
+        this.boDySSheets = assessment.getBoDySSheets();
+        binding.circumstancesInfo.setText(getString(R.string.circumstancesDE, assessment.getFormattedCircumstances()));
+        binding.commentsInfo.setText(getString(R.string.assessmentNotesDE, assessment.getFormattedNotes()));
     }
 
     private void initProgressBar(){
-
         float progress = ((float) 100 / assessment.getMaxRecordingNr()) * (evaluatedTasks);
         progress = Math.max(progress, 0);
 
@@ -88,17 +95,14 @@ public class BoDySOverviewPageActivity extends BaseApp {
     }
 
     private void initTasks(){
-        Recording[] recordings = assessment.getRecordings();
-        BoDySSheet[] boDySSheets = assessment.getBoDySSheets();
-
         nextTask = 0;
-        boolean recordingFinished = isAllRecordingAvailable(recordings, boDySSheets);
+        boolean recordingFinished = areAllRecordingsAvailable();
 
         if(recordingFinished) {
             nextTask = 0;
             evaluatedTasks = 0;
             disableRecordingMode();
-            initEvaluationMode(recordings, boDySSheets);
+            initEvaluationMode();
         }
 
         if(checkEvaluationDone() && !assessment.isCompleted()){
@@ -107,7 +111,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
 
     }
 
-    private void initEvaluationMode(Recording[] recordings, BoDySSheet[] boDySSheets){
+    private void initEvaluationMode(){
         boolean nextTaskFound = false;
         for(int i = 0; i < recordings.length; i++ ){
 
@@ -145,11 +149,12 @@ public class BoDySOverviewPageActivity extends BaseApp {
         }
     }
 
-    private boolean isAllRecordingAvailable(Recording[] recordings, BoDySSheet[] sheets) {
-
+    private boolean areAllRecordingsAvailable() {
         boolean recordingDone = true;
 
         for(int i = 0; i < recordings.length; i++ ){
+            BoDySSheet sheet = boDySSheets[i];
+            Recording recording = recordings[i];
 
             int taskOverviewId = getResources().getIdentifier("boDySTask" + i, "id", getPackageName());
             CardView taskOverview = findViewById(taskOverviewId);
@@ -158,8 +163,8 @@ public class BoDySOverviewPageActivity extends BaseApp {
             TextView taskDuration = taskOverview.findViewById(R.id.taskDuration);
             TextView taskStatus = taskOverview.findViewById(R.id.taskStatus);
 
-            updateRecordingStatus(recordings[i], sheets[i], taskStatus, taskName, taskDuration, i);
-            if((sheets[i] == null) || (recordings[i] == null && (sheets[i].getStatus().isUnknown()))) {
+            updateRecordingStatus(recording, sheet, taskStatus, taskName, taskDuration, i);
+            if((sheet == null) || (recording == null && (sheet.getStatus().isUnknown()))) {
                 recordingDone = false;
             } else {
                 nextTask = nextTask + 1;
@@ -170,10 +175,10 @@ public class BoDySOverviewPageActivity extends BaseApp {
     }
 
     private void updateRecordingStatus(Recording recording, BoDySSheet sheet, TextView taskStatus, TextView taskName, TextView taskDuration, int nr) {
-        if((sheet == null) || ((recording == null) && sheet.getStatus().isUnknown())) {
+        if((sheet == null) || (sheet.getStatus().isUnknown())) {
             taskStatus.setText(getString(R.string.recordingStatusNegativeDE));
         } else if (sheet.getStatus().isSkipped()) {
-            taskStatus.setText("Übersprungen");
+            taskStatus.setText(getString(R.string.recordingStatusSkippedDE));
         } else {
             taskStatus.setText(getString(R.string.recordingStatusPositiveDE));
             taskDuration.setText(recording.getFormattedPatientTime());
@@ -201,15 +206,13 @@ public class BoDySOverviewPageActivity extends BaseApp {
             return;
         }
 
-        listenTaskOveview(taskOverview, nr);
+        listenTaskOverview(taskOverview, nr);
         playImage.setImageResource(R.drawable.play_24_darkblue);
 
         if(!last) {
             taskStatus.setText(getString(R.string.scoringStatusPositiveDE));
             taskStatus.setTextColor(getColor(R.color.green));
             taskScore.setText(String.valueOf(sheet.getTotalScore()));
-            totalScorePoints = totalScorePoints + sheet.getTotalScore();
-//            binding.totalTasksScore.setText(getString(R.string.taskOverviewScoringDE, totalScorePoints));
         }
     }
 
@@ -222,7 +225,7 @@ public class BoDySOverviewPageActivity extends BaseApp {
         binding.finishBoDySBtn.setVisibility(View.VISIBLE);
     }
 
-    private void listenTaskOveview(CardView taskOverview, int number){
+    private void listenTaskOverview(CardView taskOverview, int number){
         taskOverview.setOnClickListener(view -> {
             assessment.setTaskId(number);
             navigateToNextActivity(this, BoDySSheetActivity.class);});
@@ -230,15 +233,13 @@ public class BoDySOverviewPageActivity extends BaseApp {
 
     private void listenStartRecordingBtn(){
         binding.startRecordingBtn.setOnClickListener(view -> {
-            assessment.continueBoDyS(nextTask);
+            assessment.setNextBoDySTask(nextTask);
             navigateToNextActivity(this, MicrophoneConnectionActivity.class);
         });
     }
 
     private void listenEditInfoBox(){
-        binding.notesInfoBox.setOnClickListener(view -> {
-            navigateToNextActivity(this, BoDySNotesActivity.class);
-        });
+        binding.notesInfoBox.setOnClickListener(view -> navigateToNextActivity(this, BoDySCircumstancesActivity.class));
     }
 
     private void disableRecordingMode(){
@@ -267,10 +268,10 @@ public class BoDySOverviewPageActivity extends BaseApp {
 
     private void showFinishConfirmDialog(){
         MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this);
-        dialogBuilder.setTitle("Willst du das Assessment abschliessen?")
-                .setMessage("Nach dem Abschliessen ist das Überarbeiten des Assessments nicht mehr möglich.")
-                .setPositiveButton("Abschliessen", ((dialogInterface, i) -> finishBoDySAssessment()))
-                .setNegativeButton("Weiter bearbeiten", null)
+        dialogBuilder.setTitle(getString(R.string.assessmentEndMessageDE))
+                .setMessage(getString(R.string.assessmentEndWarningMessageDE))
+                .setPositiveButton(getString(R.string.assessmentEndMessagePostiveDE), ((dialogInterface, i) -> finishBoDySAssessment()))
+                .setNegativeButton(getString(R.string.assessmentEndMessageNegativeDE), null)
                 .show();
     }
 

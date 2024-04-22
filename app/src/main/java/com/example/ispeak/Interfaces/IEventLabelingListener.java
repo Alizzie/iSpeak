@@ -1,6 +1,6 @@
 package com.example.ispeak.Interfaces;
 
-public interface EventLabelingObserver {
+public interface IEventLabelingListener {
     void onListItemRemoved(int position);
     void onListItemInserted(int position);
     void onEventClick(int position);

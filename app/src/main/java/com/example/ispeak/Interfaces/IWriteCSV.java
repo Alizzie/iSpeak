@@ -2,6 +2,6 @@ package com.example.ispeak.Interfaces;
 
 import java.util.List;
 
-public interface WriteCSVInterface {
+public interface IWriteCSV {
     List<String[]> onWriteCSV();
 }

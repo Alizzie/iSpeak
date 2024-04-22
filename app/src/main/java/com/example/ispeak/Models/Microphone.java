@@ -23,10 +23,10 @@ public class Microphone {
     private AudioManager audioManager;
     private AudioRecord audioRecord;
     private MediaRecorder mediaRecorder;
-    private byte[] audioBuffer = new byte[4000];
     private boolean isPaused = false;
     private boolean isActive = false;
 
+    private static final byte[] AUDIOBUFFER = new byte[4000];
     private static final int SAMPLE_RATE = 44100;
     private static final int CHANNEL_CONFIG = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
@@ -47,7 +47,7 @@ public class Microphone {
             return false;
         }
 
-        return checkDIVASMic();
+        return checkMicroPluggedIn();
     }
 
     private void checkMicroPermission() {
@@ -64,19 +64,17 @@ public class Microphone {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MICROPHONE);
     }
 
-    private boolean checkDIVASMic() {
+    private boolean checkMicroPluggedIn() {
         AudioDeviceInfo[] audioDevices = audioManager.getDevices(AudioManager.GET_DEVICES_INPUTS);
 
-        // TODO: Set false after deploy
         boolean externalMicro = false;
 
         for (AudioDeviceInfo device : audioDevices) {
             int deviceTyp = device.getType();
-            Log.d("TESTAUDIO", String.valueOf(deviceTyp));
 
-            if (deviceTyp == AudioDeviceInfo.TYPE_USB_HEADSET) {
+            if (deviceTyp == AudioDeviceInfo.TYPE_USB_HEADSET || deviceTyp == AudioDeviceInfo.TYPE_USB_DEVICE) {
                 externalMicro = true;
-//                audioRecord.setPreferredDevice(device);
+                audioRecord.setPreferredDevice(device);
                 break;
             }
         }
@@ -135,10 +133,10 @@ public class Microphone {
             try {
                 Log.d("AUDIORECORDD", String.valueOf(audioRecord));
                 while (!isPaused && isActive) {
-                    int bytesRead = audioRecord.read(audioBuffer, 0, BUFFER_SIZE);
+                    int bytesRead = audioRecord.read(AUDIOBUFFER, 0, BUFFER_SIZE);
                     if (bytesRead > 0) {
                         // Update the waveform view with the new audio data
-                        activity.runOnUiThread(() -> waveformView.setWaveform(Arrays.copyOf(audioBuffer, bytesRead)));
+                        activity.runOnUiThread(() -> waveformView.setWaveform(Arrays.copyOf(AUDIOBUFFER, bytesRead)));
                     } else {
                         Log.e("AudioRecord", "Error reading audio data");
                         break;

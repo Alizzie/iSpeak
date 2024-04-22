@@ -6,7 +6,7 @@ import com.example.ispeak.Models.BoDyS;
 public class AssessmentFactory {
 
     public enum AssessmentNames {
-        BoDyS, Assessment1
+        BoDyS
     }
 
     public static Assessment createAssessment(AssessmentNames assessment) {

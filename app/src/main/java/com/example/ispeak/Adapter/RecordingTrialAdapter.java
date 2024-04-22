@@ -18,9 +18,9 @@ import com.example.ispeak.R;
 import java.util.List;
 public class RecordingTrialAdapter extends RecyclerView.Adapter<RecordingTrialAdapter.ViewHolder> {
 
-    List<Recording> trialList;
-    Context context;
-    int checkPosition;
+    private List<Recording> trialList;
+    private Context context;
+    private int checkPosition;
 
     public RecordingTrialAdapter(List<Recording> trialList, Context context) {
         this.trialList = trialList;
@@ -53,11 +53,6 @@ public class RecordingTrialAdapter extends RecyclerView.Adapter<RecordingTrialAd
         holder.totalTime.setText(context.getString(R.string.totalRecordingTime, trialList.get(position).getFormattedTotalTime()));
         holder.numEvents.setText(String.valueOf(trialList.get(position).getEvents().size()));
 
-//        if (checkPosition == holder.getAdapterPosition()) {
-//            holder.tickItem();
-//        }
-//
-//        holder.trialItem.setOnClickListener(view -> holder.tickItem());
 
         holder.tickItem();
         holder.trialItem.setOnClickListener(view -> {
@@ -79,9 +74,9 @@ public class RecordingTrialAdapter extends RecyclerView.Adapter<RecordingTrialAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView trialLabelTxt, patientTime, totalTime, numEvents;
-        ImageView trialSelected;
-        ConstraintLayout trialItem;
+        private TextView trialLabelTxt, patientTime, totalTime, numEvents;
+        private ImageView trialSelected;
+        private ConstraintLayout trialItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,16 +102,6 @@ public class RecordingTrialAdapter extends RecyclerView.Adapter<RecordingTrialAd
                 }
             }
 
-//            String notSelected = itemView.getResources().getString(R.string.trialNotSelected);
-//            String selected = itemView.getResources().getString(R.string.trialSelected);
-//
-//            if (trialSelected.getContentDescription().equals(notSelected)) {
-//                trialSelected.setImageDrawable(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.check_circle_outline_24, null));
-//                trialSelected.setContentDescription(selected);
-//            } else {
-//                trialSelected.setImageDrawable(ResourcesCompat.getDrawable(itemView.getResources(), R.drawable.outline_circle_24, null));
-//                trialSelected.setContentDescription(notSelected);
-//            }
         }
     }
 }

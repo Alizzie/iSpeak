@@ -1,25 +1,15 @@
 package com.example.ispeak.Models;
 
-import android.os.Bundle;
-import android.os.Parcel;
-import android.util.Log;
-
-import com.example.ispeak.Utils.BoDySScoringView;
+import com.example.ispeak.Utils.AssessmentFactory;
 import com.example.ispeak.Utils.BoDySStatus;
-import com.example.ispeak.Utils.ReadCSV;
-import com.example.ispeak.Utils.WriteCSV;
+import com.example.ispeak.Utils.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class BoDyS extends Assessment{
@@ -52,13 +42,13 @@ public class BoDyS extends Assessment{
     }
 
     public BoDyS(){
-        super("BoDyS", 8);
-        this.boDySSheets = new BoDySSheet[this.maxRecordingNr];
+        super(AssessmentFactory.AssessmentNames.BoDyS.name(), 8);
+        this.boDySSheets = new BoDySSheet[this.MAXRECORDING];
         this.currentSheet = new BoDySSheet();
         this.boDySSheets[taskId] = this.currentSheet;
     }
 
-    public void continueBoDyS(int taskId){
+    public void setNextBoDySTask(int taskId){
         this.taskId = taskId;
         this.currentSheet = new BoDySSheet();
         boDySSheets[taskId] = this.currentSheet;
@@ -69,8 +59,8 @@ public class BoDyS extends Assessment{
         currentSheet.setStatus(BoDySStatus.PREFILL);
         saveTaskResultsInCSV();
 
-        if(taskId+1 < maxRecordingNr) {
-            continueBoDyS(taskId + 1);
+        if(taskId+1 < MAXRECORDING) {
+            setNextBoDySTask(taskId + 1);
         }
     }
 
@@ -79,50 +69,14 @@ public class BoDyS extends Assessment{
         currentSheet.setStatus(BoDySStatus.SKIPPED);
         saveTaskResultsInCSV();
 
-        if(taskId+1 < maxRecordingNr) {
-            continueBoDyS(taskId + 1);
+        if(taskId+1 < MAXRECORDING) {
+            setNextBoDySTask(taskId + 1);
         }
     }
 
     public void saveEvaluationData(){
         currentSheet.setStatus(BoDySStatus.EVALUATED);
         updateTaskResultsInCSV();
-    }
-
-    @Override
-    public List<String[]> onWriteCSV() {
-        ArrayList<String> criteriaArray = new ArrayList<>(Arrays.asList("TaskNr", "Status"));
-
-        String statusName = currentSheet.getStatus().getStatusName();
-        ArrayList<String> markingsArray = new ArrayList<>(Arrays.asList(String.valueOf(taskId), statusName));
-
-
-        List<String> mainKeys = currentSheet.getMainCriteriaList().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-        for (int j = 0; j < mainKeys.size(); j++){
-            String main = mainKeys.get(j);
-            criteriaArray.add(main);
-            criteriaArray.add(main+"Notes");
-            markingsArray.add(String.valueOf(currentSheet.getBoDySScores().get(main)));
-
-            String note = currentSheet.getBoDySNotes().get(main);
-
-            if(note != null){
-                note = note.replaceAll("\n", " / ");
-            } else {
-                note = "null";
-            }
-
-            markingsArray.add(note);
-
-            List<String> keys = currentSheet.getBoDySCriteria().get(main).keySet().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-
-            for(int i = 0; i < keys.size(); i++) {
-                criteriaArray.add(keys.get(i));
-                markingsArray.add(String.valueOf(currentSheet.getBoDySCriteria().get(main).get(keys.get(i))));
-            }
-        }
-
-        return new ArrayList<>(Arrays.asList(criteriaArray.toArray(new String[0]), markingsArray.toArray(new String[0])));
     }
 
     @Override
@@ -137,28 +91,80 @@ public class BoDyS extends Assessment{
                 boDySSheets[i] = new BoDySSheet();
             } else {
                 String[] line = lines.get(i + assessmentDataOffset);
-                restoreBoDysSheet(headline, line, recordings[i]);
+                restoreBoDysSheet(headline, line);
             }
         }
 
 
     }
+    @Override
+    public List<String[]> onWriteCSV() {
+        ArrayList<String> csvKeys = new ArrayList<>(Arrays.asList("TaskNr", "Status"));
 
-    private void restoreBoDysSheet(String[] headline, String[] line, Recording recording){
-        BoDySSheet boDySSheet = new BoDySSheet();
-        int taskId = Integer.parseInt(line[0]);
-        String status = line[1];
+        ArrayList<String> csvValues = initCSVAssessmentData();
+        List<String> mainKeys = sortAlphabeticMainCriteriaList();
 
-        if(recording == null) {
-            boDySSheet.setStatus(BoDySStatus.fromString(status));
-            boDySSheets[taskId] = boDySSheet;
-            return;
+        for (int j = 0; j < mainKeys.size(); j++){
+            String mainCriteria = mainKeys.get(j);
+            appendCSVKeys(csvKeys, mainCriteria);
+
+            appendCSVScore(mainCriteria, csvValues);
+            appendCSVNotes(mainCriteria, csvValues);
+            appendCSVMarkings(mainCriteria, csvValues, csvKeys);
         }
+
+        return new ArrayList<>(Arrays.asList(csvKeys.toArray(new String[0]), csvValues.toArray(new String[0])));
+    }
+
+    private ArrayList<String> initCSVAssessmentData(){
+        String statusName = currentSheet.getStatus().getStatusName();
+        return new ArrayList<>(Arrays.asList(String.valueOf(taskId), statusName));
+    }
+
+    private List<String> sortAlphabeticMainCriteriaList(){
+        return currentSheet.getMainCriteriaList().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+    }
+
+    private List<String> sortNaturalCriteriaList(String mainCriteria){
+        return Objects.requireNonNull(currentSheet.getBoDySCriteria().get(mainCriteria)).keySet().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+    }
+
+    private void appendCSVKeys(ArrayList<String> csvKeys, String mainCriteria) {
+        csvKeys.add(mainCriteria);
+        csvKeys.add(mainCriteria+"Notes");
+    }
+
+    private void appendCSVScore(String mainCriteria, ArrayList<String> csvValues){
+        csvValues.add(String.valueOf(currentSheet.getBoDySScores().get(mainCriteria)));
+    }
+
+    private void appendCSVNotes(String mainCriteria, ArrayList<String> csvValues) {
+        String note = currentSheet.getBoDySNotes().get(mainCriteria);
+
+        if(note != null){
+            note = note.replaceAll("\n", " / ");
+        } else {
+            note = "null";
+        }
+
+        csvValues.add(note);
+    }
+
+    private void appendCSVMarkings(String mainCriteria, ArrayList<String> csvValues, ArrayList<String> csvKeys){
+        List<String> keys = sortNaturalCriteriaList(mainCriteria);
+        for(int i = 0; i < keys.size(); i++) {
+            csvKeys.add(keys.get(i));
+            csvValues.add(String.valueOf(Objects.requireNonNull(currentSheet.getBoDySCriteria().get(mainCriteria)).get(keys.get(i))));
+        }
+    }
+
+    private void restoreBoDysSheet(String[] headline, String[] line){
+        BoDySSheet boDySSheet = readBoDySSheetInfos(line);
 
         String mainCriteriaFocus = "";
         for(int lineIndex = 2; lineIndex < headline.length; lineIndex++){
 
-            if(containsNumber(headline[lineIndex]) && headline[lineIndex].length() == 4){
+            if(Utils.containsNumber(headline[lineIndex]) && headline[lineIndex].length() == 4){
                 int marking = Integer.parseInt(line[lineIndex]);
                 restoreMarking(boDySSheet, mainCriteriaFocus, headline[lineIndex], marking);
             } else if(headline[lineIndex].length() == 8){
@@ -168,37 +174,29 @@ public class BoDyS extends Assessment{
                     note = note.replaceAll("/", "\n");
                 }
 
-                boDySSheet.updateBoDySNotes(mainCriteriaFocus, note);
+                boDySSheet.updateNotes(mainCriteriaFocus, note);
             } else {
                 mainCriteriaFocus = headline[lineIndex];
                 int score = Integer.parseInt(line[lineIndex]);
                 boDySSheet.updateScores(headline[lineIndex], score, true);
             }
         }
+    }
+
+    private BoDySSheet readBoDySSheetInfos(String[] line){
+        BoDySSheet boDySSheet = new BoDySSheet();
+        int taskId = Integer.parseInt(line[0]);
+        String status = line[1];
 
         boDySSheet.setStatus(BoDySStatus.fromString(status));
         boDySSheets[taskId] = boDySSheet;
+
+        return boDySSheet;
     }
 
-    private void restoreMarking(BoDySSheet boDySSheet, String mainCriteriaFocus, String criteria, int marking){
-        boDySSheet.updateMarkings(mainCriteriaFocus, criteria, marking);
-    }
 
-    private static boolean containsNumber(String input) {
-        Pattern pattern = Pattern.compile(".*\\d.*");
-        Matcher matcher = pattern.matcher(input);
-        return matcher.matches();
-    }
-
-    private int getNumberOfRecordings(){
-        int number = 0;
-        for(Recording recording : recordings){
-            if(recording != null){
-                number += 1;
-            }
-        }
-
-        return number;
+    private void restoreMarking(BoDySSheet boDySSheet, String mainCriteria, String criteria, int marking){
+        boDySSheet.updateMarkings(mainCriteria, criteria, marking);
     }
 
     public BoDySSheet[] getBoDySSheets() {

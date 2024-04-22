@@ -2,16 +2,13 @@ package com.example.ispeak.Utils;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.ispeak.Interfaces.NotesObserver;
-import com.example.ispeak.Models.BoDyS;
+import com.example.ispeak.Interfaces.INotesListener;
 import com.example.ispeak.Models.BoDySSheet;
-import com.example.ispeak.Models.Patient;
 import com.example.ispeak.R;
 import com.google.android.material.button.MaterialButton;
 
@@ -19,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class BoDySMarkingView extends ConstraintLayout implements NotesObserver {
+public class BoDySMarkingView extends ConstraintLayout implements INotesListener {
     private BoDySSheet assessmentSheet;
     private boolean readOnly;
     public BoDySMarkingView(@NonNull Context context) {
@@ -100,6 +97,6 @@ public class BoDySMarkingView extends ConstraintLayout implements NotesObserver 
 
     @Override
     public void onSaveNote(String criteria, String note) {
-        assessmentSheet.updateBoDySNotes(criteria, note);
+        assessmentSheet.updateNotes(criteria, note);
     }
 }

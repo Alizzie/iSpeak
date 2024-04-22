@@ -2,7 +2,6 @@ package com.example.ispeak.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,15 +9,10 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ispeak.Interfaces.IntentHandler;
-import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Microphone;
 import com.example.ispeak.R;
 import com.example.ispeak.databinding.ActivityMicrophoneConnectionBinding;
-
-import java.util.Objects;
 
 public class MicrophoneConnectionActivity extends BaseApp {
 
@@ -30,19 +24,24 @@ public class MicrophoneConnectionActivity extends BaseApp {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMicrophoneConnectionBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
-
-        init();
-        listenBtnCheckMicrophoneConnection();
-        listenBtnStartRecordingActivity();
-
     }
 
-    private void init(){
+    public void init(){
         retrieveIntent(this);
         enableNavBackArrow();
         microphone = new Microphone(this);
+    }
+
+    @Override
+    public void listenBtn() {
+        listenBtnCheckMicrophoneConnection();
+        listenBtnStartRecordingActivity();
+    }
+
+    @Override
+    public void setBinding() {
+        binding = ActivityMicrophoneConnectionBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
     }
 
     private void listenBtnCheckMicrophoneConnection(){
@@ -61,10 +60,10 @@ public class MicrophoneConnectionActivity extends BaseApp {
 
     private void setConnectionMessage(boolean connected){
         if (connected) {
-            binding.connectionTxt.setText(getResources().getString(R.string.divasConnected));
+            binding.connectionTxt.setText(getString(R.string.divasConnected));
             binding.connectionTxt.setTextColor(getResources().getColor(R.color.green, getTheme()));
         } else {
-            binding.connectionTxt.setText(getResources().getString(R.string.divasNotConnected));
+            binding.connectionTxt.setText(getString(R.string.divasNotConnected));
             binding.connectionTxt.setTextColor(getResources().getColor(R.color.red, getTheme()));
         }
     }
@@ -100,12 +99,6 @@ public class MicrophoneConnectionActivity extends BaseApp {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onBackPressed() {
-        navigateToNextActivity(this, MenuActivity.class);
-    }
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 

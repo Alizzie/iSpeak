@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ispeak.Adapter.RecordingTrialAdapter;
 import com.example.ispeak.Models.Assessment;
-import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Event;
 import com.example.ispeak.Models.Microphone;
 import com.example.ispeak.Models.Patient;
@@ -38,7 +36,6 @@ public class RecordingActivity extends BaseApp {
     private Microphone microphone;
     private int eventCounter = 0;
     private boolean eventRegistered;
-    private Patient patientInfo;
     private int assessmentNr, taskId;
     private Assessment assessment;
     private ArrayList<Event> eventList = new ArrayList<>();
@@ -47,40 +44,49 @@ public class RecordingActivity extends BaseApp {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityRecordingBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
+    }
 
-        init();
+    @Override
+    public void init(){
+        retrieveIntent(this);
+        initAssessmentInfo();
+        initRecordingInfo();
+        initTaskProgressBar();
+        increaseTrialRun();
+        initRecordingRecyclerView();
+    }
+
+    @Override
+    public void listenBtn() {
         listenBtnStartRecording();
         listenBtnPauseRecording();
         listenBtnEventDetection();
         listenBtnConfirm();
     }
 
-    private void init(){
-        retrieveIntent(this);
+    @Override
+    public void setBinding() {
+        binding = ActivityRecordingBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+    }
 
-        patientInfo = Patient.getInstance();
-        assessment = Patient.getInstance().getAssessmentList().get(assessmentNr);
+    private void initAssessmentInfo(){
+        assessment = patientInfo.getAssessmentList().get(assessmentNr);
         binding.patientId.setText(patientInfo.getPatientId());
         binding.patientDiagnosis.setText(patientInfo.getDiagnosis());
+        taskId = assessment.getTaskId();
+    }
 
+    private void initRecordingInfo(){
         microphone = new Microphone(this);
         adapter = new RecordingTrialAdapter(trialList, this);
-
-        taskId = assessment.getTaskId();
-
-        initTaskProgressBar();
-        increaseTrialRun();
-        initRecordingRecyclerView();
-
     }
 
     private void initTaskProgressBar(){
         float maxProgress = binding.taskProgressBar.getMax();
         float progress = (maxProgress / assessment.getMaxRecordingNr()) * (taskId + 1);
         binding.taskProgressBar.setProgress((int) progress);
-        binding.taskProgressNr.setText(getResources().getString(R.string.taskProgress, taskId + 1));
+        binding.taskProgressNr.setText(getString(R.string.taskProgress, taskId + 1));
         binding.taskName.setText(assessment.getTaskName(taskId));
     }
 
@@ -103,13 +109,13 @@ public class RecordingActivity extends BaseApp {
     }
 
     private void saveRecording(Recording recording) {
-        File file = new File(recording.getMp3_filepath());
+        File file = new File(recording.getMp3Filepath());
         File dest = new File(assessment.getFolderPath() + File.separator + "Recordings" +
                 File.separator + "recording_" + taskId + ".3gp");
 
         boolean success = file.renameTo(dest);
         if(success) {
-            recording.setMp3_filepath(dest.getPath());
+            recording.setMp3Filepath(dest.getPath());
         }
 
     }
@@ -118,14 +124,8 @@ public class RecordingActivity extends BaseApp {
         for (int i = 0; i < trialList.size(); i++) {
 
             if (i != checkPosition) {
-                // Delete the recording, e.g., using File.delete() or your specific logic
-                File fileToDelete = new File(trialList.get(i).getMp3_filepath());
-                boolean deleted = fileToDelete.delete();
-                if (deleted) {
-                    // Handle deletion success
-                } else {
-                    // Handle deletion failure
-                }
+                File fileToDelete = new File(trialList.get(i).getMp3Filepath());
+                fileToDelete.delete();
             }
         }
     }
@@ -134,7 +134,7 @@ public class RecordingActivity extends BaseApp {
     private void listenBtnStartRecording(){
         binding.btnStartRecording.setOnClickListener(view -> {
             Button button = (Button) view;
-            String playMode = button.getText().toString();  //get current playmode (start, stop)
+            String playMode = button.getText().toString();
 
             updatePlayBtn(button, playMode);
             updateChronometer(playMode);
@@ -262,13 +262,13 @@ public class RecordingActivity extends BaseApp {
     private void resetEventCounter(){
         eventCounter = 0;
         eventList = new ArrayList<>();
-        binding.numEvents.setText(getResources().getString(R.string.number0));
+        binding.numEvents.setText(getString(R.string.number0));
     }
 
     private void increaseTrialRun(){
         int currentTrialId = trialList.size() + 1;
         updateOutputAudioPath(currentTrialId);
-        binding.trialNumber.setText(getResources().getString(R.string.trialNumber, currentTrialId));
+        binding.trialNumber.setText(getString(R.string.trialNumber, currentTrialId));
     }
 
     private void updateOutputAudioPath(int trialId) {
@@ -298,7 +298,7 @@ public class RecordingActivity extends BaseApp {
                 if(taskId < assessment.getMaxRecordingNr() - 1) {
                     navigateToNextActivity(this, RecordingActivity.class);
                 } else{
-                    navigateToNextActivity(this, BoDySNotesActivity.class);
+                    navigateToNextActivity(this, BoDySCircumstancesActivity.class);
                 }
                 return true;
             });

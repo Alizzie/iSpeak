@@ -17,8 +17,6 @@ import com.example.ispeak.Models.Patient;
 import com.example.ispeak.R;
 import com.example.ispeak.databinding.ActivityBodysScoresOverviewBinding;
 
-import java.util.Iterator;
-
 public class BoDySScoreOverviewActivity extends BaseApp {
     private ActivityBodysScoresOverviewBinding binding;
     private int assessmentNr;
@@ -27,16 +25,24 @@ public class BoDySScoreOverviewActivity extends BaseApp {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityBodysScoresOverviewBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
-
-        init();
+        enableNavBackArrow();
     }
 
-    private void init(){
-        this.assessment = (BoDyS) Patient.getInstance().getAssessmentList().get(assessmentNr);
-        enableNavBackArrow();
+    @Override
+    public void init(){
+        this.assessment = (BoDyS) patientInfo.getAssessmentList().get(assessmentNr);
         initScoreItems();
+    }
+
+    @Override
+    public void listenBtn() {
+
+    }
+
+    @Override
+    public void setBinding() {
+        binding = ActivityBodysScoresOverviewBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
     }
 
     private void initScoreItems(){
@@ -53,25 +59,30 @@ public class BoDySScoreOverviewActivity extends BaseApp {
     private void updateScoreItem(CardView cardView, String criteria){
         TextView scoreHistory = cardView.findViewById(R.id.scoreHistory);
         TextView totalCriteriaScore = cardView.findViewById(R.id.totalCriteriaScore);
-        int totalScore = 0;
+        Integer totalScore = 0;
         StringBuilder scores = new StringBuilder();
 
         for(int i = 0; i < assessment.getMaxRecordingNr(); i++){
             BoDySSheet currentSheet = assessment.getBoDySSheets()[i];
             int score = currentSheet.getBoDySScores().get(criteria);
-
-            if(score == -1 || !currentSheet.getStatus().isEvaluated()){
-                scores.append("-");
-            } else {
-                totalScore += score;
-                scores.append(score);
-            }
-
-            scores.append(" | ");
+            totalScore = updateScore(scores, score, totalScore, currentSheet);
         }
 
         scoreHistory.setText(scores);
         totalCriteriaScore.setText(String.valueOf(totalScore));
+    }
+
+    private int updateScore(StringBuilder scores, int score, int totalScore, BoDySSheet sheet){
+
+        if(score == -1 || !sheet.getStatus().isEvaluated()){
+            scores.append("-");
+        } else {
+            totalScore = totalScore + score;
+            scores.append(score);
+        }
+
+        scores.append(" | ");
+        return totalScore;
     }
 
     @Override

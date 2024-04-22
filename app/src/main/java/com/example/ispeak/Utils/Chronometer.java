@@ -9,19 +9,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatTextView;
-
-import java.text.DecimalFormat;
-
 
 public class Chronometer extends AppCompatTextView {
     @SuppressWarnings("unused")
     private static final String TAG = "Chronometer";
 
     public interface OnChronometerTickListener {
-
         void onChronometerTick(Chronometer chronometer);
     }
 
@@ -32,7 +27,6 @@ public class Chronometer extends AppCompatTextView {
     private boolean mRunning;
     private boolean mPausing;
     private OnChronometerTickListener mOnChronometerTickListener;
-    private Chronometer mChrono;
 
 
     private static final int TICK_WHAT = 2;
@@ -51,11 +45,23 @@ public class Chronometer extends AppCompatTextView {
         super (context, attrs, defStyle);
 
         init();
+        mHandler = new Handler() {
+            public void handleMessage(Message m) {
+                if(mPausing) {
+                    updatePauseTime(SystemClock.elapsedRealtime());
+                } else if (mRunning) {
+                    updateText(SystemClock.elapsedRealtime());
+                    dispatchChronometerTick();
+                }
+
+                sendMessageDelayed(Message.obtain(this , TICK_WHAT),
+                        100);
+            }
+        };
     }
 
     private void init() {
         mBase = SystemClock.elapsedRealtime();
-        mChrono = this;
         mPauseTime = 0;
         mPausing = false;
         updateText(mBase);
@@ -130,27 +136,8 @@ public class Chronometer extends AppCompatTextView {
 
     public synchronized void updateText(long now) {
         timeElapsed = now - mBase - mPauseTime;
-        String text = Utils.formatTime(timeElapsed);
+        String text = Utils.formatAudioTimeToStringPresentation(timeElapsed);
         setText(text);
-
-        /*
-        if(seconds < 5 && !mRunning)
-            mChrono.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_chrono));
-
-        if(seconds<5 && mRunning)
-           mChrono.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_chrono_below5sec));
-
-        if(seconds==5 && milliseconds ==0) {
-            mChrono.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_chrono_above5sec));
-            mp.start();
-        }
-        if(minutes==1 && seconds == 0){
-            mChrono.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_chrono_done));
-            mp.start();
-            mChrono.stop();
-        }
-        */
-
     }
 
     private void updateRunning() {
@@ -169,19 +156,7 @@ public class Chronometer extends AppCompatTextView {
         }
     }
 
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message m) {
-            if(mPausing) {
-                updatePauseTime(SystemClock.elapsedRealtime());
-            } else if (mRunning) {
-                updateText(SystemClock.elapsedRealtime());
-                dispatchChronometerTick();
-            }
-
-            sendMessageDelayed(Message.obtain(this , TICK_WHAT),
-                    100);
-        }
-    };
+    private final Handler mHandler;
 
     void dispatchChronometerTick() {
         if (mOnChronometerTickListener != null) {

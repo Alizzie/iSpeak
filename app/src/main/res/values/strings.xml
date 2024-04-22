@@ -7,11 +7,14 @@
     <string name="patientIdInput">Patient ID (7 characters)</string>
     <string name="caseIdInput">Case ID (7 characters)</string>
     <string name="patientDiagnosis">Patient\'s diagnosis:</string>
+    <string name="patientIdInputError">Patient Id not correct</string>
+    <string name="caseIdInputError">Case Id not correct</string>
 
     <!--Diagnosis-->
     <string name="diagnosisStroke">Stroke</string>
     <string name="diagnosisPakinson">Pakinson</string>
     <string name="diagnosisOther">Other</string>
+    <string name="diagnosisError">NaN</string>
 
     <!--Button Text-->
     <string name="confirmBtn">Confirm</string>
@@ -148,6 +151,7 @@
     <string name="criteriaNotesHint">Schreibe hier deine Notizen</string>
     <string name="recordingStatusNegativeDE">Nicht aufgenommen</string>
     <string name="recordingStatusPositiveDE">Aufgenommen</string>
+    <string name="recordingStatusSkippedDE">Übersprungen</string>
     <string name="scoringStatusNegativeDE">Nicht bewertet</string>
     <string name="scoringStatusPositiveDE">Bewertet</string>
 
@@ -155,6 +159,32 @@
     <string name="taskOverviewDE">Aufgabenübersicht</string>
     <string name="taskOverviewScoringDE">Gesamtpunktzahl: %1$d</string>
     <string name="taskOverviewProgress">%1$.1f%%</string>
+
+    <string name="circumstancesDE">Beleitumstände: %1$s</string>
+    <string name="assessmentNotesDE">Anmerkungen: %1$s</string>
+
+    <string name="assessmentEndMessageDE">Willst du das Assessment abschliessen?</string>
+    <string name="assessmentEndWarningMessageDE">Nach dem Abschliessen ist das Überarbeiten des Assessments nicht mehr möglich.</string>
+    <string name="assessmentEndMessagePostiveDE">Abschliessen</string>
+    <string name="assessmentEndMessageNegativeDE">Weiter bearbeiten</string>
+
+    <string name="boDySFrequencyMainCriteriaTitle">%d. %s</string>
+
+    <string name="boDySMissingErrorTitle">Fehlende Bewertungen</string>
+    <string name="boDySMissingErrorMessage">Bitte gebe alle Kriterien eine Bewertung.</string>
+    <string name="okay">Ok</string>
+
+    <string name="boDySScoringInfoTitle">Scoring</string>
+    <string name="boDySScoringInfoBox">0: Schwere Störung, 4: Keine Störung</string>
+
+    <string name="boDySMarkingInfoTitle">Beobachtungen</string>
+    <string name="boDySMarkingInfoBox">Beobachtungen im Audio können durch das Klicken der Kriterien hinzugefügt werden." +
+                        "\nMarkierte Beobachtungen sind blau gekennzeichnet. Diese können durch ein erneutes Klicken auf das Feld wieder entfernt werden." +
+                        "\nDurch das Klicken an den blauen Hauptmerkmalen gelangt man zu den Notizen.</string>
+
+    <string name="boDySEventInfoTitle">Events</string>
+    <string name="boDySEventInfoBox">Füge neue Events durch das Lesezeichen rechts, unter der Signalwelle hinzu. \nEvents können mit Kategorien markiert werden." +
+                        "Die Kategorien sind bisher noch nicht fest definiert und werden im Laufe des Entwicklungsprozesses noch festgelegt!</string>
 
 
 </resources>

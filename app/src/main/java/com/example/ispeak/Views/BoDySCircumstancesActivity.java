@@ -18,38 +18,43 @@ import com.example.ispeak.Adapter.NotesAdapter;
 import com.example.ispeak.Adapter.SimpleCheckboxAdapter;
 import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.Models.Patient;
-import com.example.ispeak.databinding.ActivityBodysNotesBinding;
+import com.example.ispeak.databinding.ActivityBodysCircumstancesBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
-public class BoDySNotesActivity extends BaseApp {
-
-    private ActivityBodysNotesBinding binding;
+public class BoDySCircumstancesActivity extends BaseApp {
+    private ActivityBodysCircumstancesBinding binding;
     private int assessmentNr;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityBodysNotesBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
-
-        init();
-        listenContinueBtn();
     }
 
-    private void init(){
+    @Override
+    public void init(){
         enableNavBackArrow();
         initCircumstancesListView();
         initCommentsListView();
     }
 
+    @Override
+    public void listenBtn() {
+        listenContinueBtn();
+    }
+
+    @Override
+    public void setBinding() {
+        binding = ActivityBodysCircumstancesBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+    }
+
     private void initCircumstancesListView(){
-        Assessment assessment = Patient.getInstance().getAssessmentList().get(assessmentNr);
+        Assessment assessment = patientInfo.getAssessmentList().get(assessmentNr);
         List<String> preOptions = new ArrayList<>(Arrays.asList("Erkältung", "Starkes Rauchen", "Vorbestehender Sigmatismus", "Antriebsminderung", "Pathologisches Lachen/ Weinen"));
         Set<String> options = assessment.getCircumstances();
         List<String> combinedList = getCombinedList(preOptions, options);
@@ -65,7 +70,7 @@ public class BoDySNotesActivity extends BaseApp {
     }
 
     private void initCommentsListView(){
-        Assessment assessment = Patient.getInstance().getAssessmentList().get(assessmentNr);
+        Assessment assessment = patientInfo.getAssessmentList().get(assessmentNr);
         List<String> preOptions = new ArrayList<>(Arrays.asList("Fremdsprachenakzent", "Dialekt"));
         Set<String> options = assessment.getNotes();
         List<String> combinedList = getCombinedList(preOptions, options);
@@ -80,9 +85,9 @@ public class BoDySNotesActivity extends BaseApp {
         addCustomInputs(combinedList, adapter, binding.commentsTxtInput, binding.commentsListView);
     }
 
-    private List<String> getCombinedList(List<String> list1, Set<String> set1){
-        Set<String> combinedSet = new HashSet<>(list1);
-        combinedSet.addAll(set1);
+    private List<String> getCombinedList(List<String> list, Set<String> set){
+        Set<String> combinedSet = new HashSet<>(list);
+        combinedSet.addAll(set);
         return new ArrayList<>(combinedSet);
     }
 
@@ -107,7 +112,7 @@ public class BoDySNotesActivity extends BaseApp {
 
     private void listenContinueBtn(){
         binding.confirmBtn.setOnClickListener(view -> {
-            Patient.getInstance().getAssessmentList().get(assessmentNr).updateAssessmentNotesInCSV();
+            patientInfo.getAssessmentList().get(assessmentNr).updateAssessmentNotesInCSV();
             navigateToNextActivity(this, BoDySOverviewPageActivity.class);
         });
     }

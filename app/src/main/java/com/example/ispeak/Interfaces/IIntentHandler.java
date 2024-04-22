@@ -3,7 +3,7 @@ package com.example.ispeak.Interfaces;
 import android.app.Activity;
 import android.content.Intent;
 
-public interface IntentHandler {
+public interface IIntentHandler {
 
     default void navigateToNextActivity(Activity currentActivity, Class nextClass) {
         Intent intent = new Intent(currentActivity, nextClass);

@@ -1,7 +1,5 @@
 package com.example.ispeak.Adapter;
 
-import android.util.Log;
-
 import com.example.ispeak.Models.Assessment;
 
 import java.util.List;

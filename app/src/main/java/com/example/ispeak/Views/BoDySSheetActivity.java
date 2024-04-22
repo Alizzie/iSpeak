@@ -2,7 +2,6 @@ package com.example.ispeak.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ispeak.Adapter.CategoryAdapter;
 import com.example.ispeak.Adapter.EventAdapter;
-import com.example.ispeak.Interfaces.EventLabelingObserver;
+import com.example.ispeak.Interfaces.IEventLabelingListener;
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.BoDySSheet;
 import com.example.ispeak.Models.Event;
@@ -24,7 +23,6 @@ import com.example.ispeak.Models.Recording;
 import com.example.ispeak.R;
 import com.example.ispeak.Utils.BoDySMarkingView;
 import com.example.ispeak.Utils.BoDySScoringView;
-import com.example.ispeak.Utils.BoDySStatus;
 import com.example.ispeak.Utils.WaveformSeekbar;
 import com.example.ispeak.databinding.ActivityBodysSheetBinding;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -32,14 +30,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver {
+public class BoDySSheetActivity extends BaseApp implements IEventLabelingListener {
 
     private ActivityBodysSheetBinding binding;
-    private Patient patientInfo;
     private BoDyS assessment;
     private int assessmentNr;
     private EventAdapter eventAdapter;
-    private CategoryAdapter categoryAdapter;
     private int taskId;
     private Recording recording;
     private BoDySSheet boDySSheet;
@@ -47,10 +43,33 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityBodysSheetBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
+    }
 
-        init();
+    private void showFullFunctionalities(){
+        binding.playBtn.setVisibility(View.VISIBLE);
+        binding.forwardBtn.setVisibility(View.VISIBLE);
+        binding.backwardBtn.setVisibility(View.VISIBLE);
+        binding.scoringModeBtn.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void init() {
+        retrieveIntent(this);
+        initPatientData();
+        initBoDySSheet();
+
+        initWaveformSeekbar();
+        initTaskProgressBar(taskId);
+
+        ArrayList<Event> events = recording.getEvents();
+        initEventRecyclerView(events);
+        initCategoryListView(events);
+
+        binding.recordingTime.setText(getApplicationContext().getString(R.string.patientRecordingTime, recording.getFormattedPatientTime()));
+    }
+
+    @Override
+    public void listenBtn() {
         listenEventLabelingBtn();
         listenMarkingBtn();
         listenSkipBtn();
@@ -71,32 +90,14 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
         }
     }
 
-    private void showFullFunctionalities(){
-        binding.playBtn.setVisibility(View.VISIBLE);
-        binding.forwardBtn.setVisibility(View.VISIBLE);
-        binding.backwardBtn.setVisibility(View.VISIBLE);
-        binding.scoringModeBtn.setVisibility(View.VISIBLE);
-    }
-
-    private void init() {
-        retrieveIntent(this);
-        initPatientData();
-        initBoDySSheet();
-
-        initWaveformSeekbar();
-        initTaskProgressBar(taskId);
-
-        ArrayList<Event> events = recording.getEvents();
-        Log.d("TESTREC", events.size()+ " ");
-        initEventRecyclerView(events);
-        initCategoryListView(events);
-
-        binding.recordingTime.setText(getApplicationContext().getString(R.string.patientRecordingTime, recording.getFormattedPatientTime()));
+    @Override
+    public void setBinding() {
+        binding = ActivityBodysSheetBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
     }
 
     private void initPatientData(){
-        patientInfo = Patient.getInstance();
-        assessment = (BoDyS) Patient.getInstance().getAssessmentList().get(assessmentNr);
+        assessment = (BoDyS) patientInfo.getAssessmentList().get(assessmentNr);
         binding.patientId.setText(patientInfo.getPatientId());
         binding.patientDiagnosis.setText(patientInfo.getDiagnosis());
     }
@@ -111,7 +112,7 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
 
     private void initWaveformSeekbar() {
         WaveformSeekbar waveformSeekbar = binding.waveformSeekbar;
-        waveformSeekbar.init(recording.getMp3_filepath(), binding.audioTime, binding.audioDuration, binding.playBtn);
+        waveformSeekbar.init(recording.getMp3Filepath(), binding.audioTime, binding.audioDuration, binding.playBtn);
         setWaveformSeekbarProgress((int) RecyclerView.NO_ID);
     }
 
@@ -186,7 +187,7 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
             navigateToNextActivity(this, RecordingActivity.class);
         } else{
             assessment.startNewTaskRound();
-            navigateToNextActivity(this, BoDySNotesActivity.class);
+            navigateToNextActivity(this, BoDySCircumstancesActivity.class);
         }
     }
 
@@ -249,36 +250,33 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
 
     private void showInfoEventDialog(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Events")
-                .setMessage("Füge neue Events durch das Lesezeichen rechts, unter der Signalwelle hinzu. \nEvents können mit Kategorien markiert werden." +
-                        "Die Kategorien sind bisher noch nicht fest definiert und werden im Laufe des Entwicklungsprozesses noch festgelegt!")
-                .setPositiveButton("Ok", null)
+        builder.setTitle(getString(R.string.boDySEventInfoTitle))
+                .setMessage(getString(R.string.boDySEventInfoBox))
+                .setPositiveButton(getString(R.string.okay), null)
                 .show();
     }
 
     private void showInfoMarkingDialog(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Beobachtungen")
-                .setMessage("Beobachtungen im Audio können durch das Klicken der Kriterien hinzugefügt werden." +
-                        "\nMarkierte Beobachtungen sind blau gekennzeichnet. Diese können durch ein erneutes Klicken auf das Feld wieder entfernt werden." +
-                        "\nDurch das Klicken an den blauen Hauptmerkmalen gelangt man zu den Notizen.")
-                .setPositiveButton("Ok", null)
+        builder.setTitle(getString(R.string.boDySMarkingInfoTitle))
+                .setMessage(getString(R.string.boDySScoringInfoBox))
+                .setPositiveButton(getString(R.string.okay), null)
                 .show();
     }
 
     private void showInfoScoringDialog(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Scoring")
-                .setMessage("0: Schwere Störung \n4: Keine Störung" )
-                .setPositiveButton("Ok", null)
+        builder.setTitle(getString(R.string.boDySScoringInfoTitle))
+                .setMessage(getString(R.string.boDySScoringInfoBox))
+                .setPositiveButton(getString(R.string.okay), null)
                 .show();
     }
 
     private void showScoringMissingDialog(){
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle("Fehlende Bewertungen")
-                .setMessage("Bitte gebe alle Kriterien eine Bewertung.")
-                .setPositiveButton("Ok", null)
+        builder.setTitle(getString(R.string.boDySMissingErrorTitle))
+                .setMessage(getString(R.string.boDySMissingErrorTitle))
+                .setPositiveButton(getString(R.string.okay), null)
                 .show();
     }
 
@@ -292,7 +290,7 @@ public class BoDySSheetActivity extends BaseApp implements EventLabelingObserver
             selectedEvent = events.get(eventAdapter.getCheckPosition());
         }
 
-        categoryAdapter = new CategoryAdapter(new ArrayList<>(assessment.getCurrentSheet().getBoDySCriteria().keySet()), getApplicationContext(), selectedEvent, this, assessment.isCompleted());
+        CategoryAdapter categoryAdapter = new CategoryAdapter(new ArrayList<>(assessment.getCurrentSheet().getBoDySCriteria().keySet()), getApplicationContext(), selectedEvent, this, assessment.isCompleted());
         binding.bodysEventLabeling.eventCategoryRecyclerView.setAdapter(categoryAdapter);
     }
 

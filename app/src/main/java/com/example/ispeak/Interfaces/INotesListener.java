@@ -1,5 +1,5 @@
 package com.example.ispeak.Interfaces;
 
-public interface NotesObserver {
+public interface INotesListener {
     void onSaveNote(String crit, String note);
 }

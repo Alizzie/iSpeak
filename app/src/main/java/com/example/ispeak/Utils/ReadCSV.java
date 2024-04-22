@@ -1,32 +1,17 @@
 package com.example.ispeak.Utils;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
-import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.Models.Event;
 import com.example.ispeak.Models.Recording;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ReadCSV extends ViewModel {
-
-    String name;
-    public static WriteCSV getInstance(@NonNull ViewModelStoreOwner owner) {
-        return new ViewModelProvider(owner, (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory()).get(WriteCSV.class);
-    }
 
     public ArrayList<String[]> readAssessmentDataCSVNote(String filepath){
         ArrayList<String[]> lines = new ArrayList<>();
@@ -64,7 +49,7 @@ public class ReadCSV extends ViewModel {
                     continue;
                 }
 
-                Event event = recording.onReadCSV(line, eventNumber, taskId);
+                Event event = recording.onReadEventsCSV(line, eventNumber, taskId);
                 events.add(event);
                 eventNumber++;
             }

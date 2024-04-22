@@ -2,22 +2,19 @@ package com.example.ispeak.Utils;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.ispeak.Interfaces.ScoreBoardObserver;
-import com.example.ispeak.Models.BoDyS;
+import com.example.ispeak.Interfaces.IScoreBoardListener;
 import com.example.ispeak.Models.BoDySSheet;
-import com.example.ispeak.Models.Patient;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class BoDySScoringView extends ConstraintLayout implements ScoreBoardObserver {
+public class BoDySScoringView extends ConstraintLayout implements IScoreBoardListener {
     private BoDySSheet assessmentSheet;
     public BoDySScoringView(@NonNull Context context) {
         super(context);
@@ -67,7 +64,6 @@ public class BoDySScoringView extends ConstraintLayout implements ScoreBoardObse
         HashMap<String, Integer> boDySScores = assessmentSheet.getBoDySScores();
 
         List<String> emptyMarkingsCriteria = assessmentSheet.getMainCriteriaWithEmptyMarkings();
-        Log.d("TESTSMARKINGS", emptyMarkingsCriteria.toString());
 
         for(String criteria: boDySScores.keySet()) {
             int btnId = getResources().getIdentifier(criteria+"Score", "id", getContext().getPackageName());
@@ -79,7 +75,6 @@ public class BoDySScoringView extends ConstraintLayout implements ScoreBoardObse
             } else {
                 btn.setClickable(true);
                 int score = boDySScores.get(criteria);
-                Log.d("TESTSMARKINGS", String.valueOf(score));
 
                 if(score == -1) {
                     btn.setText("--");
@@ -89,7 +84,6 @@ public class BoDySScoringView extends ConstraintLayout implements ScoreBoardObse
             }
         }
     }
-
 
     @Override
     public void onScoreBoardClicked(String criteria, int score) {

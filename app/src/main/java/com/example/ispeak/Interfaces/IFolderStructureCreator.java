@@ -1,6 +1,6 @@
 package com.example.ispeak.Interfaces;
 
-public interface FolderStructureCreator {
+public interface IFolderStructureCreator {
 
      void createFolderStructure();
 }

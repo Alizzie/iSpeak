@@ -2,7 +2,6 @@ package com.example.ispeak.Adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.BoDySSheet;
@@ -49,7 +47,7 @@ public class BoDySMainCriteriaAdapter extends RecyclerView.Adapter<BoDySMainCrit
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.criteriaTxt.setText(position+1 + ". " + mainKeys.get(position));
+        holder.criteriaTxt.setText(context.getString(R.string.boDySFrequencyMainCriteriaTitle, position+1, mainKeys.get(position)));
         holder.setFrequencyBar(mainKeys.get(position));
 
         holder.cardViewItem.setOnClickListener(view -> {
@@ -64,11 +62,11 @@ public class BoDySMainCriteriaAdapter extends RecyclerView.Adapter<BoDySMainCrit
         });
 
         initFrequencyObservationRecyclerView(holder, mainKeys.get(position));
-        initDownDropCriteria(holder);
+        initDropDownCriteria(holder);
 
     }
 
-    private void initDownDropCriteria(ViewHolder holder) {
+    private void initDropDownCriteria(ViewHolder holder) {
         holder.subCriteriaRecyclerView.setVisibility(View.GONE);
 
         Drawable arrowDown = ResourcesCompat.getDrawable(context.getResources(), R.drawable.keyboard_arrow_down_24, null);
@@ -97,7 +95,7 @@ public class BoDySMainCriteriaAdapter extends RecyclerView.Adapter<BoDySMainCrit
         holder.subCriteriaRecyclerView.setLayoutManager(layoutManager);
 
         HashMap<String, Integer> criteria = assessment.getCurrentSheet().getBoDySCriteria().get(mainCriteria);
-        BoDySSubCriteriaAdapter adapter = new BoDySSubCriteriaAdapter(assessment, mainCriteria, criteria, context.getApplicationContext());
+        BoDySCriteriaAdapter adapter = new BoDySCriteriaAdapter(assessment, mainCriteria, criteria, context.getApplicationContext());
         holder.subCriteriaRecyclerView.setAdapter(adapter);
     }
 
@@ -142,7 +140,7 @@ public class BoDySMainCriteriaAdapter extends RecyclerView.Adapter<BoDySMainCrit
 
         private boolean hasMarking(BoDySSheet sheet, String mainCriteria){
             HashMap<String, Integer> markings = sheet.getBoDySCriteria().get(mainCriteria);
-            return markings.containsValue(1);
+            return markings != null && markings.containsValue(1);
         }
     }
 }

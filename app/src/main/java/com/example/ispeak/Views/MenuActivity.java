@@ -1,7 +1,3 @@
-/*
- * Elisa D.
- */
-
 package com.example.ispeak.Views;
 
 import android.content.Intent;
@@ -18,27 +14,31 @@ import com.example.ispeak.databinding.ActivityMenuBinding;
 public class MenuActivity extends BaseApp {
 
     ActivityMenuBinding binding;
-    Patient patientInfo;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMenuBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
-
-        init();
-        listenBoDysAssessment();
     }
 
-    private void init(){
+    @Override
+    public void init(){
         retrieveIntent(this);
-        patientInfo = Patient.getInstance();
         setPatientInfoDisplay();
     }
 
+    @Override
+    public void listenBtn(){
+        listenBoDysAssessment();
+    }
+
+    @Override
+    public void setBinding() {
+        binding = ActivityMenuBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+    }
+
     private void setPatientInfoDisplay(){
-        binding.patientId.setText(getResources().getString(R.string.patientData, patientInfo.getPatientId()));
-        binding.caseId.setText(getResources().getString(R.string.caseData, patientInfo.getCaseId()));
+        binding.patientId.setText(getString(R.string.patientData, patientInfo.getPatientId()));
+        binding.caseId.setText(getString(R.string.caseData, patientInfo.getCaseId()));
         binding.patientDiagnosis.setText(patientInfo.getDiagnosis());
         binding.caseDate.setText(patientInfo.getFormattedDate());
     }
@@ -58,7 +58,6 @@ public class MenuActivity extends BaseApp {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
         MenuItem homeItem = menu.findItem(R.id.action_return_home);
         if(homeItem!= null) {
             homeItem.setVisible(false);

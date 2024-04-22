@@ -1,32 +1,26 @@
 package com.example.ispeak.Models;
 
 import android.media.MediaMetadataRetriever;
-import android.util.Log;
 
-import androidx.annotation.RequiresPermission;
-
-import com.example.ispeak.Interfaces.FolderStructureCreator;
-import com.example.ispeak.Interfaces.WriteCSVInterface;
+import com.example.ispeak.Interfaces.IFolderStructureCreator;
+import com.example.ispeak.Interfaces.IWriteCSV;
 import com.example.ispeak.Utils.ReadCSV;
 import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.Utils.WriteCSV;
 
 import java.io.File;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public abstract class Assessment implements FolderStructureCreator, WriteCSVInterface {
+public abstract class Assessment implements IFolderStructureCreator, IWriteCSV {
 
     protected String assessmentFolderPath, assessmentName;
     protected Recording[] recordings;
     protected int taskId;
-    protected int maxRecordingNr;
+    protected int MAXRECORDING;
     protected Set<String> circumstances;
     protected Set<String> notes;
     private boolean isCompleted;
@@ -34,12 +28,12 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
     public Assessment(String assessmentName, int maxRecordingNr){
         this.assessmentName = assessmentName;
         this.taskId = 0;
-        this.maxRecordingNr = maxRecordingNr;
+        this.MAXRECORDING = maxRecordingNr;
         this.recordings = new Recording[maxRecordingNr];
         this.isCompleted = false;
         this.circumstances = new HashSet<>();
         this.notes = new HashSet<>();
-        assessmentFolderPath = Patient.getInstance().getPatientFolderPath() +
+        assessmentFolderPath = Patient.getPatient().getPatientFolderPath() +
                 File.separator + assessmentName;
         createFolderStructure();
     }
@@ -49,8 +43,8 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
 
         String csvFolder = assessmentFolderPath + File.separator + "CSV" + File.separator;
         List<String> csvFiles = new ArrayList<>(Arrays.asList(csvFolder + "Assessment.csv", csvFolder + "Events.csv"));
-        writeCSV.storeDataCSVNote(this, csvFiles.get(0));
-        writeCSV.storeEventDataCSVNote(this, csvFiles.get(1));
+        writeCSV.storeAssessmentDataCSVNote(this, csvFiles.get(0));
+        writeCSV.storeRecordingEventDataCSVNote(this, csvFiles.get(1));
     }
 
     protected void updateTaskResultsInCSV(){
@@ -77,13 +71,6 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         writeCSV.sumTotalAssessment(csvFiles);
     }
 
-    @Override
-    public void createFolderStructure() {
-        Utils.createFolder(assessmentFolderPath + File.separator + "Recordings");
-        Utils.createFolder(assessmentFolderPath + File.separator + "CSV");
-    }
-
-
     public boolean retrieveAssessment(File file) {
         File recordingsDir = new File(file, "Recordings");
         File csvDir = new File(file, "CSV");
@@ -97,57 +84,64 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
                 return false;
             }
 
-            retrieveNotes(lines.get(1));
+            retrieveAssessmentSideNotes(lines.get(1));
             this.retrieveConcreteAssessment(lines);
         }
 
         return true;
     }
 
-    private void retrieveNotes(String[] notes) {
-        boolean isCompleted = notes[0].equals("true");
-        String[] circumstances = notes[1].split("/");
-        String[] comments = notes[2].split("/");
+    private void retrieveAssessmentSideNotes(String[] line) {
+        retrieveAssessmentCompletion(line[0]);
+        retrieveAssessmentCircumstances(line[1]);
+        retrieveAssessmentNotes(line[2]);
+    }
 
-        this.isCompleted = isCompleted;
+    private void retrieveAssessmentCompletion(String lineItem){
+        this.isCompleted = lineItem.equals("true");
+    }
 
-        if(circumstances.length >= 1 && !notes[1].trim().isEmpty() && !notes[1].equals("/")){
+    private void retrieveAssessmentCircumstances(String lineItem){
+        String[] circumstances = lineItem.split("/");
+        if(circumstances.length >= 1 && !lineItem.trim().isEmpty() && !lineItem.equals("/")){
             this.circumstances = new HashSet<>(Arrays.asList(circumstances));
         }
+    }
 
-        if(comments.length >= 1 && !notes[2].trim().isEmpty() && !notes[2].equals("/")){
+    private void retrieveAssessmentNotes(String lineItem){
+        String[] comments = lineItem.split("/");
+        if(comments.length >= 1 && !lineItem.trim().isEmpty() && !lineItem.equals("/")){
             this.notes = new HashSet<>(Arrays.asList(comments));
         }
     }
 
-    protected ArrayList<String[]> readLines(File dataFile){
-        ArrayList<String[]> lines = new ArrayList<>();
-
-        if(dataFile.exists()){
-            ReadCSV readCSV = new ReadCSV();
-            lines = readCSV.readAssessmentDataCSVNote(dataFile.getAbsolutePath());
-        }
-
-        return lines;
-    }
-
-    private void retrieveRecordings(File recordingsDir, File csvDir){
+    private void retrieveRecordings(File recordingsDir, File recordingEventCsvDir){
         File[] recordingFiles = recordingsDir.listFiles();
 
-        if (recordingFiles != null) {
-            Arrays.sort(recordingFiles);
-            for (int i = 0; i < recordingFiles.length; i++) {
-                File recordingFile = recordingFiles[i];
-                Recording recording = retrieveRecording(recordingFile);
-                recording.setEvents(retrieveRecordingEvents(csvDir, recording, i));
-                int recordingIndex = calculateRecordingIndex(recording.getMp3_filepath());
+        if(recordingFiles == null) {
+            return;
+        }
 
-                if(recordingIndex != -1){
-                    recordings[recordingIndex] = recording;
-                } else{
-                    Utils.deleteFromDir(recordingFile);
-                }
-            }
+        Arrays.sort(recordingFiles);
+
+        for (File recordingFile : recordingFiles) {
+            retrieveRecording(recordingFile, recordingEventCsvDir);
+        }
+    }
+
+    private void retrieveRecording(File recordingFile, File csvDir){
+        Recording recording = createRecording(recordingFile);
+        int recordingIndex = -1;
+
+        if(recording != null) {
+            recordingIndex = calculateRecordingIndex(recording.getMp3Filepath());
+            recording.setEvents(retrieveRecordingEvents(csvDir, recording, recordingIndex));
+        }
+
+        if(recordingIndex != -1){
+            recordings[recordingIndex] = recording;
+        } else{
+            Utils.deleteFilesFromDir(recordingFile);
         }
     }
 
@@ -162,7 +156,7 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         return new ArrayList<>();
     }
 
-    private Recording retrieveRecording(File recordingFile) {
+    private Recording createRecording(File recordingFile) {
         if (recordingFile.isFile() && recordingFile.exists()) {
             String mp3Filepath = recordingFile.getAbsolutePath();
             long mp3Duration = calculateRecordingTime(recordingFile);
@@ -170,6 +164,17 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         }
 
         return null;
+    }
+
+    protected ArrayList<String[]> readLines(File dataFile){
+        ArrayList<String[]> lines = new ArrayList<>();
+
+        if(dataFile.exists()){
+            ReadCSV readCSV = new ReadCSV();
+            lines = readCSV.readAssessmentDataCSVNote(dataFile.getAbsolutePath());
+        }
+
+        return lines;
     }
 
     private int calculateRecordingIndex(String input){
@@ -194,7 +199,14 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
         return Long.parseLong(durationStr);
     }
 
-    public abstract void retrieveConcreteAssessment(ArrayList<String[]> lines);
+    @Override
+    public void createFolderStructure() {
+        Utils.createFolder(assessmentFolderPath + File.separator + "Recordings");
+        Utils.createFolder(assessmentFolderPath + File.separator + "CSV");
+    }
+
+
+    protected abstract void retrieveConcreteAssessment(ArrayList<String[]> lines);
     public abstract void skipTaskRound();
     public abstract void startNewTaskRound();
 
@@ -213,7 +225,7 @@ public abstract class Assessment implements FolderStructureCreator, WriteCSVInte
     public int getTaskId(){return taskId;}
 
     public int getMaxRecordingNr() {
-        return maxRecordingNr;
+        return MAXRECORDING;
     }
 
     public void setTaskId(int taskId) {

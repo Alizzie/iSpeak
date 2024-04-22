@@ -7,23 +7,13 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ispeak.Adapter.BoDySMainCriteriaAdapter;
-import com.example.ispeak.Adapter.EventAdapter;
-import com.example.ispeak.Interfaces.IntentHandler;
-import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.Models.BoDyS;
-import com.example.ispeak.Models.Event;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.databinding.ActivityBodysFrequencyObservationBinding;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 
 public class BoDySFrequencyObservationActivity extends BaseApp {
     private ActivityBodysFrequencyObservationBinding binding;
@@ -33,17 +23,24 @@ public class BoDySFrequencyObservationActivity extends BaseApp {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityBodysFrequencyObservationBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
-
-        init();
-        //listenConfirmBtn();
     }
 
-    private void init(){
-        this.assessment = (BoDyS) Patient.getInstance().getAssessmentList().get(assessmentNr);
+    @Override
+    public void init(){
+        this.assessment = (BoDyS) patientInfo.getAssessmentList().get(assessmentNr);
         enableNavBackArrow();
         initFrequencyObservationRecyclerView();
+    }
+
+    @Override
+    public void listenBtn() {
+
+    }
+
+    @Override
+    public void setBinding() {
+        binding = ActivityBodysFrequencyObservationBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
     }
 
     private void initFrequencyObservationRecyclerView(){
@@ -55,10 +52,6 @@ public class BoDySFrequencyObservationActivity extends BaseApp {
         BoDySMainCriteriaAdapter adapter = new BoDySMainCriteriaAdapter(assessment, binding.criteriaFrequencyRecyclerView, getApplicationContext());
         binding.criteriaFrequencyRecyclerView.setAdapter(adapter);
     }
-
-//    private void listenConfirmBtn(){
-//        binding.confirmBtn.setOnClickListener(view -> navigateToNextActivity(this, BoDySOverviewPageActivity.class));
-//    }
 
     @Override
     public void prepareIntent(Intent intent) {

@@ -1,7 +1,6 @@
 package com.example.ispeak.Models;
 
 import android.util.Log;
-
 import com.example.ispeak.Utils.BoDySStatus;
 
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class BoDySSheet {
     private HashMap<String, HashMap<String, Integer>> boDySCriteriaMarking = createBoDySCriteria();
@@ -20,26 +20,14 @@ public class BoDySSheet {
         this.status = BoDySStatus.UNKNOWN;
     }
 
-    public HashMap<String, String> getBoDySNotes() {
-        return boDySNotes;
-    }
-
-    public List<String> getMainCriteriaList(){
-        return new ArrayList<>(this.getBoDySCriteria().keySet());
-    }
-
-    public HashMap<String, Integer> getBoDySScores() {
-        return boDySScores;
-    }
-
     public ArrayList<String> getMainCriteriaWithEmptyMarkings(){
         ArrayList<String> list = new ArrayList<>();
 
         for (String mainCriteria: getMainCriteriaList()) {
             HashMap<String, Integer> criteriaValues = boDySCriteriaMarking.get(mainCriteria);
-            Collection<Integer> values = criteriaValues.values();
+            Collection<Integer> values = criteriaValues != null ? criteriaValues.values() : null;
 
-            if(!values.contains(1)){
+            if(!(values != null && values.contains(1))){
                 list.add(mainCriteria);
             }
         }
@@ -47,37 +35,36 @@ public class BoDySSheet {
         return list;
     }
 
-    private boolean checkUnmarkedMainCriteria(String criteria){
-        HashMap<String, Integer> criteriaValues = boDySCriteriaMarking.get(criteria);
-        Collection<Integer> values = criteriaValues.values();
+    private boolean checkIfMainCriteriaMarked(String mainCriteria){
+        HashMap<String, Integer> criteriaValues = boDySCriteriaMarking.get(mainCriteria);
+        Collection<Integer> values = criteriaValues != null ? criteriaValues.values() : null;
 
-        return !values.contains(1);
+        return !(values != null && values.contains(1));
     }
 
 
-    public void updateMarkings(String mainKey, String key, int marked) {
-        if(!boDySCriteriaMarking.keySet().contains(mainKey)){
+    public void updateMarkings(String mainCriteria, String criteria, int marked) {
+        if(!boDySCriteriaMarking.containsKey(mainCriteria)){
             return;
         }
 
-        if(!boDySCriteriaMarking.get(mainKey).keySet().contains(key)){
+        if(!Objects.requireNonNull(boDySCriteriaMarking.get(mainCriteria)).containsKey(criteria)){
             return;
         }
 
-        boDySCriteriaMarking.get(mainKey).put(key, marked);
+        Objects.requireNonNull(boDySCriteriaMarking.get(mainCriteria)).put(criteria, marked);
     }
 
-    public void updateScores(String key, int score, boolean restoreProcess) {
-        if(checkUnmarkedMainCriteria(key) && !restoreProcess) {
-            boDySScores.put(key, 4);
+    public void updateScores(String mainCriteria, int score, boolean restoreProcess) {
+        if(checkIfMainCriteriaMarked(mainCriteria) && !restoreProcess) {
+            boDySScores.put(mainCriteria, 4);
         } else {
-            boDySScores.put(key, score);
-            boDySScores.put(key, score);
+            boDySScores.put(mainCriteria, score);
         }
     }
 
-    public void updateBoDySNotes(String criteria, String note) {
-        if(!boDySNotes.keySet().contains(criteria)){
+    public void updateNotes(String criteria, String note) {
+        if(!boDySNotes.containsKey(criteria)){
             return;
         }
 
@@ -91,8 +78,7 @@ public class BoDySSheet {
 
     public int getTotalScore(){
         Collection<Integer> scores = boDySScores.values();
-        int totalScore = scores.stream().reduce(0, (x, y) -> x + y);
-        return totalScore;
+        return scores.stream().reduce(0, Integer::sum);
     }
 
     public HashMap<String, HashMap<String, Integer>> getBoDySCriteria() {
@@ -209,5 +195,17 @@ public class BoDySSheet {
 
     public void setStatus(BoDySStatus status) {
         this.status = status;
+    }
+
+    public HashMap<String, String> getBoDySNotes() {
+        return boDySNotes;
+    }
+
+    public List<String> getMainCriteriaList(){
+        return new ArrayList<>(this.getBoDySCriteria().keySet());
+    }
+
+    public HashMap<String, Integer> getBoDySScores() {
+        return boDySScores;
     }
 }

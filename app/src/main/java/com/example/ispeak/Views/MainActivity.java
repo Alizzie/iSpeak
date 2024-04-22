@@ -2,14 +2,9 @@ package com.example.ispeak.Views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
-
-import com.example.ispeak.Interfaces.IntentHandler;
 import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.R;
 import com.example.ispeak.Utils.AssessmentFactory;
@@ -22,89 +17,110 @@ import java.util.Objects;
 
 
 public class MainActivity extends BaseApp {
-    ActivityMainBinding binding;
-    Patient patientInfo;
+    private ActivityMainBinding binding;
+    private String patientId, caseId, diagnosis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(LayoutInflater.from(this));
-        setContentView(binding.getRoot());
-
-        listenBtnConfirm();
-        initRadioGroup();
     }
 
     private void listenBtnConfirm() {
         binding.patientRegisterBtn.setOnClickListener(view -> {
-            String patientId = Objects.requireNonNull(binding.patientIdInput.getText()).toString().trim();
-            String caseId = Objects.requireNonNull(binding.caseIdInput.getText()).toString().trim();
-            int diagnosisId = binding.radioGroupDiagnosis.getCheckedRadioButtonId();
+            boolean correctPatientIdInput = readPatientId();
+            boolean correctCaseIdInput = readCaseId();
+            readPatientDiagnosis();
 
-            boolean correctInputLength = checkIdLength(patientId, caseId);
-            String diagnosis = retrieveDiagnosis(diagnosisId);
-
-            if (correctInputLength && !diagnosis.equals("NaN")) {
-                patientInfo = Patient.getInstance();
-                patientInfo.setPatientData(patientId, caseId, diagnosis, this);
-
-                restoreAssessments();
-                navigateToNextActivity(this, MenuActivity.class);
+            if (correctPatientIdInput && correctCaseIdInput && !diagnosis.equals(getString(R.string.diagnosisError))) {
+                createPatient();
             }
 
-
-//            patientInfo = Patient.getInstance(patientId, caseId, diagnosis, getApplicationContext());
+//            patientInfo = Patient.getPatient(patientId, caseId, diagnosis, getApplicationContext());
 //            navigateToNextActivity(this, MenuActivity.class);
         });
     }
 
-    public void restoreAssessments() {
-        File[] assessmentFiles = Utils.getFilesFromInternalStorageFolder(Patient.getInstance().getPatientFolderPath());
-        if(assessmentFiles != null) {
-            for(File file : assessmentFiles) {
-                String fileName = file.getName();
-                AssessmentFactory.AssessmentNames assessmentName = AssessmentFactory.AssessmentNames.valueOf(fileName);
-                Log.d("TESTFILES", String.valueOf(assessmentName));
-                Assessment assessment = AssessmentFactory.createAssessment(assessmentName);
-
-                if(assessment != null) {
-                    boolean existing = assessment.retrieveAssessment(file);
-
-                    if(existing){
-                        Patient.getInstance().addAssessment(assessment);
-                    }
-                }
-            }
-        }
+    private boolean readPatientId(){
+        patientId = Objects.requireNonNull(binding.patientIdInput.getText()).toString().trim();
+        return checkPatientIdLength();
     }
 
-    private boolean checkIdLength(String patientId, String caseId){
-        boolean correctInput = true;
+    private boolean readCaseId(){
+        caseId = Objects.requireNonNull(binding.caseIdInput.getText()).toString().trim();
+        return checkCaseIdLength();
+    }
 
+    private void readPatientDiagnosis(){
+        int diagnosisId = binding.radioGroupDiagnosis.getCheckedRadioButtonId();
+        diagnosis = convertDiagnosisToString(diagnosisId);
+    }
+
+    private boolean checkPatientIdLength(){
         if (patientId.length() != 7) {
-            binding.patientIdInput.setError("Patient Id not correct");
-            correctInput = false;
+            binding.patientIdInput.setError(getString(R.string.patientIdInputError));
+            return false;
         }
 
-        if (caseId.length() != 7) {
-            binding.caseIdInput.setError("Case Id not correct");
-            correctInput = false;
-        }
-
-        return correctInput;
+        return true;
     }
 
-    private String retrieveDiagnosis(int diagnosis) {
+    private boolean checkCaseIdLength(){
+        if (caseId.length() != 7) {
+            binding.caseIdInput.setError(getString(R.string.caseIdInputError));
+            return false;
+        }
 
+        return true;
+    }
+
+    private String convertDiagnosisToString(int diagnosis) {
         if (diagnosis == binding.radioBtnStroke.getId()){
-            return "Stroke";
+            return getString(R.string.diagnosisStroke);
         } else if (diagnosis == binding.radioBtnPakinson.getId()){
-            return "Pakinson";
+            return getString(R.string.diagnosisPakinson);
         } else if (diagnosis == binding.radioBtnOther.getId()){
-            return "Other";
+            return getString(R.string.diagnosisOther);
         } else {
             binding.diagnosisTextInput.setError("Select diagnosis");
-            return "NaN";
+            return getString(R.string.diagnosisError);
+        }
+    }
+
+    private void createPatient(){
+        patientInfo.setPatientData(patientId, caseId, diagnosis, this);
+
+        restoreAssessments();
+        navigateToNextActivity(this, MenuActivity.class);
+    }
+
+    public void restoreAssessments() {
+        File[] assessmentFiles = getPatientFilesIfExisting();
+
+        if(assessmentFiles == null){
+            return;
+        }
+
+        for(File file : assessmentFiles) {
+            restoreAssessmentIfNotEmpty(file);
+        }
+    }
+
+    private File[] getPatientFilesIfExisting(){
+        return Utils.getFilesFromInternalStorageFolder(patientInfo.getPatientFolderPath());
+    }
+
+    private void restoreAssessmentIfNotEmpty(File file){
+        String fileName = file.getName();
+        AssessmentFactory.AssessmentNames assessmentName = AssessmentFactory.AssessmentNames.valueOf(fileName);
+        Assessment assessment = AssessmentFactory.createAssessment(assessmentName);
+
+        if(assessment == null) {
+            return;
+        }
+
+        boolean notEmptyAssessment = assessment.retrieveAssessment(file);
+        if(notEmptyAssessment){
+            patientInfo.addAssessment(assessment);
         }
     }
 
@@ -112,6 +128,26 @@ public class MainActivity extends BaseApp {
         binding.radioGroupDiagnosis.setOnCheckedChangeListener((radioGroup, i) -> binding.diagnosisTextInput.setError(null));
     }
 
+    @Override
+    public void init() {
+        initRadioGroup();
+    }
+
+    @Override
+    public void listenBtn() {
+        listenBtnConfirm();
+    }
+
+    @Override
+    public void setBinding() {
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this));
+        setContentView(binding.getRoot());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
     @Override
     public void prepareIntent(Intent intent) {
@@ -120,10 +156,5 @@ public class MainActivity extends BaseApp {
     @Override
     public void processReceivedIntent(Intent intent) {
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
     }
 }

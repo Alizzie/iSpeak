@@ -1,16 +1,13 @@
 package com.example.ispeak.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ispeak.Models.BoDyS;
@@ -18,23 +15,20 @@ import com.example.ispeak.Models.BoDySSheet;
 import com.example.ispeak.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BoDySSubCriteriaAdapter extends RecyclerView.Adapter<BoDySSubCriteriaAdapter.ViewHolder> {
+public class BoDySCriteriaAdapter extends RecyclerView.Adapter<BoDySCriteriaAdapter.ViewHolder> {
 
     private String mainCriteria;
-    private HashMap<String, Integer> criteria;
     private List<String> criteriaStrings;
     private BoDyS assessment;
     private Context context;
 
-    public BoDySSubCriteriaAdapter(BoDyS assessment, String mainCriteria, HashMap<String, Integer> criteria, Context context) {
+    public BoDySCriteriaAdapter(BoDyS assessment, String mainCriteria, HashMap<String, Integer> criteria, Context context) {
         this.mainCriteria = mainCriteria;
-        this.criteria = criteria;
         this.assessment = assessment;
         this.context = context;
         this.criteriaStrings = new ArrayList<>(criteria.keySet());
@@ -43,8 +37,8 @@ public class BoDySSubCriteriaAdapter extends RecyclerView.Adapter<BoDySSubCriter
 
     @NonNull
     @Override
-    public BoDySSubCriteriaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new BoDySSubCriteriaAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bodys_small_frequency, parent, false));
+    public BoDySCriteriaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new BoDySCriteriaAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bodys_small_frequency, parent, false));
     }
 
     @Override

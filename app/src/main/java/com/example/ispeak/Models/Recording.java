@@ -1,46 +1,44 @@
 package com.example.ispeak.Models;
 
-import com.example.ispeak.Interfaces.ReadEventCSVInterface;
+import com.example.ispeak.Interfaces.IReadCSV;
 import com.example.ispeak.Utils.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Recording implements ReadEventCSVInterface {
-
-    //private String wav_filepath, mp3_filepath;
-    private String mp3_filepath;
+public class Recording implements IReadCSV {
+    private String mp3Filepath;
     private final long totalTime;
     private final long patientTime;
     private ArrayList<Event> events;
 
-    public Recording(String mp3_filepath, long time){
-        this(mp3_filepath, time, time, new ArrayList<>());
+    public Recording(String mp3Filepath, long time){
+        this(mp3Filepath, time, time, new ArrayList<>());
     }
 
-    public Recording(String mp3_filepath, long totalTime, long patientTime, ArrayList<Event> events) {
-        this.mp3_filepath = mp3_filepath;
+    public Recording(String mp3Filepath, long totalTime, long patientTime, ArrayList<Event> events) {
+        this.mp3Filepath = mp3Filepath;
         this.totalTime = totalTime;
         this.patientTime = patientTime;
         this.events = events;
     }
 
-    public String getMp3_filepath() {
-        return mp3_filepath;
+    public String getMp3Filepath() {
+        return mp3Filepath;
     }
 
-    public void setMp3_filepath(String mp3_filepath) {
-        this.mp3_filepath = mp3_filepath;
+    public void setMp3Filepath(String mp3Filepath) {
+        this.mp3Filepath = mp3Filepath;
     }
 
     public String getFormattedTotalTime(){
-        return Utils.formatTime(totalTime);
+        return Utils.formatAudioTimeToStringPresentation(totalTime);
     }
     public long getPatientTime() {
         return patientTime;
     }
 
     public String getFormattedPatientTime(){
-        return Utils.formatTime(patientTime);
+        return Utils.formatAudioTimeToStringPresentation(patientTime);
     }
 
     public ArrayList<Event> getEvents() {
@@ -60,7 +58,7 @@ public class Recording implements ReadEventCSVInterface {
     }
 
     @Override
-    public Event onReadCSV(String[] line, int eventId, int taskId) {
+    public Event onReadEventsCSV(String[] line, int eventId, int taskId) {
         long timeStart = Utils.parseTimeToMilliseconds(line[1]);
         long timeEnd = Utils.parseTimeToMilliseconds(line[2]);
 

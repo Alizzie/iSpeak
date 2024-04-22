@@ -1,14 +1,8 @@
 package com.example.ispeak.Utils;
-
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.ispeak.Models.Assessment;
-import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.Event;
 import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Models.Recording;
@@ -17,26 +11,15 @@ import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class WriteCSV extends ViewModel {
 
-    String name;
-    public static WriteCSV getInstance(@NonNull ViewModelStoreOwner owner) {
-        return new ViewModelProvider(owner, (ViewModelProvider.Factory) new ViewModelProvider.NewInstanceFactory()).get(WriteCSV.class);
-    }
-
-    public void storeDataCSVNote(Assessment assessment, String filepath) {
+    public void storeAssessmentDataCSVNote(Assessment assessment, String filepath) {
         try {
 
             FileWriter outputFile;
@@ -87,7 +70,7 @@ public class WriteCSV extends ViewModel {
         }
     }
 
-    public void storeEventDataCSVNote(Assessment assessment, String filepath){
+    public void storeRecordingEventDataCSVNote(Assessment assessment, String filepath){
         Recording recording = assessment.getRecordings()[assessment.getTaskId()];
 
         if(recording == null) {
@@ -176,7 +159,7 @@ public class WriteCSV extends ViewModel {
             }
 
             if(lines.size() == 0){
-                storeEventDataCSVNote(assessment, filepath);
+                storeRecordingEventDataCSVNote(assessment, filepath);
                 return;
             }
 
@@ -245,9 +228,9 @@ public class WriteCSV extends ViewModel {
     }
 
     private void writePatientData(CSVWriter writer){
-        List<String[]> patientData = new ArrayList<String[]>();
+        List<String[]> patientData = new ArrayList<>();
         patientData.add(new String[] {"Patient_Id", "Case_Id", "Diagnosis", "Time"});
-        patientData.add(new String[] {Patient.getInstance().getPatientId(), Patient.getInstance().getCaseId(), Patient.getInstance().getDiagnosis(), Patient.getInstance().getFormattedDate()});
+        patientData.add(new String[] {Patient.getPatient().getPatientId(), Patient.getPatient().getCaseId(), Patient.getPatient().getDiagnosis(), Patient.getPatient().getFormattedDate()});
         patientData.add(new String[] {});
         writer.writeAll(patientData);
     }
@@ -300,7 +283,7 @@ public class WriteCSV extends ViewModel {
 
     private boolean checkIfFileIsEmpty(FileReader file){
         CSVReader reader = new CSVReader(file);
-        List<String[]> lines = null;
+        List<String[]> lines;
         try {
             lines = reader.readAll();
         } catch (IOException | CsvException e) {

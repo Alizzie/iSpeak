@@ -1,21 +1,24 @@
 package com.example.ispeak.Views;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 
-import com.example.ispeak.Interfaces.IntentHandler;
+import com.example.ispeak.Interfaces.IActivityCreator;
+import com.example.ispeak.Interfaces.IIntentHandler;
+import com.example.ispeak.Models.Patient;
 import com.example.ispeak.R;
 
 import java.util.Objects;
 
-public abstract class BaseApp extends AppCompatActivity implements IntentHandler {
+public abstract class BaseApp extends AppCompatActivity implements IIntentHandler, IActivityCreator {
+    protected Patient patientInfo;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -43,7 +46,7 @@ public abstract class BaseApp extends AppCompatActivity implements IntentHandler
         return super.onOptionsItemSelected(item);
     }
 
-    public void enableNavBackArrow(){
+    protected void enableNavBackArrow(){
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
@@ -54,6 +57,16 @@ public abstract class BaseApp extends AppCompatActivity implements IntentHandler
         if(this instanceof MainActivity || this instanceof MenuActivity){
             return;
         }
+
         navigateToNextActivity(this, MenuActivity.class);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        patientInfo = Patient.getPatient();
+        setBinding();
+        init();
+        listenBtn();
     }
 }
