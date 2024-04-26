@@ -13,7 +13,6 @@ import androidx.cardview.widget.CardView;
 
 import com.example.ispeak.Models.BoDyS;
 import com.example.ispeak.Models.BoDySSheet;
-import com.example.ispeak.Models.Patient;
 import com.example.ispeak.R;
 import com.example.ispeak.databinding.ActivityBodysScoresOverviewBinding;
 

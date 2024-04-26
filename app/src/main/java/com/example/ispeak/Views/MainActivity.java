@@ -1,14 +1,12 @@
 package com.example.ispeak.Views;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 
 import com.example.ispeak.Models.Assessment;
 import com.example.ispeak.R;
 import com.example.ispeak.Utils.AssessmentFactory;
-import com.example.ispeak.Models.Patient;
 import com.example.ispeak.Utils.Utils;
 import com.example.ispeak.databinding.ActivityMainBinding;
 
@@ -19,11 +17,6 @@ import java.util.Objects;
 public class MainActivity extends BaseApp {
     private ActivityMainBinding binding;
     private String patientId, caseId, diagnosis;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     private void listenBtnConfirm() {
         binding.patientRegisterBtn.setOnClickListener(view -> {

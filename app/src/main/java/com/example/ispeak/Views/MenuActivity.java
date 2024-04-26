@@ -15,11 +15,6 @@ public class MenuActivity extends BaseApp {
 
     ActivityMenuBinding binding;
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void init(){
         retrieveIntent(this);
         setPatientInfoDisplay();

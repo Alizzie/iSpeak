@@ -23,32 +23,32 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     private Context context;
     private int checkPosition;
     private boolean deleteMode = false;
-    private IEventLabelingListener observer;
+    private IEventLabelingListener listener;
 
-    public EventAdapter(List<Event> eventList, Context context, IEventLabelingListener observer) {
+    public EventAdapter(List<Event> eventList, Context context, IEventLabelingListener listener) {
         this.eventList = eventList;
         this.context = context;
         this.checkPosition = RecyclerView.NO_POSITION;
-        this.observer = observer;
+        this.listener = listener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void toggleDeleteMode(){
         deleteMode = !deleteMode;
         notifyItemRangeChanged(0, getItemCount());
-        observer.onEventClick(checkPosition);
+        listener.onEventClick(checkPosition);
     }
 
     public void notifyAdapterItemInserted(int eventId) {
         notifyItemRangeChanged(0, getItemCount());
         checkPosition = eventId;
         notifyItemInserted(eventId);
-        notifyListInsertedObserver(eventId);
+        notifyListInsertedlistener(eventId);
     }
 
     private void deleteItem(int position) {
         if (position >= 0 && position < eventList.size()) {
-            notifyListRemovedObserver(position);
+            notifyListRemovedlistener(position);
             notifyItemRemoved(position);
 
             checkPosition = RecyclerView.NO_POSITION;
@@ -57,11 +57,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         toggleDeleteMode();
     }
 
-    private void notifyListRemovedObserver(int position) {
-        observer.onListItemRemoved(position);
+    private void notifyListRemovedlistener(int position) {
+        listener.onListItemRemoved(position);
     }
-    private void notifyListInsertedObserver(int position) {
-        observer.onListItemInserted(position);
+    private void notifyListInsertedlistener(int position) {
+        listener.onListItemInserted(position);
     }
 
     public void setDeleteMode(boolean mode){
@@ -98,7 +98,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                 holder.tickItem();
             }
 
-            observer.onEventClick(position);
+            listener.onEventClick(position);
         });
 
         holder.eventDeleteBtn.setOnClickListener(view -> {

@@ -14,11 +14,11 @@ public class BoDySNotesPopup extends CustomPopupView {
     private TextView title;
     private String criteria;
     private EditText userText;
-    private INotesListener observer;
+    private INotesListener listener;
     private boolean readOnly;
-    public BoDySNotesPopup(INotesListener observer, boolean readOnly) {
+    public BoDySNotesPopup(INotesListener listener, boolean readOnly) {
         super(false);
-        this.observer = observer;
+        this.listener = listener;
         this.readOnly = readOnly;
     }
 
@@ -59,13 +59,13 @@ public class BoDySNotesPopup extends CustomPopupView {
     private boolean resetEditText(){
         String emptyString = "";
         userText.setText(emptyString);
-        observer.onSaveNote(criteria, emptyString);
+        listener.onSaveNote(criteria, emptyString);
         return true;
     }
 
     private boolean saveEditText(PopupWindow popupWindow){
         String note = userText.getText().toString();
-        observer.onSaveNote(criteria, note);
+        listener.onSaveNote(criteria, note);
         popupWindow.dismiss();
         return true;
     }

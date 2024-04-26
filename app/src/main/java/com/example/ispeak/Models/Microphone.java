@@ -42,8 +42,7 @@ public class Microphone {
     }
 
     public boolean connectMicrophone() {
-        boolean ONLYDIVAS = true;
-        if (!isMicroPresent() || !ONLYDIVAS) {
+        if (!isMicroPresent()) {
             return false;
         }
 

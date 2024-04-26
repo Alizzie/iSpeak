@@ -21,14 +21,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     private List<String> categoryList;
     private Event event;
     private Context context;
-    private IEventLabelingListener observer;
+    private IEventLabelingListener listener;
     private boolean readOnly;
 
-    public CategoryAdapter(List<String> categoryList, Context context, Event event, IEventLabelingListener observer, boolean readOnly){
+    public CategoryAdapter(List<String> categoryList, Context context, Event event, IEventLabelingListener listener, boolean readOnly){
         this.categoryList = categoryList;
         this.context = context;
         this.event = event;
-        this.observer = observer;
+        this.listener = listener;
         this.readOnly = readOnly;
     }
 
@@ -63,7 +63,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                     event.addEventLabel(category);
                 }
 
-                observer.onCategoryClick();
+                listener.onCategoryClick();
             });
         }
     }

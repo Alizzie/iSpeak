@@ -20,6 +20,15 @@ import java.util.Objects;
 public abstract class BaseApp extends AppCompatActivity implements IIntentHandler, IActivityCreator {
     protected Patient patientInfo;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        patientInfo = Patient.getPatient();
+        setBinding();
+        init();
+        listenBtn();
+    }
+
     @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,14 +68,5 @@ public abstract class BaseApp extends AppCompatActivity implements IIntentHandle
         }
 
         navigateToNextActivity(this, MenuActivity.class);
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        patientInfo = Patient.getPatient();
-        setBinding();
-        init();
-        listenBtn();
     }
 }
