@@ -16,7 +16,6 @@ public class MenuActivity extends BaseApp {
     ActivityMenuBinding binding;
     @Override
     public void init(){
-        retrieveIntent(this);
         setPatientInfoDisplay();
     }
 

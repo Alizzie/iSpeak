@@ -54,7 +54,6 @@ public class BoDySSheetActivity extends BaseApp implements IEventLabelingListene
 
     @Override
     public void init() {
-        retrieveIntent(this);
         initPatientData();
         initBoDySSheet();
 

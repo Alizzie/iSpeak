@@ -27,6 +27,7 @@ public abstract class BaseApp extends AppCompatActivity implements IIntentHandle
         setBinding();
         init();
         listenBtn();
+        retrieveIntent(this);
     }
 
     @SuppressLint("RestrictedApi")

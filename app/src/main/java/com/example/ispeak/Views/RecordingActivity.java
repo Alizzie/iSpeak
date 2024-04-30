@@ -48,7 +48,6 @@ public class RecordingActivity extends BaseApp {
 
     @Override
     public void init(){
-        retrieveIntent(this);
         initAssessmentInfo();
         initRecordingInfo();
         initTaskProgressBar();

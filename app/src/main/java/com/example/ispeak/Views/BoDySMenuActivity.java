@@ -30,7 +30,6 @@ public class BoDySMenuActivity extends BaseApp {
 
     @Override
     public void init() {
-        retrieveIntent(this);
         assessmentNr = patientInfo.findAssessment(BoDyS.class);
     }
 

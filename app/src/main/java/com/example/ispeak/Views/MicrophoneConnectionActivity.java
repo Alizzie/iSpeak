@@ -27,7 +27,6 @@ public class MicrophoneConnectionActivity extends BaseApp {
     }
 
     public void init(){
-        retrieveIntent(this);
         enableNavBackArrow();
         microphone = new Microphone(this);
     }

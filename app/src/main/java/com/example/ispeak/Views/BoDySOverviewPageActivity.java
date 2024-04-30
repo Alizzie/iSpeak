@@ -38,7 +38,6 @@ public class BoDySOverviewPageActivity extends BaseApp {
 
     @Override
     public void init(){
-        retrieveIntent(this);
         initPatientInfo();
         initAssessmentInfo();
         initTasks();
